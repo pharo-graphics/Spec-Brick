@@ -1,0 +1,27 @@
+Class {
+	#name : #BaselineOfSpecBrick,
+	#superclass : #BaselineOf,
+	#category : #BaselineOfSpecBrick
+}
+
+{ #category : #baseline }
+BaselineOfSpecBrick >> baseline: spec [
+	<baseline>
+	spec
+		for: #common
+		do: [ 
+			self
+				declareBrickOn: spec.
+
+			spec
+				package: 'Spec-Brick' with: [ spec requires: #('Brick') ];
+				package: 'Spec-Brick-Tests'.
+		]
+]
+
+{ #category : #'external projects' }
+BaselineOfSpecBrick >> declareBrickOn: spec [
+	spec
+		baseline: 'Brick'
+		with: [ spec repository: 'github://pharo-graphics/Brick:master/src' ]
+]
