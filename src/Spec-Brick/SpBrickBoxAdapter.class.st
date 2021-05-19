@@ -2,8 +2,8 @@ Class {
 	#name : #SpBrickBoxAdapter,
 	#superclass : #SpBrickLayoutAdapter,
 	#instVars : [
-		'startContainerElement',
-		'endContainerElement'
+		'startPane',
+		'endPane'
 	],
 	#category : #'Spec-Brick'
 }
@@ -29,22 +29,23 @@ SpBrickBoxAdapter >> basicAdd: aPresenter constraints: constraints to: aBlElemen
 	self verifyBoxExtentOf: aPanel withChild: childMorph.
 "
 	constraints isPlacedAtStart
-		ifTrue: [ startContainerElement addChild: newElement ]
-		ifFalse: [ endContainerElement addChild: newElement ].
+		ifTrue: [ startPane addChild: newElement ]
+		ifFalse: [ endPane addChild: newElement ].
 
 	^ newElement
 ]
 
-{ #category : #factory }
-SpBrickBoxAdapter >> buildWidget [ 
+{ #category : #'instance creation' }
+SpBrickBoxAdapter >> layout: aLayout [
 
-	startContainerElement := self newContainerElement.
-	endContainerElement := self newContainerElement.
+	widget := aLayout direction newWidgetOn: self.
 
-	^ super buildWidget
-		addChild: startContainerElement;
-		addChild: endContainerElement;
-		yourself
+	widget padding: (BlInsets all: aLayout borderWidth).
+
+	aLayout hasAlignment 
+		ifTrue: [ 1halt. "widget := self applyAlignmentTo: widget" ].
+
+	super layout: aLayout
 ]
 
 { #category : #'instance creation' }
@@ -68,10 +69,22 @@ SpBrickBoxAdapter >> newElementFrom: aPresenter constraints: constraints [
 { #category : #'instance creation' }
 SpBrickBoxAdapter >> newVertical [
 
-	startContainerElement layout: BlFlowLayout vertical.
-	endContainerElement layout: BlFlowLayout vertical.
-"			vResizing: #shrinkWrap;
-			height: 0;"
-						
-	widget layout: BlFlowLayout vertical
+	startPane := self newVerticalPane.
+	endPane := self newVerticalPane
+		vFitContent;
+		yourself.
+
+	^ self newVerticalPane
+		  addChild: startPane as: 'boxStartPane';
+		  addChild: endPane as: 'boxEndPane';
+		  yourself
+]
+
+{ #category : #'instance creation' }
+SpBrickBoxAdapter >> newVerticalPane [
+
+	^ BrVerticalPane new
+		  background: Color white;
+		  matchParent;
+		  yourself
 ]

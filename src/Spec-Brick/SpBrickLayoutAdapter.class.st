@@ -9,23 +9,13 @@ Class {
 
 { #category : #factory }
 SpBrickLayoutAdapter >> buildWidget [
+	"Answer nil to postpone instance creation (not enough information at this moment)."
 
-	^ self newContainerElement
+	^ nil
 ]
 
 { #category : #factory }
 SpBrickLayoutAdapter >> layout: aLayout [
 
 	layout := aLayout
-]
-
-{ #category : #'instance creation' }
-SpBrickLayoutAdapter >> newContainerElement [
-
-	^ BlElement new
-		  background: Color transparent;
-		  constraintsDo: [ :c | 
-			  c horizontal matchParent.
-			  c vertical matchParent ];
-		  yourself
 ]
