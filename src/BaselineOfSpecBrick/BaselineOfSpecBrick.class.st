@@ -7,14 +7,15 @@ Class {
 { #category : #baseline }
 BaselineOfSpecBrick >> baseline: spec [
 	<baseline>
+	
 	spec
 		for: #common
 		do: [ 
-			self
-				declareBrickOn: spec.
+			self declareBrickOn: spec.
 
 			spec
 				package: 'Spec-Brick' with: [ spec requires: #('Brick') ];
+				package: 'Spec-Brick-MockedHost' with: [ spec requires: #('Spec-Brick') ];
 				package: 'Spec-Brick-Tests'.
 		]
 ]
