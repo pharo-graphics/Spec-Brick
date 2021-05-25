@@ -1,36 +1,30 @@
 Class {
 	#name : #SpBrickWindowAdapterTest,
 	#superclass : #SpBrickAdapterTest,
-	#instVars : [
-		'window',
-		'space'
-	],
 	#category : #'Spec-Brick-Tests'
 }
 
-{ #category : #tests }
-SpBrickWindowAdapterTest >> closeWindow [
-	
-"	self waitEmptySpaceTaskQueue."
-	"Why doesn't it work if I send to presenter directly?"
-	window adapter close.
-	self waitSpaceTaskQueueIsEmpty.
+{ #category : #asserting }
+SpBrickWindowAdapterTest >> assertCloseWindowPresenter [
+
+	self ensureCloseWindowPresenter.
+	self assert: specWindow isClosed description: 'The presenter says it is closed'.
+	self deny: space isOpened description: 'The backend widget says it is closed'.
+
 ]
 
-{ #category : #tests }
-SpBrickWindowAdapterTest >> newPresenter [
+{ #category : #asserting }
+SpBrickWindowAdapterTest >> assertOpenWindowPresenter [
 
-	^ (self newApplication new: SpWindowPresenter)
-		presenter: SpLabelPresenter new;
-		yourself
-]
+	specWindow := self newApplication new: SpWindowPresenter.
+	"What matters in this test case is the window itself, but some content is needed."
+	specWindow presenter: (specWindow instantiate: SpLabelPresenter).
+	specWindow openWithSpecLayout: SpLabelPresenter defaultSpec.
 
-{ #category : #tests }
-SpBrickWindowAdapterTest >> openWindow [
-
-	window openWithSpecLayout: SpLabelPresenter defaultSpec.
-	50 milliSeconds wait.
-	space := window adapter widget.
+	space := specWindow adapter widget.
+	self deny: specWindow isClosed description: 'The window presenter says it is NOT opened'.
+	150 milliSeconds wait.
+	self assert: space isOpened description: 'The Bloc space says it is NOT opened'.
 
 ]
 
@@ -43,20 +37,10 @@ SpBrickWindowAdapterTest >> setUp [
 ]
 
 { #category : #tests }
-SpBrickWindowAdapterTest >> tearDown [
-
-	self closeWindow.
-
-	super tearDown
-]
-
-{ #category : #tests }
 SpBrickWindowAdapterTest >> testClose [
 
-	self openWindow.
-	self closeWindow.
-	self assert: window isClosed.
-	
+	self assertOpenWindowPresenter.
+	self assertCloseWindowPresenter.
 
 ]
 
@@ -64,19 +48,19 @@ SpBrickWindowAdapterTest >> testClose [
 SpBrickWindowAdapterTest >> testLifeCycleSubscriptions [
 
 	| openedTime closedTime willCloseTime |
-	window whenOpenedDo: [ openedTime := DateAndTime now. 10 milliSeconds wait ].
-	window whenWillCloseDo: [ willCloseTime := DateAndTime now. 10 milliSeconds wait ].
-	window whenClosedDo: [ closedTime := DateAndTime now. 10 milliSeconds wait ].
+	specWindow whenOpenedDo: [ openedTime := DateAndTime now. 10 milliSeconds wait ].
+	specWindow whenWillCloseDo: [ willCloseTime := DateAndTime now. 10 milliSeconds wait ].
+	specWindow whenClosedDo: [ closedTime := DateAndTime now. 10 milliSeconds wait ].
 	
-	self openWindow.
+	self assertOpenWindowPresenter.
 	
 	self deny: openedTime isNil.
 	self assert: willCloseTime isNil.
 	self assert: closedTime isNil.
 	
 	"Closing BlSpace must trigger the Spec action."
-	window adapter widget close.
-	self waitSpaceTaskQueueIsEmpty.
+	specWindow adapter widget close.
+	self waitUI.
 
 	"All timestamps are set"
 	self deny: openedTime isNil.
@@ -91,42 +75,14 @@ SpBrickWindowAdapterTest >> testLifeCycleSubscriptions [
 { #category : #tests }
 SpBrickWindowAdapterTest >> testOpen [
 
-	self assert: window isClosed.
-	self openWindow.
-	self deny: window isClosed.
+	self assertOpenWindowPresenter
 ]
 
 { #category : #tests }
 SpBrickWindowAdapterTest >> testTitle [
 
-	self openWindow.
-	self assert: space title equals: window title.
+	self assertOpenWindowPresenter.
+	self assert: space title equals: specWindow title.
 	space title: 'This is not a test'.
 	self assert: space title equals: 'This is not a test'.
-]
-
-{ #category : #tests }
-SpBrickWindowAdapterTest >> waitSpaceTaskQueueIsEmpty [
-
-	self assert: (self waitSpaceTaskQueueIsEmptyTimeout: 100 milliSeconds)
-]
-
-{ #category : #tests }
-SpBrickWindowAdapterTest >> waitSpaceTaskQueueIsEmptyTimeout: aDuration [
-	"Wait BlSpace no available tasks to execute. This is important since the SpBrick adapters are usually not synchronous. They enqueue tasks.
-	
-	Inspired in BlDevScripterWaitStep>>#forEmptySpaceTaskQueueTimeout:"
-
-	| startTime timeoutCondition emptyCondition |
-	startTime := space time now.
-	space time 
-		every: 20 milliSeconds
-		while: [ 
-			timeoutCondition := space time now < (startTime + aDuration).
-			emptyCondition := space taskQueue isEmpty not.
-			'tick' traceCr.
-			timeoutCondition and: [ emptyCondition ] ]
-		do: [ space pulse ].
-
-	^ timeoutCondition
 ]
