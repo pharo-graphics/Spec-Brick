@@ -14,7 +14,7 @@ BaselineOfSpecBrick >> baseline: spec [
 			self declareBrickOn: spec.
 
 			spec
-				package: 'Spec-Brick' with: [ spec requires: #('Brick') ];
+				package: 'Spec-Brick' with: [ spec requires: #('NewBrick') ];
 				package: 'Spec-Brick-MockedHost' with: [ spec requires: #('Spec-Brick') ];
 				package: 'Spec-Brick-Tests'.
 		]
@@ -23,6 +23,6 @@ BaselineOfSpecBrick >> baseline: spec [
 { #category : #'external projects' }
 BaselineOfSpecBrick >> declareBrickOn: spec [
 	spec
-		baseline: 'Brick'
+		baseline: 'NewBrick'
 		with: [ spec repository: 'github://pharo-graphics/Brick:master/src' ]
 ]
