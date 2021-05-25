@@ -1,0 +1,14 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'SpecBrick',
+      #directory : 'src',
+      #platforms : [ #pharo ]
+    }
+  ],
+  #testing: {
+    #include : {
+     #packages : [ 'Spec-Brick.*' ]
+    }
+  }
+}
