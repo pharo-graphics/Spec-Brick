@@ -8,9 +8,10 @@ Evaluate the following script on [Pharo 9](https://pharo.org/download):
 
 ```smalltalk
 Metacello new
-        baseline: 'SpecBrick';
-        repository: 'github://pharo-graphics/Spec-Brick/src';
-        load.
+	baseline: 'SpecBrick';
+	repository: 'github://pharo-graphics/Spec-Brick:main/src';
+	onConflictUseIncoming;
+	load
 ```
 
 Alternatively, you can do it by terminal (MacOS, linux... and should work as well in Windows with MINGW64). 
