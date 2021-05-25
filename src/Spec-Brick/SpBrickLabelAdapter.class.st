@@ -12,8 +12,8 @@ SpBrickLabelAdapter >> buildWidget [
 		  yourself
 ]
 
-{ #category : #factory }
-SpBrickLabelAdapter >> subscribeToModel [
+{ #category : #'widget creation' }
+SpBrickLabelAdapter >> subscribeToPresenter [
 
 	self presenter whenLabelChangedDo: [ self updateText ]
 ]

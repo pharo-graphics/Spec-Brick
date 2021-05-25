@@ -7,14 +7,14 @@ Class {
 	#category : #'Spec-Brick'
 }
 
-{ #category : #factory }
+{ #category : #'widget creation' }
 SpBrickLayoutAdapter >> buildWidget [
 	"Answer nil to postpone instance creation (not enough information at this moment)."
 
 	^ nil
 ]
 
-{ #category : #factory }
+{ #category : #protocol }
 SpBrickLayoutAdapter >> layout: aLayout [
 
 	layout := aLayout

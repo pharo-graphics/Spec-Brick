@@ -18,19 +18,19 @@ SpBrickAdapter class >> allAdapters [
 	^ self allSubclasses
 ]
 
-{ #category : #factory }
+{ #category : #initialization }
 SpBrickAdapter >> adapt: aPresenter [
 
 	super adapt: aPresenter.
 
 	self
 		updateAll;
-		subscribeToModel;
+		subscribeToPresenter;
 		subscribeToWidget.
 
 ]
 
-{ #category : #'deferred message' }
+{ #category : #private }
 SpBrickAdapter >> defer: aBlockClosure [
 	"Enqueue aBlockClosure in the BlSpace, which will be valued in next #pulse."
 
@@ -39,20 +39,20 @@ SpBrickAdapter >> defer: aBlockClosure [
 	self widget enqueueTask: (BlTaskAction new action: aBlockClosure)
 ]
 
-{ #category : #factory }
-SpBrickAdapter >> subscribeToModel [
-	"Subscribe to the model so the widget updates on every change announcement."
+{ #category : #'widget creation' }
+SpBrickAdapter >> subscribeToPresenter [
+	"Subscribe to the presenter so the widget updates on every change announcement."
 
 ]
 
-{ #category : #factory }
+{ #category : #'widget creation' }
 SpBrickAdapter >> subscribeToWidget [
 	"Subscribe to certain widget events that require to trigger actions in the presenter (model)."
 
 ]
 
-{ #category : #factory }
+{ #category : #'widget update' }
 SpBrickAdapter >> updateAll [
-	"Apply the model' specifications to the backend widget"
+	"Apply the presenter specifications to the backend widget"
 
 ]

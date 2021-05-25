@@ -4,7 +4,7 @@ Class {
 	#category : #'Spec-Brick'
 }
 
-{ #category : #factory }
+{ #category : #'widget creation' }
 SpBrickButtonAdapter >> buildWidget [
 
 	^ BrButton new
@@ -13,8 +13,8 @@ SpBrickButtonAdapter >> buildWidget [
 
 ]
 
-{ #category : #factory }
-SpBrickButtonAdapter >> subscribeToModel [
+{ #category : #'widget creation' }
+SpBrickButtonAdapter >> subscribeToPresenter [
 
 	self presenter
 		whenLabelChangedDo: [ self updateLabel ];
@@ -22,13 +22,13 @@ SpBrickButtonAdapter >> subscribeToModel [
 		whenActionChangedDo: [ self updateAction ]
 ]
 
-{ #category : #update }
+{ #category : #'widget update' }
 SpBrickButtonAdapter >> updateAction [
 
 	self widgetDo: [ :w | w action: self presenter action ]
 ]
 
-{ #category : #'updating screen' }
+{ #category : #'widget update' }
 SpBrickButtonAdapter >> updateAll [
 
 	self
@@ -37,7 +37,7 @@ SpBrickButtonAdapter >> updateAll [
 		updateAction.
 ]
 
-{ #category : #update }
+{ #category : #'widget update' }
 SpBrickButtonAdapter >> updateIcon [
 
 	self widgetDo: [ :w | 
@@ -47,7 +47,7 @@ SpBrickButtonAdapter >> updateIcon [
 		w icon: self presenter icon ] ]
 ]
 
-{ #category : #update }
+{ #category : #'widget update' }
 SpBrickButtonAdapter >> updateLabel [
 
 	self widgetDo: [ :w | w label: self presenter label ]

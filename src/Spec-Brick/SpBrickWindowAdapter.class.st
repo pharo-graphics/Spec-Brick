@@ -4,7 +4,7 @@ Class {
 	#category : #'Spec-Brick'
 }
 
-{ #category : #adding }
+{ #category : #accessing }
 SpBrickWindowAdapter >> addContent: aBlElement toWindow: aBlSpace [ 
 
 "	| containerMorph |
@@ -32,7 +32,7 @@ SpBrickWindowAdapter >> addContent: aBlElement toWindow: aBlSpace [
 	aBlSpace root: aBlElement
 ]
 
-{ #category : #adding }
+{ #category : #accessing }
 SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpAbstractWidgetLayout [ 
 	
 	self presenter initialPosition 
@@ -52,13 +52,21 @@ SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpAbstractWidg
 		toWindow: aBlSpace
 ]
 
-{ #category : #factory }
+{ #category : #accessing }
+SpBrickWindowAdapter >> blocHost [
+
+	^ BlHost pickHost
+]
+
+{ #category : #'widget creation' }
 SpBrickWindowAdapter >> buildWidget [
 
 	^ BlSpace new
+		host: self blocHost;
+		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : #accessing }
 SpBrickWindowAdapter >> close [
 
 	self defer: [
@@ -68,7 +76,7 @@ SpBrickWindowAdapter >> close [
 		self presenter windowClosed]
 ]
 
-{ #category : #'instance creation' }
+{ #category : #accessing }
 SpBrickWindowAdapter >> open [
 
 	"self defer: ["
@@ -79,7 +87,7 @@ SpBrickWindowAdapter >> open [
 		self presenter isCentered 
 			ifTrue: [ 1halt "self centered" ].
 
-		self model windowIsOpening. "]"
+		self presenter windowIsOpening. "]"
 	
 	self flag: #todo.	
 "	self widget openInWorld.
@@ -93,7 +101,7 @@ SpBrickWindowAdapter >> open [
 
 ]
 
-{ #category : #factory }
+{ #category : #'widget creation' }
 SpBrickWindowAdapter >> subscribeToWidget [
 
 	widget
