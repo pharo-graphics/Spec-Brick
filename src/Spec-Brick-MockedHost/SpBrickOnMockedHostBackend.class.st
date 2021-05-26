@@ -7,7 +7,7 @@ Class {
 { #category : #accessing }
 SpBrickOnMockedHostBackend class >> backendName [
 
-	^ #BrickOnMockHost
+	^ #BrickOnMockedHost
 ]
 
 { #category : #'deferred message' }

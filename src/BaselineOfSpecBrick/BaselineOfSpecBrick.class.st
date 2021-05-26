@@ -15,7 +15,7 @@ BaselineOfSpecBrick >> baseline: spec [
 
 			spec
 				package: 'Spec-Brick' with: [ spec requires: #('NewBrick') ];
-				package: 'Spec-Brick-MockedHost' with: [ spec requires: #('Spec-Brick') ];
+"				package: 'Spec-Brick-MockedHost' with: [ spec requires: #('Spec-Brick') ]; --> Loading this package is buggy since it overrides the regular adapter. See SpBrickOnMockedHostAdapterBindings>>#allAdapters"
 				package: 'Spec-Brick-Tests'.
 		]
 ]

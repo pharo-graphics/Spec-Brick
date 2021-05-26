@@ -20,6 +20,8 @@ SpBrickOnMockedHostAdapterBindings >> allAdapters [
 	adapters
 		remove: SpBrickWindowAdapter;
 		add: SpBrickOnMockedHostWindowAdapter.
+	self flag: #todo. "There is a bug here... SpBrickOnMockedHostWindowAdapter overrides the superclass even with Brick backend."
+	1halt.
 
 	^ adapters
 ]
