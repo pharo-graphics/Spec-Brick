@@ -2,9 +2,8 @@ Class {
 	#name : #SpBrickWidgetAdapterTest,
 	#superclass : #SpBrickAdapterTest,
 	#instVars : [
-		'brickWidget',
 		'specWidget',
-		'brickWindow'
+		'brickWidget'
 	],
 	#category : #'Spec-Brick-Tests'
 }
@@ -14,10 +13,8 @@ SpBrickWidgetAdapterTest >> setUp [
 
 	super setUp.
 
-	specWindow := self newApplication new: SpWindowPresenter.
-	specWidget := specWindow instantiate: self specWidgetClass.
-	specWindow presenter: specWidget.
-	specWindow buildWithSpecLayout: self specWidgetClass defaultSpec.
+	specWidget := self newApplication new: self specWidgetClass.
+	specWindow := specWidget openWithSpec.
 	
 	brickWidget := specWidget adapter widget.
 	brickWindow := specWindow adapter widget.
@@ -32,7 +29,7 @@ SpBrickWidgetAdapterTest >> specWidgetClass [
 { #category : #running }
 SpBrickWidgetAdapterTest >> tearDown [
 
-	self ensureCloseWindowPresenter.
+	self closeSpecWindow.
 
 	super tearDown
 ]
