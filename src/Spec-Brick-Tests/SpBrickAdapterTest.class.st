@@ -2,14 +2,14 @@ Class {
 	#name : #SpBrickAdapterTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'space',
-		'specWindow'
+		'specWindow',
+		'brickWindow'
 	],
 	#category : #'Spec-Brick-Tests'
 }
 
 { #category : #running }
-SpBrickAdapterTest >> ensureCloseWindowPresenter [
+SpBrickAdapterTest >> closeSpecWindow [
 
 	specWindow ifNotNil: [ specWindow close ].
 
@@ -19,7 +19,7 @@ SpBrickAdapterTest >> ensureCloseWindowPresenter [
 SpBrickAdapterTest >> newApplication [
 
 	^ SpApplication new
-		  useBackend: #Brick"OnMockHost";
+		  useBackend: #Brick "BrickOnMockedHost";
 		  yourself
 ]
 
@@ -36,7 +36,11 @@ SpBrickAdapterTest >> waitUITimeout: aDuration [
 	
 	Inspired in BlDevScripterWaitStep>>#forEmptySpaceTaskQueueTimeout:"
 
-	| startTime timeoutCondition emptyCondition |
+	| startTime space timeoutCondition emptyCondition |
+	(specWindow isNil or:[ specWindow adapter isNil or: [ specWindow adapter widget isNil ] ])
+		ifTrue:[ self error: 'Window not yet built' ].
+
+	space := specWindow adapter widget.
 	startTime := space time now.
 	space time 
 		every: 20 milliSeconds

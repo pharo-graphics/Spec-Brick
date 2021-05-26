@@ -1,46 +1,56 @@
 Class {
 	#name : #SpBrickWindowAdapterTest,
 	#superclass : #SpBrickAdapterTest,
+	#instVars : [
+		'specContent'
+	],
 	#category : #'Spec-Brick-Tests'
 }
 
 { #category : #asserting }
-SpBrickWindowAdapterTest >> assertCloseWindowPresenter [
+SpBrickWindowAdapterTest >> buildWindowWithPresenterClass: aClass [
 
-	self ensureCloseWindowPresenter.
-	self assert: specWindow isClosed description: 'The presenter says it is closed'.
-	self deny: space isOpened description: 'The backend widget says it is closed'.
+	specWindow := self newApplication new: SpWindowPresenter.
+	specWindow presenter: (specWindow instantiate: aClass).
+	specWindow buildWithSpecLayout: aClass defaultSpec.
+	brickWindow := specWindow adapter widget.
 
 ]
 
 { #category : #asserting }
-SpBrickWindowAdapterTest >> assertOpenWindowPresenter [
+SpBrickWindowAdapterTest >> openSpecWindow [
 
-	specWindow := self newApplication new: SpWindowPresenter.
-	"What matters in this test case is the window itself, but some content is needed."
-	specWindow presenter: (specWindow instantiate: SpLabelPresenter).
-	specWindow openWithSpecLayout: SpLabelPresenter defaultSpec.
-
-	space := specWindow adapter widget.
-	self deny: specWindow isClosed description: 'The window presenter says it is NOT opened'.
-	150 milliSeconds wait.
-	self assert: space isOpened description: 'The Bloc space says it is NOT opened'.
+	specWindow := specContent openWithSpec.
+	brickWindow := specWindow adapter widget.
 
 ]
 
-{ #category : #tests }
+{ #category : #asserting }
 SpBrickWindowAdapterTest >> setUp [
 
 	super setUp.
-	
-	window := self newPresenter.
+	specContent := self newApplication new: SpBrickStubPresenter.
+
+]
+
+{ #category : #asserting }
+SpBrickWindowAdapterTest >> tearDown [
+
+	self closeSpecWindow.
+
+	super tearDown.
+
 ]
 
 { #category : #tests }
 SpBrickWindowAdapterTest >> testClose [
 
-	self assertOpenWindowPresenter.
-	self assertCloseWindowPresenter.
+	self openSpecWindow.
+
+	self closeSpecWindow.
+
+	self assert: specWindow isClosed description: 'Spec window is NOT closed'.
+	self deny: brickWindow isOpened description: 'Bloc window is NOT closed'.
 
 ]
 
@@ -48,11 +58,12 @@ SpBrickWindowAdapterTest >> testClose [
 SpBrickWindowAdapterTest >> testLifeCycleSubscriptions [
 
 	| openedTime closedTime willCloseTime |
-	specWindow whenOpenedDo: [ openedTime := DateAndTime now. 10 milliSeconds wait ].
-	specWindow whenWillCloseDo: [ willCloseTime := DateAndTime now. 10 milliSeconds wait ].
-	specWindow whenClosedDo: [ closedTime := DateAndTime now. 10 milliSeconds wait ].
+	specContent initializeWindowBlock: [ :aSpWindow |
+		aSpWindow whenOpenedDo: [ openedTime := DateAndTime now. 10 milliSeconds wait ].
+		aSpWindow whenWillCloseDo: [ willCloseTime := DateAndTime now. 10 milliSeconds wait ].
+		aSpWindow whenClosedDo: [ closedTime := DateAndTime now. 10 milliSeconds wait ] ].
 	
-	self assertOpenWindowPresenter.
+	self openSpecWindow.
 	
 	self deny: openedTime isNil.
 	self assert: willCloseTime isNil.
@@ -75,14 +86,22 @@ SpBrickWindowAdapterTest >> testLifeCycleSubscriptions [
 { #category : #tests }
 SpBrickWindowAdapterTest >> testOpen [
 
-	self assertOpenWindowPresenter
+	self openSpecWindow.
+	
+	self deny: specWindow isClosed description: 'Spec window is NOT opened'.
+	self assert: brickWindow isOpened description: 'Bloc space is NOT opened'.
+
 ]
 
 { #category : #tests }
 SpBrickWindowAdapterTest >> testTitle [
 
-	self assertOpenWindowPresenter.
-	self assert: space title equals: specWindow title.
-	space title: 'This is not a test'.
-	self assert: space title equals: 'This is not a test'.
+	self openSpecWindow.
+
+	"Test with default title"
+	self assert: brickWindow title equals: specWindow title.
+
+	"Test with a specific title"
+	brickWindow title: 'This is not a test'.
+	self assert: brickWindow title equals: 'This is not a test'.
 ]
