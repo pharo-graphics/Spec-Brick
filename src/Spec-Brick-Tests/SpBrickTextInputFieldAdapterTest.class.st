@@ -17,7 +17,6 @@ SpBrickTextInputFieldAdapterTest >> testText [
 	self assert: specWidget text asString equals: 'Hello Brick'.
 	
 	brickWidget text: 'Hello Spec' asRopedText.
-"	self waitUI."
 	self assert: specWidget text asString equals: 'Hello Spec'.
 
 ]

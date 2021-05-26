@@ -15,9 +15,9 @@ SpBrickButtonAdapterTest >> testAction [
 
 	| evaluated |
 	evaluated := false.
-	specWidget
-				action: [ evaluated := true ].
+	specWidget action: [ evaluated := true ].
 
+	"Simulate button clicked"
 	brickWidget action value.
 	self assert: evaluated.
 ]

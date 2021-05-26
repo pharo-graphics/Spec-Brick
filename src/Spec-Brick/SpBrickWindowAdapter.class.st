@@ -112,5 +112,8 @@ SpBrickWindowAdapter >> subscribeToWidget [
 { #category : #accessing }
 SpBrickWindowAdapter >> title: aString [ 
 
-	self widgetDo: [ :w | w title: (aString ifNotNil: [ :theString | theString localizedForPresenter: self presenter]) ]
+	| localizedTitle |
+	localizedTitle := aString ifNotNil: [ :theString | theString localizedForPresenter: self presenter].
+
+	self widgetDo: [ :w | w title: localizedTitle ]
 ]
