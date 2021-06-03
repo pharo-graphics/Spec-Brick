@@ -5,17 +5,23 @@ Class {
 }
 
 { #category : #'widget creation' }
-SpBrickTextInputFieldAdapter >> buildWidget [
+SpBrickTextInputFieldAdapter >> initialAptitude [
+
+	^ BrGlamorousRegularEditorAptitude
+]
+
+{ #category : #'widget creation' }
+SpBrickTextInputFieldAdapter >> newBrickWidget [
 
 	^ BrEditor new
-		aptitude: BrGlamorousRegularEditorAptitude;
-		inputFilter: BrOneLineInputFilter new;
+		hMatchParent;
 		vFitContent;
+		inputFilter: BrOneLineInputFilter new;
 		yourself
 ]
 
 { #category : #'widget update' }
 SpBrickTextInputFieldAdapter >> updateText [
-
-	self widgetDo: [ :w | w text: self presenter text ]
+1halt.
+"	widget text: self presenter text"
 ]

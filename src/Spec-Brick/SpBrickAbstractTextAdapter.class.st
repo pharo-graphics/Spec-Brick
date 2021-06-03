@@ -25,6 +25,7 @@ SpBrickAbstractTextAdapter >> subscribeToWidget [
 { #category : #'widget update' }
 SpBrickAbstractTextAdapter >> updateAll [
 
+	super updateAll.
 	self updateText.
 ]
 

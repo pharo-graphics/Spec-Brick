@@ -47,7 +47,9 @@ SpBrickAdapter >> subscribeToPresenter [
 
 { #category : #'widget creation' }
 SpBrickAdapter >> subscribeToWidget [
-	"Subscribe to certain widget events that require to trigger actions in the presenter (model)."
+	"Subscribe to certain widget events that require to trigger actions in the presenter (model).
+
+	Important: avoid cycles in announcements that would produce an infinite loop."
 
 ]
 

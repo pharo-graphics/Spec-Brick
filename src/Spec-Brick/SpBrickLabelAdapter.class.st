@@ -5,11 +5,15 @@ Class {
 }
 
 { #category : #'widget creation' }
-SpBrickLabelAdapter >> buildWidget [
+SpBrickLabelAdapter >> initialAptitude [
+
+	^ BrGlamorousLabelAptitude new
+]
+
+{ #category : #'widget creation' }
+SpBrickLabelAdapter >> newBrickWidget [
 
 	^ BrLabel new
-		  aptitude: BrGlamorousLabelAptitude new;
-		  yourself
 ]
 
 { #category : #'widget creation' }
@@ -21,11 +25,12 @@ SpBrickLabelAdapter >> subscribeToPresenter [
 { #category : #'widget update' }
 SpBrickLabelAdapter >> updateAll [
 
+	super updateAll.
 	self updateText.
 ]
 
 { #category : #'widget update' }
 SpBrickLabelAdapter >> updateText [
 
-	self widgetDo: [ :w | w text: self presenter label ]
+	widget text: self presenter label
 ]

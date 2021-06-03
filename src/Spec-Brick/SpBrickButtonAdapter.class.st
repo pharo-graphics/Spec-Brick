@@ -5,12 +5,22 @@ Class {
 }
 
 { #category : #'widget creation' }
-SpBrickButtonAdapter >> buildWidget [
+SpBrickButtonAdapter >> initialAptitude [
+
+	"^BrGlamorousButtonWithIconAndLabelAptitude new"
+
+	^ BrGlamorousButtonExteriorAptitude new
+	  + BrGlamorousButtonRectangularAptitude new
+	  + BrGlamorousButtonIconAptitude new
+	  + BrGlamorousButtonLabelAptitude new
+]
+
+{ #category : #'widget creation' }
+SpBrickButtonAdapter >> newBrickWidget [
 
 	^ BrButton new
-		  aptitude: BrGlamorousButtonWithIconAndLabelAptitude new;
+		  hMatchParent;
 		  yourself
-
 ]
 
 { #category : #'widget creation' }
@@ -31,6 +41,7 @@ SpBrickButtonAdapter >> updateAction [
 { #category : #'widget update' }
 SpBrickButtonAdapter >> updateAll [
 
+	super updateAll.
 	self
 		updateLabel;
 		updateIcon;
@@ -40,15 +51,13 @@ SpBrickButtonAdapter >> updateAll [
 { #category : #'widget update' }
 SpBrickButtonAdapter >> updateIcon [
 
-	self widgetDo: [ :w | 
-		
 	"TODO"
 	self presenter icon ifNotNil: [
-		w icon: self presenter icon ] ]
+		widget icon: self presenter icon ]
 ]
 
 { #category : #'widget update' }
 SpBrickButtonAdapter >> updateLabel [
 
-	self widgetDo: [ :w | w label: self presenter label ]
+	widget label: self presenter label
 ]
