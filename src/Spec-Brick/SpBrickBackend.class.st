@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickBackend,
 	#superclass : #SpApplicationBackend,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Base'
 }
 
 { #category : #accessing }

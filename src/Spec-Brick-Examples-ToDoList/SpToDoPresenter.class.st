@@ -35,26 +35,41 @@ Class {
 SpToDoPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newTopToBottom
-		  add: #titleLabel expand: false;
-		  add: #titleInput expand: false;
-		  add: #acceptButton expand: false;
+		  add: (SpBoxLayout newLeftToRight
+				   add: #titleLabel expand: false;
+				   add: #titleInput;
+				   addLast: #acceptButton;
+				   yourself)
+		  expand: false;
 		  add: #listLabel expand: false;
 		  add: #list;
-		  addLast: #toggleCompletedButton;
-		  addLast: #deleteButton;
+		  add: (SpBoxLayout newLeftToRight
+				   add: #toggleCompletedButton;
+				   add: #deleteButton)
+		  expand: false;
 		  yourself
 ]
 
-{ #category : #visiting }
+{ #category : #actions }
 SpToDoPresenter >> acceptTask [
 
-	[ toDoList addNewTaskTitled: 'titleInput text' ]
-		on: SpToDoListValidationError
+	[ 	toDoList addNewTaskTitled: titleInput text.
+		titleInput text: ''.
+	]	on: SpToDoListValidationError
 		do: [ :error |
 			"FIX: how to open a dialog? or show in-situ with a label?" 
-			self inform: error message ].
+			self inform: error messageText ].
 
 	self refresh
+]
+
+{ #category : #initialization }
+SpToDoPresenter >> connectPresenters [
+
+	super connectPresenters.
+	
+	list whenSelectionChangedDo: [ :aSelection |
+		self refreshAccordingToSelectedTask ]
 ]
 
 { #category : #actions }
@@ -69,9 +84,9 @@ SpToDoPresenter >> iconFor: aToDoTask [
 	
 	| iconName |
 	iconName := aToDoTask isCompleted
-		ifTrue:[ #checkBoxOn ]
-		ifFalse: [ #checkBoxOff ].
-		
+		ifTrue:[ #smallOk ]
+		ifFalse: [ #blank ].
+	
 	^ self iconNamed: iconName
 ]
 
@@ -79,7 +94,7 @@ SpToDoPresenter >> iconFor: aToDoTask [
 SpToDoPresenter >> initializePresenters [
 
 	titleLabel := self newLabel
-		label: 'Task:';
+		label: 'New Task:';
 		yourself.
 	
 	titleInput := self newTextInput
@@ -87,7 +102,7 @@ SpToDoPresenter >> initializePresenters [
 		yourself.
 
 	acceptButton := self newButton
-		label: 'Accept';
+		label: 'Add';
 		icon: (self iconNamed: #add);
 		action: [ self acceptTask ];
 		yourself.
@@ -99,11 +114,12 @@ SpToDoPresenter >> initializePresenters [
 	list := self newList
 		displayIcon: [ :aToDoTask | self iconFor: aToDoTask ];
 		display: [ :aToDoTask | aToDoTask title ];
+		whenActivatedDo: [ self toggleCompletedTask ];
 		yourself.
 	
 	toggleCompletedButton := self newButton
-		label: 'Mark as completed';
-		icon: (self iconNamed: #switch);
+		label: 'Toggle completed';
+		icon: (self iconNamed: #diff);
 		action: [ self toggleCompletedTask ];
 		yourself.
 
@@ -122,11 +138,28 @@ SpToDoPresenter >> initializeWindow: w [
 	w title: 'ToDo list in ' , w application backend asString
 ]
 
+{ #category : #private }
+SpToDoPresenter >> presentersThatRequireTaskSelected [
+
+	^ { deleteButton. toggleCompletedButton }
+]
+
 { #category : #initialization }
 SpToDoPresenter >> refresh [ 
 
+	list unselectAll.
 	list items: toDoList tasks.
-	
+	self refreshAccordingToSelectedTask.
+]
+
+{ #category : #private }
+SpToDoPresenter >> refreshAccordingToSelectedTask [
+
+	| hasSelection |
+	hasSelection := list selection isEmpty not.
+
+	self presentersThatRequireTaskSelected do: [ :each | 
+		each enabled: hasSelection ]
 ]
 
 { #category : #initialization }

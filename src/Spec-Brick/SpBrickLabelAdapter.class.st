@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickLabelAdapter,
 	#superclass : #SpBrickWidgetAdapter,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Adapters'
 }
 
 { #category : #'widget creation' }
@@ -27,6 +27,13 @@ SpBrickLabelAdapter >> updateAll [
 
 	super updateAll.
 	self updateText.
+]
+
+{ #category : #'widget update' }
+SpBrickLabelAdapter >> updateEnabled [
+	"Overriden to do nothing."
+	
+	self flag: #todo. "refactoring?"
 ]
 
 { #category : #'widget update' }

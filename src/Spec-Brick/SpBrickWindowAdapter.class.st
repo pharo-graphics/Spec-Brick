@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickWindowAdapter,
 	#superclass : #SpBrickAdapter,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Adapters'
 }
 
 { #category : #accessing }

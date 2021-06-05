@@ -1,16 +1,25 @@
 Class {
 	#name : #SpBrickAbstractTextAdapter,
 	#superclass : #SpBrickWidgetAdapter,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Adapters'
 }
+
+{ #category : #'widget update' }
+SpBrickAbstractTextAdapter >> presenterUpdateText [
+	"Update the presenter's text from the Brick widget."
+
+"1halt.
+	SpBrickUpdateCycleBreaker ifNotUpdatingDo: [ 
+"		self presenter text: widget text 
+]
 
 { #category : #'widget creation' }
 SpBrickAbstractTextAdapter >> subscribeToPresenter [
 
 	self presenter
 		whenTextChangedDo: [ self updateText ];
-		whenPlaceholderChangedDo: [ self halt ];
-		whenAcceptBlockChangedDo: [ self halt ];
+"		whenPlaceholderChangedDo: [ self halt ];
+		whenAcceptBlockChangedDo: [ self halt ];"
 		yourself
 ]
 
@@ -18,8 +27,8 @@ SpBrickAbstractTextAdapter >> subscribeToPresenter [
 SpBrickAbstractTextAdapter >> subscribeToWidget [
 
 	widget
-		addEventHandlerOn: "BrEditorTextChanged"BrTextEditorModifiedEvent
-		do: [ self updateText ]
+		addEventHandlerOn: BrEditorTextChanged
+		do: [ self presenterUpdateText ]
 ]
 
 { #category : #'widget update' }
@@ -32,5 +41,9 @@ SpBrickAbstractTextAdapter >> updateAll [
 { #category : #'widget update' }
 SpBrickAbstractTextAdapter >> updateText [
 
-	self subclassResponsibility
+	self defer: [ 
+		'updateText ' trace.
+		self presenter text traceCr.
+		
+		widget text: self presenter text ]
 ]

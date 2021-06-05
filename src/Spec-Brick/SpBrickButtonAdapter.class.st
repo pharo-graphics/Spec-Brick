@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickButtonAdapter,
 	#superclass : #SpBrickWidgetAdapter,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Adapters'
 }
 
 { #category : #'widget creation' }

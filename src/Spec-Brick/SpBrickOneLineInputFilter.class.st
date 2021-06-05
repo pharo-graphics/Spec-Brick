@@ -1,11 +1,11 @@
 Class {
-	#name : #BrOneLineInputFilter,
+	#name : #SpBrickOneLineInputFilter,
 	#superclass : #BrTextEditorInputFilter,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Text'
 }
 
 { #category : #accessing }
-BrOneLineInputFilter >> filter: aString [
+SpBrickOneLineInputFilter >> filter: aString [
 	<return: #String>
 	
 	^ aString reject: #isLineSeparator

@@ -1,7 +1,23 @@
+"
+I represent to most abstract characteristics of the adapters of the Brick backend for Spec2. Given a tree of SpPresenter, each concrete adapter knows what are the BlElements to instantiate, initialize, and do mutual subscriptions to keep them in sync.
+
+The protocol in my hierarchy follows these conventions, grouped by the life-cycle of the presenters:
+
+Widget creation (used in the presenter's build process)
+* `adapt:`
+* `subscribeToPresenter`
+* `subscribeToWidget`
+
+Widget update (used both in presenter's build process, and each time a presenter changes)
+* `update*`
+
+Normally, the Brick elements are not ""sync"", in the sense that an update in a property is queued and executed in next UI loop cycle.
+
+"
 Class {
 	#name : #SpBrickAdapter,
 	#superclass : #SpAbstractAdapter,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Adapters'
 }
 
 { #category : #accessing }

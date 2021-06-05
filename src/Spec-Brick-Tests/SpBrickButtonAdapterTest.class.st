@@ -23,6 +23,17 @@ SpBrickButtonAdapterTest >> testAction [
 ]
 
 { #category : #tests }
+SpBrickButtonAdapterTest >> testEnabled [
+
+	specWidget enabled: true.
+	self assert: brickWidget isEnabled.
+
+	specWidget enabled: false.
+	self deny: brickWidget isEnabled.
+
+]
+
+{ #category : #tests }
 SpBrickButtonAdapterTest >> testIcon [
 
 	| aForm |

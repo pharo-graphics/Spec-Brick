@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickAdapterBindings,
 	#superclass : #SpAdapterBindings,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Base'
 }
 
 { #category : #initialize }

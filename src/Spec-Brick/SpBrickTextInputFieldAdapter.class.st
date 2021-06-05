@@ -1,27 +1,31 @@
 Class {
 	#name : #SpBrickTextInputFieldAdapter,
 	#superclass : #SpBrickAbstractTextAdapter,
-	#category : #'Spec-Brick'
+	#category : #'Spec-Brick-Adapters'
 }
 
 { #category : #'widget creation' }
 SpBrickTextInputFieldAdapter >> initialAptitude [
 
-	^ BrGlamorousRegularEditorAptitude
+	^ BrGlamorousRegularEditorAptitude + "BrGlamorousButtonExteriorAptitude" (BrStyleCommonAptitude new
+			default: [ :aStyle | 
+				aStyle
+					background: BrGlamorousColors defaultButtonBackgroundColor;
+					border: (BlBorder
+					    paint: BrGlamorousColors defaultButtonBorderColor
+					    width: 1) ];
+			disabled: [ :aStyle |
+				aStyle
+					background: BrGlamorousColors disabledButtonBackgroundColor;
+					border: (BlBorder
+						paint: BrGlamorousColors disabledButtonBorderColor
+						width: 1) ]
+			yourself)
 ]
 
 { #category : #'widget creation' }
 SpBrickTextInputFieldAdapter >> newBrickWidget [
 
-	^ BrEditor new
-		hMatchParent;
-		vFitContent;
-		inputFilter: BrOneLineInputFilter new;
-		yourself
-]
+	^ SpBrickTextField new
 
-{ #category : #'widget update' }
-SpBrickTextInputFieldAdapter >> updateText [
-1halt.
-"	widget text: self presenter text"
 ]
