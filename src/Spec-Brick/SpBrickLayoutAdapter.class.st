@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #adding }
-SpBrickLayoutAdapter >> addChild: aPresenter constrainedBy: constraints [ 
+SpBrickLayoutAdapter >> add: aPresenter constraints: constraints [ 
 	"Add a new child to my presenter, and build it following the specified SpLayoutConstraints. 
 	
 	Inspired on SpMorphicLayoutAdapter>>#add:constraints:"
