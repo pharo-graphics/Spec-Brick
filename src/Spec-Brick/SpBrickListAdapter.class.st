@@ -41,6 +41,7 @@ SpBrickListAdapter >> newBrickWidget [
 
 { #category : #updating }
 SpBrickListAdapter >> newItemStencil [
+	"Answer a BlElement that can be used to represent a list item."
 
 	^ BrLabel new
 		  hMatchParent;
@@ -79,27 +80,36 @@ SpBrickListAdapter >> refreshList [
 
 { #category : #factory }
 SpBrickListAdapter >> refreshWidgetSelection [
+	"Act after a change in the presenter's selection. This could be a change in:
+	- the selection mode (simple, multiple)
+	- the selected item(s)
+	- initialization on build process
+	"
 
+	| indices |
 	#refreshWidgetSelection traceCr.
-	self refreshList.
+	
+	indices := self presenter selection selectedIndexes.
 
-"	| rowIndexes |
-	rowIndexes := self presenter selection selectedIndexes.
-	rowIndexes = self widget selectedIndexes
+	self flag: #todo. "This should break the eventual cycle, but could have a more general solution"
+	indices = self widget selectedIndices
 		ifTrue: [ ^ self ].
-	rowIndexes isEmpty
-		ifTrue: [ self widget basicSelectIndexes: #() ]
-		ifFalse: [ self widget basicSelectIndexes: rowIndexes ].
-	^ self widget refresh"
+
+	Halt if:[ indices size > 1 ]. "Not yet implemented for multiple selection"
+
+	indices isEmpty
+		ifTrue: [ widget deselectAll ]
+		ifFalse: [ widget selectOne: indices anyOne ]
+
 ]
 
 { #category : #'widget creation' }
 SpBrickListAdapter >> subscribeToPresenter [
 	"Subscribe to the presenter so the widget updates on every change announcement."
 
-"	self presenter
-		whenItemsChangeDo: [ ]
-"
+	self presenter
+		whenModelChangedDo: [ self updateItems ]";
+		whenSelectionChangedDo: [ self refreshWidgetSelection ]."
 ]
 
 { #category : #'widget creation' }
@@ -127,5 +137,6 @@ SpBrickListAdapter >> updateEnabled [
 { #category : #updating }
 SpBrickListAdapter >> updateItems [
 
+	widget deselectAll.
 	widget items: self presenter items
 ]
