@@ -8,9 +8,7 @@ Class {
 SpBrickAbstractTextAdapter >> presenterUpdateText [
 	"Update the presenter's text from the Brick widget."
 
-"1halt.
-	SpBrickUpdateCycleBreaker ifNotUpdatingDo: [ 
-"		self presenter text: widget text 
+	self presenter text: widget text 
 ]
 
 { #category : #'widget creation' }
@@ -26,9 +24,12 @@ SpBrickAbstractTextAdapter >> subscribeToPresenter [
 { #category : #'widget creation' }
 SpBrickAbstractTextAdapter >> subscribeToWidget [
 
-	widget
-		addEventHandlerOn: BrEditorTextChanged
-		do: [ self presenterUpdateText ]
+	widget editor
+		addEventHandlerOn: BrTextEditorModifiedEvent
+			do: [ self presenterUpdateText ];
+		addEventHandlerOn: BrTextEditorTextReplacedEvent
+			do: [ self presenterUpdateText ]
+
 ]
 
 { #category : #'widget update' }

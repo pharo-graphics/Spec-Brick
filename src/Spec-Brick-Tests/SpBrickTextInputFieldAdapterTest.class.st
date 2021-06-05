@@ -13,12 +13,18 @@ SpBrickTextInputFieldAdapterTest >> specWidgetClass [
 { #category : #tests }
 SpBrickTextInputFieldAdapterTest >> testEnabled [
 
+	"Initial value"
+	self assert: specWidget isEnabled equals: brickWidget isEnabled.
+
+	"Probably redundant"
 	specWidget enabled: true.
 	self assert: brickWidget isEnabled.
 
+	"Change value"
 	specWidget enabled: false.
 	self deny: brickWidget isEnabled.
 
+	"Change value back"
 	specWidget enabled: true.
 	self assert: brickWidget isEnabled.
 
@@ -31,12 +37,13 @@ SpBrickTextInputFieldAdapterTest >> testText [
 	self assert: brickWidget text asString equals: specWidget text.
 
 	"spec -> brick"
-	specWidget text: 'Hello Brick'.
+	specWidget text: 'Brick'.
 	self waitUI.
-	self assert: brickWidget text asString equals: 'Hello Brick'.
+	self assert: brickWidget text asString equals: 'Brick'.
 	
 	"brick -> spec"
-	brickWidget text: 'Hello Spec' asRopedText.
-	self assert: specWidget text equals: 'Hello Spec'.
+	brickWidget inUIProcessDo:[ brickWidget text: 'Spec' asRopedText ].
+	self waitUI.
+	self assert: specWidget text asString equals: 'Spec'.
 
 ]

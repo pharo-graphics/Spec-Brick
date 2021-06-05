@@ -50,9 +50,11 @@ SpBrickAdapter >> adapt: aPresenter [
 SpBrickAdapter >> defer: aBlockClosure [
 	"Enqueue aBlockClosure in the BlSpace, which will be valued in next #pulse."
 
-"	self widget root inUIProcessDo: aBlockClosure."
+	"	self widget root inUIProcessDo: aBlockClosure."
 
-	self widget enqueueTask: (BlTaskAction new action: aBlockClosure)
+	self widget enqueueTask: (BlTaskAction new
+			 action: aBlockClosure;
+			 yourself)
 ]
 
 { #category : #'widget creation' }

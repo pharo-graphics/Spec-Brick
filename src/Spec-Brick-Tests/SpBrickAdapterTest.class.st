@@ -26,7 +26,7 @@ SpBrickAdapterTest >> newApplication [
 { #category : #running }
 SpBrickAdapterTest >> waitUI [
 
-	self assert: (self waitUITimeout: 100 milliSeconds)
+	self assert: (self waitUITimeout: 500 milliSeconds)
 ]
 
 { #category : #running }
@@ -43,13 +43,13 @@ SpBrickAdapterTest >> waitUITimeout: aDuration [
 	space := specWindow adapter widget.
 	startTime := space time now.
 	space time 
-		every: 20 milliSeconds
+		every: 25 milliSeconds
 		while: [ 
 			timeoutCondition := space time now < (startTime + aDuration).
 			emptyCondition := space taskQueue isEmpty not.
 			'waitUI' traceCr.
 			timeoutCondition and: [ emptyCondition ] ]
-		do: [ space pulse ].
+		do: [ "space host uiProcessDo: [ space pulse ]" ].
 
 	^ timeoutCondition
 ]
