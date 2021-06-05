@@ -69,11 +69,15 @@ SpBrickWindowAdapter >> buildWidget [
 { #category : #accessing }
 SpBrickWindowAdapter >> close [
 
-	self defer: [
-		self widget close.
+	self widget close
+]
 
-		self presenter windowIsClosing.
-		self presenter windowClosed]
+{ #category : #'widget creation' }
+SpBrickWindowAdapter >> onSpaceClosed [
+	"Inspired on SpMorphicWindowAdapter>>#windowClosed"
+
+	self presenter windowIsClosing.
+	self presenter windowClosed.
 ]
 
 { #category : #accessing }
@@ -106,7 +110,7 @@ SpBrickWindowAdapter >> subscribeToWidget [
 
 	widget
 		addEventHandlerOn: BlSpaceClosedEvent
-		do: [ self presenter windowClosed ]
+		do: [ self onSpaceClosed ]
 ]
 
 { #category : #accessing }
