@@ -97,9 +97,7 @@ SpToDoPresenter >> initializePresenters [
 		label: 'New Task:';
 		yourself.
 	
-	titleInput := self newTextInput
-		placeholder: 'Something to do';
-		yourself.
+	titleInput := self newTextInput.
 
 	acceptButton := self newButton
 		label: 'Add';
