@@ -58,9 +58,7 @@ SpToDoPresenter >> acceptTask [
 	[ 	toDoList addNewTaskTitled: titleInput text.
 		titleInput text: ''.
 	]	on: SpToDoListValidationError
-		do: [ :error |
-			"FIX: how to open a dialog? or show in-situ with a label?" 
-			self inform: error messageText ].
+		do: [ :error | self showError: error ].
 
 	self refresh
 ]
@@ -168,6 +166,15 @@ SpToDoPresenter >> setModelBeforeInitialization: aSpToDoList [
 
 	toDoList := aSpToDoList.
 	toDoList whenUpdatedSend: #refresh to: self
+]
+
+{ #category : #actions }
+SpToDoPresenter >> showError: error [
+	
+	| errorPresenter |
+	errorPresenter := SpToDoValidationErrorPresenter newApplication: self application model: error.
+	errorPresenter openWithSpec.
+
 ]
 
 { #category : #actions }
