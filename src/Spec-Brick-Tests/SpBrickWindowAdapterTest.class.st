@@ -56,6 +56,46 @@ SpBrickWindowAdapterTest >> testClose [
 ]
 
 { #category : #tests }
+SpBrickWindowAdapterTest >> testInitialExtent [
+
+	| aParticularExtent |
+	aParticularExtent := 777 @ 888.
+
+	specContent initializeWindowBlock: [ :aSpWindow | 
+		aSpWindow initialExtent: aParticularExtent ].
+
+	self openSpecWindow.
+
+	self assert: brickWindow extent equals: aParticularExtent
+]
+
+{ #category : #tests }
+SpBrickWindowAdapterTest >> testInitialExtentByDefault [
+
+	| defaultExtent |
+	specContent initializeWindowBlock: [ :aSpWindow | 
+		defaultExtent := aSpWindow initialExtent ].
+
+	self openSpecWindow.
+
+	self assert: brickWindow extent equals: defaultExtent
+]
+
+{ #category : #tests }
+SpBrickWindowAdapterTest >> testInitialPosition [
+
+	| aParticularPosition |
+	aParticularPosition := 77 @ 88.
+
+	specContent initializeWindowBlock: [ :aSpWindow | 
+		aSpWindow initialPosition: aParticularPosition ].
+
+	self openSpecWindow.
+
+	self assert: brickWindow position equals: aParticularPosition
+]
+
+{ #category : #tests }
 SpBrickWindowAdapterTest >> testLifeCycleSubscriptions [
 
 	| openedTime closedTime willCloseTime |

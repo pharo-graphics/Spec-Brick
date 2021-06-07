@@ -34,9 +34,11 @@ SpBrickWindowAdapter >> addContent: aBlElement toWindow: aBlSpace [
 
 { #category : #accessing }
 SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpAbstractWidgetLayout [ 
-	
+
+	self presenter isCentered 
+		ifTrue: [ 1halt "self centered" ].
 	self presenter initialPosition 
-		ifNotNil: [ :position | 1halt "aWindow position: position" ].
+		ifNotNil: [ :position | aBlSpace position: position ].
 	self presenter initialExtent 
 		ifNotNil: [ :extent | aBlSpace extent: extent ].
 	self presenter hasDecorations 
@@ -83,25 +85,10 @@ SpBrickWindowAdapter >> onSpaceClosed [
 { #category : #accessing }
 SpBrickWindowAdapter >> open [
 
-	"self defer: ["
-		self widget show.
+	self widget show.
 
-		self presenter initialPosition 
-			ifNotNil: [ :aPosition | 1halt "self widget position: aPosition" ].
-		self presenter isCentered 
-			ifTrue: [ 1halt "self centered" ].
-
-		self presenter windowIsOpening. "]"
-	
-	self flag: #todo.	
-"	self widget openInWorld.
-	self presenter initialPosition 
-		ifNotNil: [ :aPosition | self widget position: aPosition ].
-	self presenter isCentered 
-		ifTrue: [ self centered ].
-	self presenter presenter takeKeyboardFocus.
-	self windowIsOpening"
-	
+"	self presenter presenter takeKeyboardFocus."
+	self presenter windowIsOpening.
 
 ]
 
