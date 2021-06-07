@@ -7,8 +7,6 @@ Class {
 { #category : #'widget creation' }
 SpBrickButtonAdapter >> initialAptitude [
 
-	"^BrGlamorousButtonWithIconAndLabelAptitude new"
-
 	^ BrGlamorousButtonExteriorAptitude new
 	  + BrGlamorousButtonRectangularAptitude new
 	  + BrGlamorousButtonIconAptitude new

@@ -132,9 +132,11 @@ SpToDoPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-SpToDoPresenter >> initializeWindow: w [
+SpToDoPresenter >> initializeWindow: aWindowPresenter [
 
-	w title: 'ToDo list in ' , w application backend asString
+	aWindowPresenter
+		title: 'Demo @ ' , aWindowPresenter application backend asString;
+		initialExtent: 500 @ 200
 ]
 
 { #category : #private }
