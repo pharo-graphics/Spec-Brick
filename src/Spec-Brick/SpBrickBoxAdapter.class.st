@@ -42,8 +42,7 @@ SpBrickBoxAdapter >> layout: aSpBoxLayout [
 	widget := aSpBoxLayout direction newWidgetOn: self.
 
 	aSpBoxLayout borderWidth isZero ifFalse: [
-		1halt.
-		widget margin: (BlInsets all: aSpBoxLayout borderWidth) ].
+		widget padding: (BlInsets all: aSpBoxLayout borderWidth) ].
 
 	aSpBoxLayout hasAlignment 
 		ifTrue: [ 1halt. "widget := self applyAlignmentTo: widget" ].

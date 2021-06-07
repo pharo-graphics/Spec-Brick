@@ -35,6 +35,7 @@ Class {
 SpToDoPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newTopToBottom
+		  borderWidth: 10;
 		  add: (SpBoxLayout newLeftToRight
 				   add: #titleLabel expand: false;
 				   add: #titleInput;
