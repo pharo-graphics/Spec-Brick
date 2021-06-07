@@ -39,6 +39,20 @@ SpToDoTask >> isCompleted [
 	^ completed
 ]
 
+{ #category : #printing }
+SpToDoTask >> printOn: aStream [
+
+	"Append a sequence of characters to aStream that identify the receiver."
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: ' title: ';
+		print: title.
+	aStream
+		nextPutAll: ' completed: ';
+		print: completed
+]
+
 { #category : #accessing }
 SpToDoTask >> title [
 

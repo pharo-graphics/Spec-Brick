@@ -83,12 +83,13 @@ SpToDoPresenter >> deleteTask [
 { #category : #private }
 SpToDoPresenter >> iconFor: aToDoTask [ 
 	
-	| iconName |
-	iconName := aToDoTask isCompleted
-		ifTrue:[ #smallOk ]
-		ifFalse: [ #blank ].
+	| aForm |
+	aForm := self iconNamed: #smallOk.
+
+	aToDoTask isCompleted
+		ifFalse: [ aForm := aForm dimmed: 0.2 ].
 	
-	^ self iconNamed: iconName
+	^ aForm
 ]
 
 { #category : #initialization }
