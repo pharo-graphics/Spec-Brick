@@ -60,3 +60,21 @@ SpBrickListAdapterTest >> testUnselectAll [
 	self assert: brickWidget selectedIndices isEmpty.
 
 ]
+
+{ #category : #tests }
+SpBrickListAdapterTest >> testWhenSelectionChangedDo [
+
+	| someItems evaluated |
+	someItems := $a to: $g.
+	specWidget items: someItems.
+
+	evaluated := false.
+	specWidget whenSelectionChangedDo: [ evaluated := true ].
+
+	"Simulate c is clicked"
+	brickWidget selectOne: 3.
+
+	self assert: evaluated.
+	self assert: specWidget selectedItem equals: $c.
+
+]
