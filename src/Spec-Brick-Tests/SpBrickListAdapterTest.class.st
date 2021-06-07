@@ -62,6 +62,24 @@ SpBrickListAdapterTest >> testUnselectAll [
 ]
 
 { #category : #tests }
+SpBrickListAdapterTest >> testWhenActivatedDo [
+
+	| someItems evaluated |
+	someItems := $a to: $g.
+	specWidget items: someItems.
+
+	evaluated := false.
+	specWidget whenActivatedDo: [ evaluated := true ].
+
+	"Simulate c is double-clicked"
+	brickWidget dispatchEvent: (BrSelectionDoubleClicked new selection: #(3); yourself).
+
+	self assert: evaluated.
+	self assert: specWidget selectedItem equals: $c.
+
+]
+
+{ #category : #tests }
 SpBrickListAdapterTest >> testWhenSelectionChangedDo [
 
 	| someItems evaluated |
