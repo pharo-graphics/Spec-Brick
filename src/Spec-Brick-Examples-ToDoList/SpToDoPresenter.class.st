@@ -40,12 +40,13 @@ SpToDoPresenter class >> defaultSpec [
 				   add: #titleInput;
 				   addLast: #acceptButton;
 				   yourself)
-		  expand: false;
+		  expand: false  fill: false padding: 15;
 		  add: #listLabel expand: false;
 		  add: #list;
 		  add: (SpBoxLayout newLeftToRight
 				   add: #toggleCompletedButton;
-				   add: #deleteButton)
+				   add: #deleteButton;
+				   yourself)
 		  expand: false;
 		  yourself
 ]

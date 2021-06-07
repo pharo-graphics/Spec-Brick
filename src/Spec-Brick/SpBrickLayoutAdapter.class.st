@@ -18,13 +18,23 @@ SpBrickLayoutAdapter >> add: aPresenter constraints: constraints [
 	
 	Inspired on SpMorphicLayoutAdapter>>#add:constraints:"
 
+	| aBlElement |
 	aPresenter owner: self presenter. 
 
 	self widget ifNil: [ 1halt. ^ self ]. "When and why could it happen?"
 
-	self 
+	aBlElement := self 
 		newChildBlElement: aPresenter
-		constrainedBy: constraints
+		constrainedBy: constraints.
+		
+	self addChildElement: aBlElement with: constraints
+]
+
+{ #category : #adding }
+SpBrickLayoutAdapter >> addChildElement: aBlElement with: constraints [
+	"Add a new element as child to the backend widget"
+
+	self subclassResponsibility	
 ]
 
 { #category : #'instance creation' }
@@ -76,7 +86,10 @@ SpBrickLayoutAdapter >> newBlElementFrom: aPresenter constraints: constraints [
 
 { #category : #adding }
 SpBrickLayoutAdapter >> newChildBlElement: aPresenter constrainedBy: constraints [
-	"Inspired on SpMorphicLayoutAdapter>>#basicAdd:constraints:to:"
+	"Answer a new Brick widget that corresponds to the received Spec presenter. The answer should follow the specified layout constraints.
+	
+	Originally inspired on SpMorphicLayoutAdapter>>#basicAdd:constraints:to:"
 
-	self subclassResponsibility
+	^ self subclassResponsibility
+
 ]

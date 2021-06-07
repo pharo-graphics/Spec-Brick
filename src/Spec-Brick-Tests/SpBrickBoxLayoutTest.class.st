@@ -28,6 +28,28 @@ SpBrickBoxLayoutTest >> testLeftToRight [
 ]
 
 { #category : #tests }
+SpBrickBoxLayoutTest >> testLeftToRightWithPadding [
+
+	| presenter labelPaddings |
+	presenter := self newApplication new: SpPresenter.
+	
+	presenter layout: (SpBoxLayout newLeftToRight
+		add: presenter newLabel expand: false fill: false padding: 11;
+		add: presenter newLabel expand: false fill: false padding: 22;
+		yourself).
+
+	presenter buildWithSpec.
+
+	labelPaddings := presenter adapter widget withAllChildrenBreadthFirst
+		select: [ :each | each isKindOf: BrLabel ]
+		thenCollect: [ :each | each padding ].
+	
+	self assert: labelPaddings first equals: (BlInsets horizontal: 11).
+	self assert: labelPaddings second equals: (BlInsets horizontal: 22).
+
+]
+
+{ #category : #tests }
 SpBrickBoxLayoutTest >> testTopToBottom [
 
 	| presenter labelA labelB labelC labelD labelTexts |
@@ -47,5 +69,27 @@ SpBrickBoxLayoutTest >> testTopToBottom [
 		thenCollect: [ :each | each text asString ].
 		
 	self assert: labelTexts equals: #(A B C D).
+
+]
+
+{ #category : #tests }
+SpBrickBoxLayoutTest >> testTopToBottomWithPadding [
+
+	| presenter labelPaddings |
+	presenter := self newApplication new: SpPresenter.
+	
+	presenter layout: (SpBoxLayout newTopToBottom
+		add: presenter newLabel expand: false fill: false padding: 11;
+		add: presenter newLabel expand: false fill: false padding: 22;
+		yourself).
+
+	presenter buildWithSpec.
+
+	labelPaddings := presenter adapter widget withAllChildrenBreadthFirst
+		select: [ :each | each isKindOf: BrLabel ]
+		thenCollect: [ :each | each padding ].
+	
+	self assert: labelPaddings first equals: (BlInsets vertical: 11).
+	self assert: labelPaddings second equals: (BlInsets vertical: 22).
 
 ]

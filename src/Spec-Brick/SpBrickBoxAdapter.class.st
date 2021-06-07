@@ -9,65 +9,58 @@ Class {
 }
 
 { #category : #adding }
-SpBrickBoxAdapter >> addConstraints: constraints toChild: childBlElement [
-	"Inspired on SpMorphicBoxAdapter>>#addConstraints:toChild:"
+SpBrickBoxAdapter >> addChildElement: aBlElement with: aSpBoxConstraints [
+	"Add child to the Brick widget. This can be the start or end pane according to constraints's #isPlacedAtStart."
 
-	| wrappedChild |
-"	layout isHomogeneous 
-		ifTrue: [ self addHomogeneousToMorph: childMorph ].
-	wrappedChild := self addPadding: constraints padding toMorph: childMorph.
-"	
-	wrappedChild := childBlElement.
+	(aSpBoxConstraints isPlacedAtStart
+		ifTrue: [ startPane ]
+		ifFalse: [ endPane ]) addChild: aBlElement
 
-	constraints isExpand 
-		ifTrue: [ 
-			"If is not 'fill', we need to pad it with another (since it 'expands', but does not 'fill')"
-			constraints isFill ifFalse: [ 
-				1halt.
-				"wrappedChild
-					hResizing: #rigid;
-					vResizing: #rigid.
-				wrappedChild := self newPanel
-					addMorphBack: wrappedChild;
-					yourself" ]. 
-			"Set to fill"
-			wrappedChild matchParent ]
-		ifFalse: [
-			"It should stay rigid in the layout direction"
-			layout direction setRigidityOfNonExpandedBlElement: wrappedChild.
-			constraints width ifNotNil: [ :w | 1halt. wrappedChild width: w ].
-			constraints height ifNotNil: [ :h | 1halt. wrappedChild height: h ] ].
-	
-	^ wrappedChild 
-]
-
-{ #category : #'instance creation' }
-SpBrickBoxAdapter >> layout: aLayout [
-
-	widget := aLayout direction newWidgetOn: self.
-
-	widget padding: (BlInsets all: aLayout borderWidth).
-
-	aLayout hasAlignment 
-		ifTrue: [ 1halt. "widget := self applyAlignmentTo: widget" ].
-
-	super layout: aLayout
 ]
 
 { #category : #adding }
-SpBrickBoxAdapter >> newChildBlElement: aPresenter constrainedBy: constraints [
+SpBrickBoxAdapter >> addConstraints: aSpBoxConstraints toChild: childBlElement [
+	"Inspired on SpMorphicBoxAdapter>>#addConstraints:toChild:"
+
+	layout isHomogeneous 
+		ifTrue: [ 1halt. "self addHomogeneousToMorph: childMorph" ].
+	
+	self updateChildPadding: childBlElement with: aSpBoxConstraints.
+
+	aSpBoxConstraints isExpand 
+		ifTrue: [
+			self updateAsExpandedChild: childBlElement with: aSpBoxConstraints ]
+		ifFalse: [
+			self updateAsNonExpandedChild: childBlElement with: aSpBoxConstraints ].
+	
+	^ childBlElement
+]
+
+{ #category : #'instance creation' }
+SpBrickBoxAdapter >> layout: aSpBoxLayout [
+
+	widget := aSpBoxLayout direction newWidgetOn: self.
+
+	aSpBoxLayout borderWidth isZero ifFalse: [
+		1halt.
+		widget margin: (BlInsets all: aSpBoxLayout borderWidth) ].
+
+	aSpBoxLayout hasAlignment 
+		ifTrue: [ 1halt. "widget := self applyAlignmentTo: widget" ].
+
+	super layout: aSpBoxLayout
+]
+
+{ #category : #adding }
+SpBrickBoxAdapter >> newChildBlElement: aPresenter constrainedBy: aSpBoxConstraints [
 	"Inspired on SpMorphicBoxAdapter>>#basicAdd:constraints:to:"
 
 	| newElement |
-	newElement := self newBlElementFrom: aPresenter constraints: constraints.	
+	newElement := self newBlElementFrom: aPresenter constraints: aSpBoxConstraints.	
 
 "	self applyAlignmentToChild: childMorph.
 	self verifyBoxExtentOf: aPanel withChild: childMorph.
 "
-	constraints isPlacedAtStart
-		ifTrue: [ startPane addChild: newElement ]
-		ifFalse: [ endPane addChild: newElement ].
-
 	^ newElement
 ]
 
@@ -115,4 +108,44 @@ SpBrickBoxAdapter >> newVerticalPane [
 		  background: Color white;
 		  matchParent;
 		  yourself
+]
+
+{ #category : #adding }
+SpBrickBoxAdapter >> updateAsExpandedChild: childBlElement with: aSpBoxConstraints [
+	
+	"If is not 'fill', we need to pad it with another (since it 'expands', but does not 'fill')"
+	aSpBoxConstraints isFill ifFalse: [ 
+		1halt.
+		"wrappedChild
+			hResizing: #rigid;
+			vResizing: #rigid.
+		wrappedChild := self newPanel
+			addMorphBack: wrappedChild;
+			yourself" ]. 
+	"Set to fill"
+	childBlElement matchParent
+]
+
+{ #category : #adding }
+SpBrickBoxAdapter >> updateAsNonExpandedChild: childBlElement with: aSpBoxConstraints [
+	"Set up child to stay rigid in the layout direction."
+
+	layout direction setRigidityOfNonExpandedBlElement: childBlElement.
+	aSpBoxConstraints width ifNotNil: [ :w | 
+		1 halt.
+		childBlElement width: w ].
+	aSpBoxConstraints height ifNotNil: [ :h | 
+		1 halt.
+		childBlElement height: h ]
+]
+
+{ #category : #'as yet unclassified' }
+SpBrickBoxAdapter >> updateChildPadding: aBlElement with: aSpBoxConstraints [
+
+	| insets |
+	insets := layout direction isHorizontal
+		          ifTrue: [ BlInsets horizontal: aSpBoxConstraints padding ]
+		          ifFalse: [ BlInsets vertical: aSpBoxConstraints padding ].
+
+	aBlElement padding: insets
 ]
