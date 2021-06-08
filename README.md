@@ -1,9 +1,14 @@
 # Spec-Brick
-Brick bindings as backend of [Spec](https://github.com/pharo-spec/Spec). 
 
-Spec is a [Pharo](https://pharo.org/) library for describing user interfaces.
+Brick backend for [Spec](https://github.com/pharo-spec/Spec). 
 
-Other backends for Spec are:
+Spec is a [Pharo](https://pharo.org/) library for describing user interfaces. You describe a UI by composing the "presenters" and by connecting them via block closures.
+
+More concretely, a Spec UI is a tree of `SpPresenter`, that is opened in the context of an application (`SpApplication`) that, among others, indicates what is the backend.
+
+Our backend (`SpBrickBackend`) provides the adapters (hierarchy of `SpBrickAdapter`) to make the `Brick` widgets to act as the tree of presenters describe.
+
+Other Spec backends are:
 - Morphic (the default)
 - [GTK](https://github.com/pharo-spec/Spec-Gtk)
 
