@@ -43,6 +43,7 @@ aPresenter := SpToDoPresenter newApplication: app model: aModel.
 aPresenter openWithSpec.
 ```
 
+Video: https://youtu.be/nYZS3zqdCQM (June of 2021 ~ commit 50dfb5f)
 
 
 ## Installation
