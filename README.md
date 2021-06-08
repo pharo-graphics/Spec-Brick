@@ -1,5 +1,35 @@
 # Spec-Brick
-Bindings to have Brick as backend of Spec2
+Brick bindings as backend of [Spec](https://github.com/pharo-spec/Spec). 
+
+Spec is a [Pharo](https://pharo.org/) library for describing user interfaces.
+
+Other backends for Spec are:
+- Morphic (the default)
+- [GTK](https://github.com/pharo-spec/Spec-Gtk)
+
+## Example
+
+This repository has a demo Spec UI that you can open with the default backend (**Morphic**) using this snippet:
+
+```smalltalk
+| aModel aPresenter |
+aModel := SpToDoList exampleWithSomeTasks.
+aPresenter := SpToDoPresenter on: aModel.
+aPresenter openWithSpec.
+```
+
+To open it using this **Brick** backend, specify the backend in an application:
+
+```smalltalk
+| app aModel aPresenter |
+app := SpApplication new 
+	useBackend: #Brick;
+	yourself.
+aModel := SpToDoList exampleWithSomeTasks.
+aPresenter := SpToDoPresenter newApplication: app model: aModel.
+aPresenter openWithSpec.
+```
+
 
 
 ## Installation
