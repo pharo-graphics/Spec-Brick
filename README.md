@@ -1,6 +1,8 @@
 # Spec-Brick
 
-Brick backend for [Spec](https://github.com/pharo-spec/Spec). 
+[Brick](https://github.com/pharo-graphics/Brick) backend for [Spec](https://github.com/pharo-spec/Spec). 
+
+Brick is a widget library on top of [Bloc](https://github.com/pharo-graphics/Bloc).
 
 Spec is a [Pharo](https://pharo.org/) library for describing user interfaces. You describe a UI by composing the "presenters" and by connecting them via block closures.
 
