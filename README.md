@@ -12,6 +12,12 @@ Other Spec backends are:
 - Morphic (the default)
 - [GTK](https://github.com/pharo-spec/Spec-Gtk)
 
+## Warning
+
+:warning: 
+This backend still **covers a very small part of Spec**: partial coverage of a few widgets. To see the current state, you can check the Example subsection below, the SUnit tests, and the hierarchy of `SpBrickAdapter`.
+:warning:
+
 ## Example
 
 This repository has a demo Spec UI that you can open with the default backend (**Morphic**) using this snippet:
