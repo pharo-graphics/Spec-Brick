@@ -41,13 +41,6 @@ SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpAbstractWidg
 		ifNotNil: [ :position | aBlSpace position: position ].
 	self presenter initialExtent 
 		ifNotNil: [ :extent | aBlSpace extent: extent ].
-	self presenter hasDecorations 
-		ifFalse: [ 1halt "aWindow removeLabelArea" ].
-	self presenter whenDecorationsChangedDo: [ :aBoolean |
-		1halt 
-		"aBoolean 
-			ifTrue: [ aWindow initializeLabelArea ]
-			ifFalse: [ aWindow removeLabelArea ]" ].
 	
 	self 
 		addContent: (self presenter presenter buildWithSpecLayout: aSpAbstractWidgetLayout) 
@@ -93,6 +86,16 @@ SpBrickWindowAdapter >> open [
 ]
 
 { #category : #'widget creation' }
+SpBrickWindowAdapter >> subscribeToPresenter [
+
+	super subscribeToPresenter.
+	
+	self presenter whenDecorationsChangedDo: [ :aBoolean |
+		self updateDecorationsAsBorderless ].
+
+]
+
+{ #category : #'widget creation' }
 SpBrickWindowAdapter >> subscribeToWidget [
 
 	widget
@@ -107,4 +110,17 @@ SpBrickWindowAdapter >> title: aString [
 	localizedTitle := aString ifNotNil: [ :theString | theString localizedForPresenter: self presenter].
 
 	self widgetDo: [ :w | w title: localizedTitle ]
+]
+
+{ #category : #accessing }
+SpBrickWindowAdapter >> updateAll [
+
+	self updateDecorationsAsBorderless
+
+]
+
+{ #category : #accessing }
+SpBrickWindowAdapter >> updateDecorationsAsBorderless [
+	
+	widget borderless: self presenter hasDecorations not
 ]

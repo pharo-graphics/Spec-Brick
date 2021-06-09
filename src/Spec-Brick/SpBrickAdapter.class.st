@@ -73,6 +73,8 @@ SpBrickAdapter >> subscribeToWidget [
 
 { #category : #'widget update' }
 SpBrickAdapter >> updateAll [
-	"Apply the presenter specifications to the backend widget"
+	"Apply all the presenter specifications to the backend widget.
+	
+	Expected to be sent during widget creation."
 
 ]

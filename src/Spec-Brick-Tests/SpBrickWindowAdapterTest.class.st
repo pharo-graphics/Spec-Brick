@@ -156,6 +156,29 @@ SpBrickWindowAdapterTest >> testTitle [
 ]
 
 { #category : #tests }
+SpBrickWindowAdapterTest >> testWithDecorations [
+
+	"This is dedefault value, but enforce it explicitely."
+	specContent initializeWindowBlock: [ :aSpWindow | 
+		aSpWindow withDecorations ].
+
+	self openSpecWindow.
+
+	self deny: brickWindow borderless
+]
+
+{ #category : #tests }
+SpBrickWindowAdapterTest >> testWithoutDecorations [
+
+	specContent initializeWindowBlock: [ :aSpWindow | 
+		aSpWindow withoutDecorations ].
+
+	self openSpecWindow.
+
+	self assert: brickWindow borderless
+]
+
+{ #category : #tests }
 SpBrickWindowAdapterTest >> waitBlocSpace [
 
 	0.5 second wait
