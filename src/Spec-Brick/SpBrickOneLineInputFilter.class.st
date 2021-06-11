@@ -7,6 +7,6 @@ Class {
 { #category : #accessing }
 SpBrickOneLineInputFilter >> filter: aString [
 	<return: #String>
-	
-	^ aString reject: #isLineSeparator
+
+	^ aString copyWithoutAll: String newCSLineEnders 
 ]
