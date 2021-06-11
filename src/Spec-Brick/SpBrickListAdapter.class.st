@@ -95,8 +95,6 @@ SpBrickListAdapter >> refreshWidgetSelection [
 	"
 
 	| indices |
-	#refreshWidgetSelection traceCr.
-	
 	indices := self presenter selection selectedIndexes.
 
 	self flag: #todo. "This should break the eventual cycle, but could have a more general solution"
