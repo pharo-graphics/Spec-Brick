@@ -6,34 +6,18 @@ Class {
 
 { #category : #accessing }
 SpBrickWindowAdapter >> addContent: aBlElement toWindow: aBlSpace [ 
+	"Inspired on SpAbstractMorphicWindowAdapter>>#addContent:toWindow:"
 
-"	| containerMorph |
-	containerMorph := self newContainerMorph.
-	containerMorph layoutFrame: aMorph layoutFrame.
-
-	""add all decorations (menu, toolbar and statusbar)""
-	self model hasMenu ifTrue: [ self addMenuTo: containerMorph ].
-
-	self setToolbarTo: containerMorph.
-
-	""Register for changes in the toolbar""
-	self model whenToolbarChangedDo: [ self setToolbarTo: containerMorph ].
-
-	containerMorph addMorphBack: aMorph.
-
-
-
-	self model hasStatusBar ifTrue: [ self addStatusBarTo: containerMorph ].
-	"
-
-	aBlElement constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
-	aBlSpace root: aBlElement
+	self
+		updateStatusBar;
+		updateToolbar;
+		updateMenu.
+		
+	aBlSpace root content: aBlElement
 ]
 
 { #category : #accessing }
-SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpAbstractWidgetLayout [ 
+SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpExecutableLayout [ 
 
 	self presenter isCentered 
 		ifTrue: [ 1halt "self centered" ].
@@ -42,9 +26,12 @@ SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpAbstractWidg
 	self presenter initialExtent 
 		ifNotNil: [ :extent | aBlSpace extent: extent ].
 	
-	self 
-		addContent: (self presenter presenter buildWithSpecLayout: aSpAbstractWidgetLayout) 
-		toWindow: aBlSpace
+	self
+		updateMenu;
+		updateToolbar;
+		updateContentWithSpecLayout: aSpExecutableLayout;
+		updateStatusBar
+
 ]
 
 { #category : #accessing }
@@ -57,6 +44,7 @@ SpBrickWindowAdapter >> blocHost [
 SpBrickWindowAdapter >> buildWidget [
 
 	^ BlSpace new
+		root: SpBrickWindowElement new;
 		host: self blocHost;
 		yourself
 ]
@@ -89,9 +77,10 @@ SpBrickWindowAdapter >> open [
 SpBrickWindowAdapter >> subscribeToPresenter [
 
 	super subscribeToPresenter.
-	
-	self presenter whenDecorationsChangedDo: [ :aBoolean |
-		self updateDecorationsAsBorderless ].
+
+	self presenter
+		whenDecorationsChangedDo: [ self updateDecorationsAsBorderless ];
+		whenToolbarChangedDo: [ self updateToolbar ]
 
 ]
 
@@ -106,16 +95,20 @@ SpBrickWindowAdapter >> subscribeToWidget [
 { #category : #accessing }
 SpBrickWindowAdapter >> title: aString [ 
 
-	| localizedTitle |
-	localizedTitle := aString ifNotNil: [ :theString | theString localizedForPresenter: self presenter].
-
-	self widgetDo: [ :w | w title: localizedTitle ]
+	widget title: aString
 ]
 
 { #category : #accessing }
 SpBrickWindowAdapter >> updateAll [
+	"Important: this update is done BEFORE window's initializeWindow:"
 
 	self updateDecorationsAsBorderless
+]
+
+{ #category : #accessing }
+SpBrickWindowAdapter >> updateContentWithSpecLayout: aSpExecutableLayout [
+
+	widget root content: (self presenter presenter buildWithSpecLayout: aSpExecutableLayout)
 
 ]
 
@@ -123,4 +116,39 @@ SpBrickWindowAdapter >> updateAll [
 SpBrickWindowAdapter >> updateDecorationsAsBorderless [
 	
 	widget borderless: self presenter hasDecorations not
+]
+
+{ #category : #'widget creation' }
+SpBrickWindowAdapter >> updateMenu [
+
+	self presenter hasMenu ifFalse: [
+		^ widget root removeMenu ].
+
+	"Build new Brick menu from presenter spec and set it."	
+	widget root menu: self presenter menu buildWithSpec
+
+]
+
+{ #category : #'widget creation' }
+SpBrickWindowAdapter >> updateStatusBar [
+	"Inspired on SpAbstractMorphicWindowAdapter>>#addStatusBarTo:"
+
+	self presenter hasStatusBar ifFalse: [
+		^ widget root removeStatusBar ].
+
+	"Build new Brick status bar from presenter spec and set it."	
+	widget root statusBar: self presenter statusBar buildWithSpec
+
+]
+
+{ #category : #'widget creation' }
+SpBrickWindowAdapter >> updateToolbar [
+	"Inspired on SpAbstractMorphicWindowAdapter>>#setToolbarTo:"
+
+	self presenter hasToolbar ifFalse: [
+		^ widget root removeToolbar ].
+
+	"Build new Brick toolbar from presenter spec and set it."	
+	widget root toolbar: self presenter toolbar buildWithSpec
+
 ]

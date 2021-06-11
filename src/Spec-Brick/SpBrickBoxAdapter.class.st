@@ -81,7 +81,6 @@ SpBrickBoxAdapter >> newHorizontal [
 SpBrickBoxAdapter >> newHorizontalPane [
 
 	^ BrHorizontalPane new
-		  background: Color white;
 		  matchParent;
 		  yourself
 ]
@@ -104,7 +103,6 @@ SpBrickBoxAdapter >> newVertical [
 SpBrickBoxAdapter >> newVerticalPane [
 
 	^ BrVerticalPane new
-		  background: Color white;
 		  matchParent;
 		  yourself
 ]

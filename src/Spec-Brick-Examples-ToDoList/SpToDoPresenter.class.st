@@ -26,7 +26,10 @@ Class {
 		'list',
 		'deleteButton',
 		'toDoList',
-		'toggleCompletedButton'
+		'toggleCompletedButton',
+		'toolbar',
+		'menu',
+		'statusBar'
 	],
 	#category : #'Spec-Brick-Examples-ToDoList-Presenters'
 }
@@ -61,6 +64,12 @@ SpToDoPresenter >> acceptTask [
 		do: [ :error | self showError: error ].
 
 	self refresh
+]
+
+{ #category : #actions }
+SpToDoPresenter >> completeAllTasks [
+
+	toDoList tasks do: [ :each | each completed: true ]
 ]
 
 { #category : #initialization }
@@ -99,7 +108,7 @@ SpToDoPresenter >> initializePresenters [
 		yourself.
 	
 	titleInput := self newTextInput.
-
+	
 	acceptButton := self newButton
 		label: 'Add';
 		icon: (self iconNamed: #add);
@@ -128,6 +137,13 @@ SpToDoPresenter >> initializePresenters [
 		action: [ self deleteTask ];
 		yourself.
 
+	statusBar := self newLabel.
+	toolbar := self newToolbar.
+	menu := self newButton
+		label: 'Complete All';
+		action: [ self completeAllTasks ];
+		yourself.
+
 	self refresh.
 ]
 
@@ -136,7 +152,10 @@ SpToDoPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Demo @ ' , aWindowPresenter application backend asString;
-		initialExtent: 500 @ 200
+		initialExtent: 500 @ 200;
+		statusBar: statusBar;
+		toolbar: toolbar;
+		menu: menu.
 ]
 
 { #category : #private }
@@ -150,6 +169,7 @@ SpToDoPresenter >> refresh [
 
 	list unselectAll.
 	list items: toDoList tasks.
+	statusBar label: ('Number of tasks: {1}' format: { toDoList tasks size}).
 	self refreshAccordingToSelectedTask.
 ]
 
