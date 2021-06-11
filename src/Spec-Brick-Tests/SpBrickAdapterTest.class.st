@@ -32,24 +32,30 @@ SpBrickAdapterTest >> waitUI [
 { #category : #running }
 SpBrickAdapterTest >> waitUITimeout: aDuration [
 	"Wait BlSpace doesn't have available tasks to execute. 
-	This is important since the SpBrick* adapters are usually not synchronous: they enqueue tasks.
+	This is important since the SpBrick* adapters are usually not synchronous: they defer tasks.
 	
-	Inspired in BlDevScripterWaitStep>>#forEmptySpaceTaskQueueTimeout:"
+	Inspired on BlDevScripterWaitStep>>#forEmptySpaceTaskQueueTimeout:"
 
-	| startTime space timeoutCondition emptyCondition |
-	(specWindow isNil or:[ specWindow adapter isNil or: [ specWindow adapter widget isNil ] ])
-		ifTrue:[ self error: 'Window not yet built' ].
+	| deadlineTime space hasTimedOut hasEmptyTaskQueue |
+	(specWindow isNil or: [
+		specWindow adapter isNil or: [
+			specWindow adapter widget isNil ] ])
+				ifTrue:[ self error: 'Window not yet built' ].
 
 	space := specWindow adapter widget.
-	startTime := space time now.
-	space time 
-		every: 25 milliSeconds
-		while: [ 
-			timeoutCondition := space time now < (startTime + aDuration).
-			emptyCondition := space taskQueue isEmpty not.
-			'waitUI' traceCr.
-			timeoutCondition and: [ emptyCondition ] ]
-		do: [ "space host uiProcessDo: [ space pulse ]" ].
+	deadlineTime := space time now + aDuration.
+	space pulse.
 
-	^ timeoutCondition
+	space time
+		every: 50 milliSeconds
+		while: [
+			hasTimedOut := space time now < deadlineTime.
+			hasEmptyTaskQueue := space taskQueue isEmpty not.
+			hasTimedOut and: [ hasEmptyTaskQueue ] ]
+		do: [ 
+			#waitUI traceCr.
+			space root inUIProcessDo: [ space pulse ].
+		].
+
+	^ hasTimedOut
 ]
