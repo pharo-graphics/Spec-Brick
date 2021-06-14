@@ -1,49 +1,28 @@
 Class {
 	#name : #SpBrickTextInputFieldAdapterTest,
-	#superclass : #SpBrickWidgetAdapterTest,
+	#superclass : #SpBrickAbstractTextAdapterTest,
 	#category : #'Spec-Brick-Tests'
 }
 
-{ #category : #tests }
+{ #category : #running }
 SpBrickTextInputFieldAdapterTest >> specWidgetClass [
 
 	^ SpTextInputFieldPresenter
 ]
 
 { #category : #tests }
-SpBrickTextInputFieldAdapterTest >> testEnabled [
+SpBrickTextInputFieldAdapterTest >> testReturnIsIgnored [
 
-	"Initial value"
-	self assert: specWidget isEnabled equals: brickWidget isEnabled.
+	self simulateKeyPress: BlKeyboardKey return on: brickWidget.
+	self assert: brickWidget text asString equals: ''.
+	self assert: specWidget text asString equals: ''.
 
-	"Probably redundant"
-	specWidget enabled: true.
-	self assert: brickWidget isEnabled.
-
-	"Change value"
-	specWidget enabled: false.
-	self deny: brickWidget isEnabled.
-
-	"Change value back"
-	specWidget enabled: true.
-	self assert: brickWidget isEnabled.
-
-]
-
-{ #category : #tests }
-SpBrickTextInputFieldAdapterTest >> testText [
-
-	"Initial text"
-	self assert: brickWidget text asString equals: specWidget text.
-
-	"spec -> brick"
-	specWidget text: 'Brick'.
+	self simulateKeyPress: BlKeyboardKey a on: brickWidget.
+	self simulateKeyPress: BlKeyboardKey return on: brickWidget.
+	self simulateKeyPress: BlKeyboardKey b on: brickWidget.
 	self waitUI.
-	self assert: brickWidget text asString equals: 'Brick'.
-	
-	"brick -> spec"
-	brickWidget inUIProcessDo:[ brickWidget text: 'Spec' asRopedText ].
-	self waitUI.
-	self assert: specWidget text asString equals: 'Spec'.
+	self assert: brickWidget text asString equals: 'ab'.
+	self assert: specWidget text asString equals: 'ab'.
+
 
 ]

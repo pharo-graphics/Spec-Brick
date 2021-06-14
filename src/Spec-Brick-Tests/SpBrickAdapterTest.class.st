@@ -23,6 +23,15 @@ SpBrickAdapterTest >> newApplication [
 		  yourself
 ]
 
+{ #category : #'as yet unclassified' }
+SpBrickAdapterTest >> simulateKeyPress: aBlKeyboardKey on: aBlElement [
+
+	aBlElement inUIProcessDo: [ 
+		BlSpace simulateKeyDownOn: aBlElement key: aBlKeyboardKey.
+		BlSpace simulateKeyUpOn: aBlElement key: aBlKeyboardKey.
+		aBlElement space pulse ]
+]
+
 { #category : #running }
 SpBrickAdapterTest >> waitUI [
 

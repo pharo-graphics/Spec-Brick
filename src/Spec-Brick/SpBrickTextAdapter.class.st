@@ -1,12 +1,12 @@
 Class {
-	#name : #SpBrickTextInputFieldAdapter,
+	#name : #SpBrickTextAdapter,
 	#superclass : #SpBrickAbstractTextAdapter,
 	#category : #'Spec-Brick-Adapters'
 }
 
 { #category : #'widget creation' }
-SpBrickTextInputFieldAdapter >> newBrickWidget [
+SpBrickTextAdapter >> newBrickWidget [
 
-	^ SpBrickTextField new
+	^ SpBrickTextArea new
 
 ]
