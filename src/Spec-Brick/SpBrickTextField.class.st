@@ -1,8 +1,6 @@
 Class {
 	#name : #SpBrickTextField,
-	#superclass : #BrEditor,
-	#traits : 'TBrEnableable',
-	#classTraits : 'TBrEnableable classTrait',
+	#superclass : #SpBrickAbstractTextEditor,
 	#category : #'Spec-Brick-Text'
 }
 
