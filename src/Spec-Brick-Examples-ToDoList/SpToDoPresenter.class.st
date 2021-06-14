@@ -140,6 +140,7 @@ SpToDoPresenter >> initializePresenters [
 	statusBar := self newLabel.
 	toolbar := self newToolbar.
 	menu := self newButton
+		icon: (self iconNamed: #smallOk);
 		label: 'Complete All';
 		action: [ self completeAllTasks ];
 		yourself.

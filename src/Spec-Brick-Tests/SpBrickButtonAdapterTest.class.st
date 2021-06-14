@@ -50,5 +50,6 @@ SpBrickButtonAdapterTest >> testLabel [
 
 	specWidget label: 'Hello Brick'.
 	
-	self assert: brickWidget label asString equals: 'Hello Brick'
+	self assert: brickWidget label asString equals: 'Hello Brick'.
+	self assert: brickWidget icon equals: specWidget adapter nullIcon
 ]

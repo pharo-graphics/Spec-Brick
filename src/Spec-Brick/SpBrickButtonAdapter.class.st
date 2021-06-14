@@ -1,6 +1,9 @@
 Class {
 	#name : #SpBrickButtonAdapter,
 	#superclass : #SpBrickWidgetAdapter,
+	#instVars : [
+		'nullIcon'
+	],
 	#category : #'Spec-Brick-Adapters'
 }
 
@@ -19,6 +22,12 @@ SpBrickButtonAdapter >> newBrickWidget [
 	^ BrButton new
 		  hMatchParent;
 		  yourself
+]
+
+{ #category : #accessing }
+SpBrickButtonAdapter >> nullIcon [
+
+	^ nullIcon ifNil: [ nullIcon := Form extent: 0 asPoint ]
 ]
 
 { #category : #'widget creation' }
@@ -49,9 +58,10 @@ SpBrickButtonAdapter >> updateAll [
 { #category : #'widget update' }
 SpBrickButtonAdapter >> updateIcon [
 
-	"TODO"
-	self presenter icon ifNotNil: [
-		widget icon: self presenter icon ]
+	| iconForm |
+	iconForm := self presenter icon ifNil: [ self nullIcon ].
+
+	widget icon: iconForm
 ]
 
 { #category : #'widget update' }
