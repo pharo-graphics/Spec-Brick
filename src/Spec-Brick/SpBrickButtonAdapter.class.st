@@ -42,7 +42,7 @@ SpBrickButtonAdapter >> subscribeToPresenter [
 { #category : #'widget update' }
 SpBrickButtonAdapter >> updateAction [
 
-	self widgetDo: [ :w | w action: self presenter action ]
+	widget action: self presenter action
 ]
 
 { #category : #'widget update' }

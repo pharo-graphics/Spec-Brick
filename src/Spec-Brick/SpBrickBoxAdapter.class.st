@@ -39,10 +39,10 @@ SpBrickBoxAdapter >> addConstraints: aSpBoxConstraints toChild: childBlElement [
 { #category : #'instance creation' }
 SpBrickBoxAdapter >> layout: aSpBoxLayout [
 
+	"Create widget via double-dispatch on the direction. See #newHorizontal and #newVertical."
 	widget := aSpBoxLayout direction newWidgetOn: self.
 
-	aSpBoxLayout borderWidth isZero ifFalse: [
-		widget padding: (BlInsets all: aSpBoxLayout borderWidth) ].
+	widget padding: (BlInsets all: aSpBoxLayout borderWidth).
 
 	aSpBoxLayout hasAlignment 
 		ifTrue: [ 1halt. "widget := self applyAlignmentTo: widget" ].
@@ -65,6 +65,7 @@ SpBrickBoxAdapter >> newChildBlElement: aPresenter constrainedBy: aSpBoxConstrai
 
 { #category : #'instance creation' }
 SpBrickBoxAdapter >> newHorizontal [
+	"Configure as horizontal. See #layout:."
 
 	startPane := self newHorizontalPane.
 	endPane := self newHorizontalPane
@@ -72,8 +73,8 @@ SpBrickBoxAdapter >> newHorizontal [
 		yourself.
 
 	^ self newHorizontalPane
-		  addChild: startPane as: 'boxStartPane';
-		  addChild: endPane as: 'boxEndPane';
+		  addChild: startPane as: 'boxStart';
+		  addChild: endPane as: 'boxEnd';
 		  yourself
 ]
 
@@ -87,6 +88,7 @@ SpBrickBoxAdapter >> newHorizontalPane [
 
 { #category : #'instance creation' }
 SpBrickBoxAdapter >> newVertical [
+	"Configure as vertical. See #layout:."
 
 	startPane := self newVerticalPane.
 	endPane := self newVerticalPane
@@ -94,8 +96,8 @@ SpBrickBoxAdapter >> newVertical [
 		yourself.
 
 	^ self newVerticalPane
-		  addChild: startPane as: 'boxStartPane';
-		  addChild: endPane as: 'boxEndPane';
+		  addChild: startPane as: 'boxStart';
+		  addChild: endPane as: 'boxEnd';
 		  yourself
 ]
 
