@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickLabelAdapterTest,
 	#superclass : #SpBrickWidgetAdapterTest,
-	#category : #'Spec-Brick-Tests'
+	#category : #'Spec-Brick-Tests-Adapters'
 }
 
 { #category : #tests }

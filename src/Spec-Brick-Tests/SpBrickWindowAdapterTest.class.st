@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'specContent'
 	],
-	#category : #'Spec-Brick-Tests'
+	#category : #'Spec-Brick-Tests-Adapters'
 }
 
 { #category : #asserting }

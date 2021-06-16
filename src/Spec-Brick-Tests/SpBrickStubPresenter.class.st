@@ -5,7 +5,7 @@ Class {
 		'initializeWindowBlock',
 		'contentPresenter'
 	],
-	#category : #'Spec-Brick-Tests'
+	#category : #'Spec-Brick-Tests-Support'
 }
 
 { #category : #specs }

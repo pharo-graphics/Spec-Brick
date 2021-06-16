@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickBoxLayoutTest,
 	#superclass : #SpBrickAdapterTest,
-	#category : #'Spec-Brick-Tests'
+	#category : #'Spec-Brick-Tests-Adapters'
 }
 
 { #category : #tests }

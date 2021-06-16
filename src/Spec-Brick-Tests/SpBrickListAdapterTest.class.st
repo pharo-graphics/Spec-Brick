@@ -4,7 +4,7 @@ A SpBrickListAdapterTest is a test class for testing the behavior of SpBrickList
 Class {
 	#name : #SpBrickListAdapterTest,
 	#superclass : #SpBrickWidgetAdapterTest,
-	#category : #'Spec-Brick-Tests'
+	#category : #'Spec-Brick-Tests-Adapters'
 }
 
 { #category : #running }

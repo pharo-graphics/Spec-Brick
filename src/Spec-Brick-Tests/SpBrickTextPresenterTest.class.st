@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickTextPresenterTest,
 	#superclass : #SpBrickAbstractTextAdapterTest,
-	#category : #'Spec-Brick-Tests'
+	#category : #'Spec-Brick-Tests-Adapters'
 }
 
 { #category : #running }
