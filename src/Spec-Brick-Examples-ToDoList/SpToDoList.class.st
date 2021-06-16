@@ -48,6 +48,13 @@ SpToDoList >> delete: aToDoTask [
 	self announceUpdated.
 ]
 
+{ #category : #accessing }
+SpToDoList >> deleteAll [
+	
+	tasks removeAll.
+	self announceUpdated.
+]
+
 { #category : #initialization }
 SpToDoList >> initialize [ 
 

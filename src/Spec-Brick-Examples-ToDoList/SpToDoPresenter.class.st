@@ -80,6 +80,12 @@ SpToDoPresenter >> connectPresenters [
 ]
 
 { #category : #actions }
+SpToDoPresenter >> deleteAllTasks [
+
+	toDoList deleteAll
+]
+
+{ #category : #actions }
 SpToDoPresenter >> deleteTask [
 	
 	toDoList delete: list selectedItem
@@ -134,15 +140,28 @@ SpToDoPresenter >> initializePresenters [
 		action: [ self deleteTask ];
 		yourself.
 
+	self initializeToolbar.
 	statusBar := self newLabel.
-	toolbar := self newToolbar.
-	menu := self newButton
-		icon: (self iconNamed: #smallOk);
-		label: 'Complete All';
-		action: [ self completeAllTasks ];
-		yourself.
 
 	self refresh.
+]
+
+{ #category : #initialization }
+SpToDoPresenter >> initializeToolbar [
+	
+	toolbar := self newToolbar.
+	
+	toolbar addItem: (self newToolbarButton
+		icon: (self iconNamed: #smallOk);
+		label: 'Compl. All';
+		action: [ self completeAllTasks ];
+		yourself).
+		
+	toolbar addItemRight: (self newToolbarButton
+		icon: (self iconNamed: #remove);
+		label: 'Del. All';
+		action: [ self deleteAllTasks ];
+		yourself).
 ]
 
 { #category : #initialization }
@@ -152,8 +171,7 @@ SpToDoPresenter >> initializeWindow: aWindowPresenter [
 		title: 'Demo @ ' , aWindowPresenter application backend asString;
 		initialExtent: 500 @ 200;
 		statusBar: statusBar;
-		toolbar: toolbar;
-		menu: menu.
+		toolbar: toolbar.
 ]
 
 { #category : #private }
