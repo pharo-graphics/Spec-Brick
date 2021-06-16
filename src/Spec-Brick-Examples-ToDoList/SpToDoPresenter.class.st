@@ -28,7 +28,6 @@ Class {
 		'toDoList',
 		'toggleCompletedButton',
 		'toolbar',
-		'menu',
 		'statusBar'
 	],
 	#category : #'Spec-Brick-Examples-ToDoList-Presenters'
@@ -63,7 +62,6 @@ SpToDoPresenter >> acceptTask [
 	]	on: SpToDoListValidationError
 		do: [ :error | self showError: error ].
 
-	self refresh
 ]
 
 { #category : #actions }
@@ -84,8 +82,7 @@ SpToDoPresenter >> connectPresenters [
 { #category : #actions }
 SpToDoPresenter >> deleteTask [
 	
-	toDoList delete: list selectedItem.
-	self refresh.
+	toDoList delete: list selectedItem
 ]
 
 { #category : #private }
