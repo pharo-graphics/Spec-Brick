@@ -53,8 +53,20 @@ SpBrickToolbarElement >> initialize [
 ]
 
 { #category : #accessing }
+SpBrickToolbarElement >> leftItems [
+
+	^ leftPane children
+]
+
+{ #category : #accessing }
 SpBrickToolbarElement >> removeAllItems [
 
 	leftPane removeChildren.
 	rightPane removeChildren.
+]
+
+{ #category : #accessing }
+SpBrickToolbarElement >> rightItems [
+
+	^ rightPane children
 ]
