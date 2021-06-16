@@ -33,7 +33,8 @@ SpBrickToolbarElement >> initialize [
 		            matchParent;
 		            yourself.
 "	leftPane := BrHorizontalPane new
-		            fitContent;
+						hMatchParent;
+		            vFitContent;
 		            yourself.
 
 "	rightPane := BrToolbar new
