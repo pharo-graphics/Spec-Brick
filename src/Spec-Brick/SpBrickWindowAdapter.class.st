@@ -5,18 +5,6 @@ Class {
 }
 
 { #category : #accessing }
-SpBrickWindowAdapter >> addContent: aBlElement toWindow: aBlSpace [ 
-	"Inspired on SpAbstractMorphicWindowAdapter>>#addContent:toWindow:"
-
-	self
-		updateStatusBar;
-		updateToolbar;
-		updateMenu.
-		
-	aBlSpace root content: aBlElement
-]
-
-{ #category : #accessing }
 SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpExecutableLayout [ 
 
 	self presenter isCentered 
