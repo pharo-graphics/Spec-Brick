@@ -170,6 +170,7 @@ SpToDoPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Demo @ ' , aWindowPresenter application backend asString;
 		initialExtent: 500 @ 200;
+		centered;
 		statusBar: statusBar;
 		toolbar: toolbar.
 ]

@@ -8,6 +8,12 @@ Class {
 	#category : #'Spec-Brick-Tests-Adapters'
 }
 
+{ #category : #testing }
+SpBrickWidgetAdapterTest class >> isAbstract [
+
+	^ self = SpBrickWidgetAdapterTest
+]
+
 { #category : #running }
 SpBrickWidgetAdapterTest >> setUp [
 

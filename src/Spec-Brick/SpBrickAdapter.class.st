@@ -46,13 +46,26 @@ SpBrickAdapter >> adapt: aPresenter [
 
 ]
 
+{ #category : #accessing }
+SpBrickAdapter >> blocHost [
+
+	^ BlHost pickHost
+]
+
 { #category : #private }
 SpBrickAdapter >> defer: aBlockClosure [
 	"Enqueue aBlockClosure in the BlSpace, which will be valued in next #pulse."
 
-	"	self widget root inUIProcessDo: aBlockClosure."
-
-	self widget enqueueTask: (BlTaskAction new
+"	| aHost |
+	aHost := self blocHost.
+	aHost universe pulse.
+	aHost universe defer: [ 
+		aHost universe pulse.
+		aHost uiProcessDo: aBlockClosure.
+		aHost universe pulse ].
+	aHost universe pulse
+"
+		self widget enqueueTask: (BlTaskAction new
 			 action: aBlockClosure;
 			 yourself)
 ]

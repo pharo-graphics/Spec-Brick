@@ -4,6 +4,12 @@ Class {
 	#category : #'Spec-Brick-Tests-Adapters'
 }
 
+{ #category : #testing }
+SpBrickAbstractTextAdapterTest class >> isAbstract [
+
+	^ self = SpBrickAbstractTextAdapterTest
+]
+
 { #category : #tests }
 SpBrickAbstractTextAdapterTest >> testEnabled [
 

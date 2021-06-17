@@ -43,6 +43,19 @@ SpBrickWindowAdapterTest >> tearDown [
 ]
 
 { #category : #tests }
+SpBrickWindowAdapterTest >> testCentered [
+
+	specContent initializeWindowBlock: [ :aSpWindow | aSpWindow centered ].
+
+	self openSpecWindow.
+	self waitBlocSpace.
+
+	"We should find a better way to assert."
+	self assert: brickWindow position x > 100.
+	self assert: brickWindow position y > 100
+]
+
+{ #category : #tests }
 SpBrickWindowAdapterTest >> testClose [
 
 	self openSpecWindow.
@@ -158,7 +171,7 @@ SpBrickWindowAdapterTest >> testTitle [
 { #category : #tests }
 SpBrickWindowAdapterTest >> testWithDecorations [
 
-	"This is dedefault value, but enforce it explicitely."
+	"This is the default value... but let's enforce it."
 	specContent initializeWindowBlock: [ :aSpWindow | 
 		aSpWindow withDecorations ].
 
