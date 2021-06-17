@@ -45,13 +45,14 @@ SpBrickWindowAdapterTest >> tearDown [
 { #category : #tests }
 SpBrickWindowAdapterTest >> testCentered [
 
-	specContent initializeWindowBlock: [ :aSpWindow | 
-		aSpWindow centered ].
+	specContent initializeWindowBlock: [ :aSpWindow | aSpWindow centered ].
 
 	self openSpecWindow.
+	self waitBlocSpace.
 
-1halt.
-"	self assert: brickWindow position equals: aParticularPosition"
+	"We should find a better way to assert."
+	self assert: brickWindow position x > 100.
+	self assert: brickWindow position y > 100
 ]
 
 { #category : #tests }

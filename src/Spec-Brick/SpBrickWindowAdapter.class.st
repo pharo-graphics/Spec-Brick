@@ -51,15 +51,14 @@ SpBrickWindowAdapter >> onSpaceClosed [
 { #category : #'event handling' }
 SpBrickWindowAdapter >> onSpaceShown [
 
-	#onSpaceShown1 traceCr.
 	self defer: [
-		#onSpaceShown2 traceCr.
 		"Setting window position was problematic before being showed."
+
 		self presenter initialPosition 
 			ifNotNil: [ :position | widget position: position ].
-"		self presenter isCentered
+		self presenter isCentered
 			ifTrue: [ self centered ].
-"
+
 	"	self presenter presenter takeKeyboardFocus."
 		self presenter windowIsOpening ].
 
