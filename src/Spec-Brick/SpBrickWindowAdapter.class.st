@@ -4,28 +4,18 @@ Class {
 	#category : #'Spec-Brick-Adapters'
 }
 
-{ #category : #accessing }
+{ #category : #API }
 SpBrickWindowAdapter >> addPresenterIn: aBlSpace withSpecLayout: aSpExecutableLayout [ 
 
-	self presenter isCentered 
-		ifTrue: [ 1halt "self centered" ].
-	self presenter initialPosition 
-		ifNotNil: [ :position | aBlSpace position: position ].
 	self presenter initialExtent 
-		ifNotNil: [ :extent | aBlSpace extent: extent ].
-	
+		ifNotNil: [ :extent | widget extent: extent ].
+
 	self
 		updateMenu;
 		updateToolbar;
 		updateContentWithSpecLayout: aSpExecutableLayout;
 		updateStatusBar
 
-]
-
-{ #category : #accessing }
-SpBrickWindowAdapter >> blocHost [
-
-	^ BlHost pickHost
 ]
 
 { #category : #'widget creation' }
@@ -37,28 +27,50 @@ SpBrickWindowAdapter >> buildWidget [
 		yourself
 ]
 
-{ #category : #accessing }
-SpBrickWindowAdapter >> close [
+{ #category : #API }
+SpBrickWindowAdapter >> centered [
 
-	self widget close
+	widget center
 ]
 
-{ #category : #'widget creation' }
+{ #category : #API }
+SpBrickWindowAdapter >> close [
+
+	widget close
+]
+
+{ #category : #'event handling' }
 SpBrickWindowAdapter >> onSpaceClosed [
 	"Inspired on SpMorphicWindowAdapter>>#windowClosed"
 
-	self presenter windowIsClosing.
-	self presenter windowClosed.
+	self presenter
+		windowIsClosing;
+		windowClosed
 ]
 
-{ #category : #accessing }
+{ #category : #'event handling' }
+SpBrickWindowAdapter >> onSpaceShown [
+
+	#onSpaceShown1 traceCr.
+	self defer: [
+		#onSpaceShown2 traceCr.
+		"Setting window position was problematic before being showed."
+		self presenter initialPosition 
+			ifNotNil: [ :position | widget position: position ].
+"		self presenter isCentered
+			ifTrue: [ self centered ].
+"
+	"	self presenter presenter takeKeyboardFocus."
+		self presenter windowIsOpening ].
+
+]
+
+{ #category : #API }
 SpBrickWindowAdapter >> open [
+	"Enqueue opening the window after next universe pulse. 
+	See #onSpaceShown for posterior initialization."
 
-	self widget show.
-
-"	self presenter presenter takeKeyboardFocus."
-	self presenter windowIsOpening.
-
+	widget show
 ]
 
 { #category : #'widget creation' }
@@ -76,11 +88,11 @@ SpBrickWindowAdapter >> subscribeToPresenter [
 SpBrickWindowAdapter >> subscribeToWidget [
 
 	widget
-		addEventHandlerOn: BlSpaceClosedEvent
-		do: [ self onSpaceClosed ]
+		addEventHandlerOn: BlSpaceClosedEvent do: [ self onSpaceClosed ];
+		addEventHandlerOn: BlSpaceShownEvent do: [ self onSpaceShown ]
 ]
 
-{ #category : #accessing }
+{ #category : #API }
 SpBrickWindowAdapter >> title: aString [ 
 
 	widget title: aString
@@ -95,6 +107,7 @@ SpBrickWindowAdapter >> updateAll [
 
 { #category : #accessing }
 SpBrickWindowAdapter >> updateContentWithSpecLayout: aSpExecutableLayout [
+	"Build the presenter of the window, and establish the Brick widget as content of the window."
 
 	widget root content: (self presenter presenter buildWithSpecLayout: aSpExecutableLayout)
 

@@ -43,6 +43,18 @@ SpBrickWindowAdapterTest >> tearDown [
 ]
 
 { #category : #tests }
+SpBrickWindowAdapterTest >> testCentered [
+
+	specContent initializeWindowBlock: [ :aSpWindow | 
+		aSpWindow centered ].
+
+	self openSpecWindow.
+
+1halt.
+"	self assert: brickWindow position equals: aParticularPosition"
+]
+
+{ #category : #tests }
 SpBrickWindowAdapterTest >> testClose [
 
 	self openSpecWindow.
@@ -158,7 +170,7 @@ SpBrickWindowAdapterTest >> testTitle [
 { #category : #tests }
 SpBrickWindowAdapterTest >> testWithDecorations [
 
-	"This is dedefault value, but enforce it explicitely."
+	"This is the default value... but let's enforce it."
 	specContent initializeWindowBlock: [ :aSpWindow | 
 		aSpWindow withDecorations ].
 
