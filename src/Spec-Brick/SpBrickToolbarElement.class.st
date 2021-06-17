@@ -5,7 +5,7 @@ Class {
 		'leftPane',
 		'rightPane'
 	],
-	#category : #'Spec-Brick-Adapters'
+	#category : #'Spec-Brick-Widgets'
 }
 
 { #category : #accessing }

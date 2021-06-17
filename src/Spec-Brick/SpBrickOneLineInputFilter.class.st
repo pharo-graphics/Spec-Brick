@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickOneLineInputFilter,
 	#superclass : #BrTextEditorInputFilter,
-	#category : #'Spec-Brick-Text'
+	#category : #'Spec-Brick-Widgets-Text'
 }
 
 { #category : #accessing }

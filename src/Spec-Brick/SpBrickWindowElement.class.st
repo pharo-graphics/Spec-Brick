@@ -12,7 +12,7 @@ Class {
 		'content',
 		'statusBar'
 	],
-	#category : #'Spec-Brick-Adapters'
+	#category : #'Spec-Brick-Widgets'
 }
 
 { #category : #accessing }

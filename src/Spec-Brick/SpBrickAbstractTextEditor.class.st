@@ -3,7 +3,7 @@ Class {
 	#superclass : #BrEditor,
 	#traits : 'TBrEnableable',
 	#classTraits : 'TBrEnableable classTrait',
-	#category : #'Spec-Brick-Text'
+	#category : #'Spec-Brick-Widgets-Text'
 }
 
 { #category : #'api - enablement' }

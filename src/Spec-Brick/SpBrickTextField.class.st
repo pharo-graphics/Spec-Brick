@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickTextField,
 	#superclass : #SpBrickAbstractTextEditor,
-	#category : #'Spec-Brick-Text'
+	#category : #'Spec-Brick-Widgets-Text'
 }
 
 { #category : #initialization }
