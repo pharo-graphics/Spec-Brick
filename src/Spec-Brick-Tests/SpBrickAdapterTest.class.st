@@ -8,6 +8,12 @@ Class {
 	#category : #'Spec-Brick-Tests-Adapters'
 }
 
+{ #category : #testing }
+SpBrickAdapterTest class >> isAbstract [
+
+	^ self = SpBrickAdapterTest 
+]
+
 { #category : #running }
 SpBrickAdapterTest >> closeSpecWindow [
 
