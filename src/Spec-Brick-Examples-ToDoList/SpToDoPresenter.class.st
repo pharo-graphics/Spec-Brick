@@ -210,9 +210,12 @@ SpToDoPresenter >> setModelBeforeInitialization: aSpToDoList [
 { #category : #actions }
 SpToDoPresenter >> showError: error [
 	
-	| errorPresenter |
-	errorPresenter := SpToDoValidationErrorPresenter newApplication: self application model: error.
-	errorPresenter openWithSpec.
+	self application newInform
+		title: 'Validation Error';
+		label: 'ERROR: ', error messageText;
+"		parentWindow: self window;"
+"		extent: 250 @ 150;"
+		openDialogWithSpec
 
 ]
 

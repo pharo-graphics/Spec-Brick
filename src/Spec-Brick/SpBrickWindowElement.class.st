@@ -79,19 +79,19 @@ SpBrickWindowElement >> newEmptyElement [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 SpBrickWindowElement >> removeMenu [
 
 	self menu: self newEmptyElement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 SpBrickWindowElement >> removeStatusBar [
 	
 	self statusBar: self newEmptyElement	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 SpBrickWindowElement >> removeToolbar [
 
 	self toolbar: self newEmptyElement	

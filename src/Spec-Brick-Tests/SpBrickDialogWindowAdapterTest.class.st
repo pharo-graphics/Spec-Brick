@@ -1,12 +1,12 @@
 Class {
-	#name : #SpBrickWindowAdapterTest,
+	#name : #SpBrickDialogWindowAdapterTest,
 	#superclass : #SpBrickWindowLikeAdapterTest,
 	#category : #'Spec-Brick-Tests-Adapters'
 }
 
 { #category : #hook }
-SpBrickWindowAdapterTest >> openSpecWindow [
+SpBrickDialogWindowAdapterTest >> openSpecWindow [
 
-	specWindow := specContent openWithSpec.
+	specWindow := specContent openDialogWithSpec.
 	brickWindow := specWindow adapter widget
 ]
