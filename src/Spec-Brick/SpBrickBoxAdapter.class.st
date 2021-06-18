@@ -44,8 +44,10 @@ SpBrickBoxAdapter >> layout: aSpBoxLayout [
 
 	widget padding: (BlInsets all: aSpBoxLayout borderWidth).
 
-	aSpBoxLayout hasAlignment 
-		ifTrue: [ 1halt. "widget := self applyAlignmentTo: widget" ].
+	aSpBoxLayout hasVAlign
+		ifTrue: [ aSpBoxLayout vAlign applyAsBrickVerticalAlignmentOn: widget ].
+	aSpBoxLayout hasHAlign
+		ifTrue: [ aSpBoxLayout hAlign applyAsBrickHorizontalAlignmentOn: widget ].
 
 	super layout: aSpBoxLayout
 ]
