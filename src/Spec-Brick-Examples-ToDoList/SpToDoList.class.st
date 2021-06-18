@@ -12,17 +12,20 @@ Class {
 SpToDoList class >> exampleWithSomeTasks [
 
 	^ self new
-		  addNewTaskTitled: 'Create example';
-		  addNewTaskTitled: 'Commit it';
-		  addNewTaskTitled: 'Push to repository';
+		  addNewTaskTitled: 'Create example' described: 'It should show most current features:
+* Label
+* List
+* Button';
+		  addNewTaskTitled: 'Commit it' described: 'Place a good comment, of course.';
+		  addNewTaskTitled: 'Push to repository' described: 'This is obvious but...';
 		  yourself
 ]
 
 { #category : #accessing }
-SpToDoList >> addNewTaskTitled: aString [ 
+SpToDoList >> addNewTaskTitled: aString described: anotherString [
 
 	| newTask |
-	newTask := SpToDoTask titled: aString in: self.
+	newTask := SpToDoTask titled: aString described: anotherString in: self.
 	newTask validate.
 
 	tasks add: newTask.

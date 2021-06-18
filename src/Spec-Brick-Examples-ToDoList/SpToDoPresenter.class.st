@@ -11,7 +11,7 @@ app := SpApplication new
   yourself.
 
 model := SpToDoList exampleWithSomeTasks.
-presenter := SpToDoPresenter newApplication: app model: model.
+presenter := SpToDoListPresenter newApplication: app model: model.
 presenter openWithSpec.
 ```
 "
@@ -19,16 +19,15 @@ Class {
 	#name : #SpToDoPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'titleLabel',
-		'titleInput',
-		'acceptButton',
 		'listLabel',
 		'list',
 		'deleteButton',
 		'toDoList',
 		'toggleCompletedButton',
 		'toolbar',
-		'statusBar'
+		'statusBar',
+		'descriptionLabel',
+		'descriptionTextArea'
 	],
 	#category : #'Spec-Brick-Examples-ToDoList-Presenters'
 }
@@ -36,32 +35,22 @@ Class {
 { #category : #specs }
 SpToDoPresenter class >> defaultSpec [
 
-	^ SpBoxLayout newTopToBottom
+	^ SpBoxLayout newLeftToRight
 		  borderWidth: 10;
-		  add: (SpBoxLayout newLeftToRight
-				   add: #titleLabel expand: false;
-				   add: #titleInput;
-				   addLast: #acceptButton;
-				   yourself)
-		  expand: false  fill: false padding: 15;
-		  add: #listLabel expand: false;
-		  add: #list;
-		  add: (SpBoxLayout newLeftToRight
-				   add: #toggleCompletedButton;
-				   add: #deleteButton;
-				   yourself)
-		  expand: false;
+		  add: (SpBoxLayout newTopToBottom
+				   add: #listLabel expand: false;
+				   add: #list;
+				   add: (SpBoxLayout newLeftToRight
+						    add: #toggleCompletedButton;
+						    add: #deleteButton;
+						    yourself)
+				   expand: false;
+				   yourself);
+		  add: (SpBoxLayout newTopToBottom
+				   add: #descriptionLabel expand: false;
+				   add: #descriptionTextArea;
+				   yourself);
 		  yourself
-]
-
-{ #category : #actions }
-SpToDoPresenter >> acceptTask [
-
-	[ 	toDoList addNewTaskTitled: titleInput text.
-		titleInput text: ''.
-	]	on: SpToDoListValidationError
-		do: [ :error | self showError: error ].
-
 ]
 
 { #category : #actions }
@@ -106,18 +95,6 @@ SpToDoPresenter >> iconFor: aToDoTask [
 { #category : #initialization }
 SpToDoPresenter >> initializePresenters [
 
-	titleLabel := self newLabel
-		label: 'New Task:';
-		yourself.
-	
-	titleInput := self newTextInput.
-	
-	acceptButton := self newButton
-		label: 'Add';
-		icon: (self iconNamed: #add);
-		action: [ self acceptTask ];
-		yourself.
-
 	listLabel := self newLabel
 		label: 'Tasks:';
 		yourself.
@@ -127,10 +104,24 @@ SpToDoPresenter >> initializePresenters [
 		display: [ :aToDoTask | aToDoTask title ];
 		whenActivatedDo: [ self toggleCompletedTask ];
 		yourself.
+
+	descriptionLabel := self newLabel
+		label: 'Description:';
+		yourself.
+
+	descriptionTextArea := self newText
+		disable;
+		yourself.
 	
+	list := self newList
+		displayIcon: [ :aToDoTask | self iconFor: aToDoTask ];
+		display: [ :aToDoTask | aToDoTask title ];
+		whenActivatedDo: [ self toggleCompletedTask ];
+		yourself.
+
 	toggleCompletedButton := self newButton
-		label: 'Toggle completed';
-		icon: (self iconNamed: #diff);
+		label: 'Toggle done';
+		icon: (self iconNamed: #smallOk);
 		action: [ self toggleCompletedTask ];
 		yourself.
 
@@ -150,16 +141,22 @@ SpToDoPresenter >> initializePresenters [
 SpToDoPresenter >> initializeToolbar [
 	
 	toolbar := self newToolbar.
-	
+
 	toolbar addItem: (self newToolbarButton
+		icon: (self iconNamed: #smallAdd);
+		label: 'Create';
+		action: [ self openAddTaskDialog ];
+		yourself).
+	
+	toolbar addItemRight: (self newToolbarButton
 		icon: (self iconNamed: #smallOk);
-		label: 'Compl. All';
+		label: 'All done';
 		action: [ self completeAllTasks ];
 		yourself).
 		
 	toolbar addItemRight: (self newToolbarButton
 		icon: (self iconNamed: #remove);
-		label: 'Del. All';
+		label: 'Clean';
 		action: [ self deleteAllTasks ];
 		yourself).
 ]
@@ -169,10 +166,18 @@ SpToDoPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Demo @ ' , aWindowPresenter application backend asString;
-		initialExtent: 500 @ 300;
+		initialExtent: 600 @ 300;
 		centered;
 		statusBar: statusBar;
 		toolbar: toolbar.
+]
+
+{ #category : #actions }
+SpToDoPresenter >> openAddTaskDialog [
+
+	(SpToDoTaskDialog newApplication: self application model: toDoList)
+		parentWindow: self window;
+		openDialogWithSpec
 ]
 
 { #category : #private }
@@ -196,8 +201,22 @@ SpToDoPresenter >> refreshAccordingToSelectedTask [
 	| hasSelection |
 	hasSelection := list selection isEmpty not.
 
+	self refreshDescriptionTextArea.
+
 	self presentersThatRequireTaskSelected do: [ :each | 
 		each enabled: hasSelection ]
+]
+
+{ #category : #private }
+SpToDoPresenter >> refreshDescriptionTextArea [
+
+	| newDescription |
+	newDescription := list selectedItem
+		                  ifNil: [ '' ]
+		                  ifNotNil: [ :selectedTask | 
+				                  selectedTask description ].
+
+	descriptionTextArea text: newDescription
 ]
 
 { #category : #initialization }
@@ -205,18 +224,6 @@ SpToDoPresenter >> setModelBeforeInitialization: aSpToDoList [
 
 	toDoList := aSpToDoList.
 	toDoList whenUpdatedSend: #refresh to: self
-]
-
-{ #category : #actions }
-SpToDoPresenter >> showError: error [
-	
-	self application newInform
-		title: 'Validation Error';
-		label: 'ERROR: ', error messageText;
-		parentWindow: self window;
-"		extent: 250 @ 150;"
-		openDialogWithSpec
-
 ]
 
 { #category : #actions }

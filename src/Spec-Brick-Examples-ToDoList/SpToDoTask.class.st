@@ -3,6 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'title',
+		'description',
 		'completed',
 		'toDoList'
 	],
@@ -10,10 +11,10 @@ Class {
 }
 
 { #category : #'instance creation' }
-SpToDoTask class >> titled: aString in: aToDoList [
+SpToDoTask class >> titled: aString described: anotherString in: aToDoList [
 
 	^ self basicNew
-		  initializeTitle: aString in: aToDoList;
+		  initializeTitle: aString described: anotherString in: aToDoList;
 		  yourself
 ]
 
@@ -24,12 +25,26 @@ SpToDoTask >> completed: aBoolean [
 	toDoList 	announceUpdated.
 ]
 
+{ #category : #accessing }
+SpToDoTask >> description [
+
+	^ description
+]
+
+{ #category : #accessing }
+SpToDoTask >> description: aString [
+
+	description := aString.
+	toDoList announceUpdated
+]
+
 { #category : #initialization }
-SpToDoTask >> initializeTitle: aString in: aSpToDoList [ 
+SpToDoTask >> initializeTitle: aString described: anotherString in: aSpToDoList [ 
 
 	self initialize.
-	title := aString.
 	toDoList := aSpToDoList.
+	title := aString.
+	description := anotherString.
 	completed := false.
 ]
 
