@@ -7,18 +7,16 @@ Class {
 	#category : #'Spec-Brick-Tests-Adapters'
 }
 
+{ #category : #testing }
+SpBrickWindowLikeAdapterTest class >> isAbstract [
+
+	^ self name = SpBrickWindowLikeAdapterTest
+]
+
 { #category : #hook }
 SpBrickWindowLikeAdapterTest >> openSpecWindow [
 
 	self subclassResponsibility
-]
-
-{ #category : #running }
-SpBrickWindowLikeAdapterTest >> setUp [
-
-	super setUp.
-	specContent := self newApplication new: SpBrickStubPresenter.
-
 ]
 
 { #category : #running }
@@ -41,6 +39,30 @@ SpBrickWindowLikeAdapterTest >> testCentered [
 	"We should find a better way to assert."
 	self assert: brickWindow position x > 100.
 	self assert: brickWindow position y > 100
+]
+
+{ #category : #test }
+SpBrickWindowLikeAdapterTest >> testCenteredRelativeTo [
+
+	| referenceWindow |
+	referenceWindow := (self newApplication new: SpBrickStubPresenter)
+		              initializeWindowBlock: [ :aSpWindow | 
+			              aSpWindow
+				              initialPosition: 200 @ 100;
+				              initialExtent: 400 @ 300 ];
+		              openWithSpec.
+
+	specContent initializeWindowBlock: [ :aSpWindow | 
+		aSpWindow
+			initialExtent: 200 @ 100;
+			centeredRelativeTo: referenceWindow ].
+
+	self openSpecWindow.
+	self waitBlocSpace.
+
+	"We should find a better way to assert."
+	self assert: brickWindow position equals: 300@200.
+
 ]
 
 { #category : #tests }

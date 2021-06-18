@@ -10,3 +10,32 @@ SpBrickDialogWindowAdapterTest >> openSpecWindow [
 	specWindow := specContent openDialogWithSpec.
 	brickWindow := specWindow adapter widget
 ]
+
+{ #category : #running }
+SpBrickDialogWindowAdapterTest >> setUp [
+
+	super setUp.
+	specContent := self newApplication new: SpBrickStubDialogPresenter
+]
+
+{ #category : #tests }
+SpBrickDialogWindowAdapterTest >> testParentWindow [
+
+	| referenceWindow |
+	referenceWindow := (self newApplication new: SpBrickStubPresenter)
+		                   initializeWindowBlock: [ :aSpWindow | 
+			                   aSpWindow
+				                   initialPosition: 200 @ 100;
+				                   initialExtent: 400 @ 300 ];
+		                   openWithSpec.
+	self waitBlocSpace.
+
+	specContent parentWindow: referenceWindow.
+	specContent initializeWindowBlock: [ :aSpWindow | 
+		aSpWindow initialExtent: 200 @ 100 ].
+
+	self openSpecWindow.
+	self waitBlocSpace.
+
+	self assert: brickWindow position equals: 300 @ 200
+]
