@@ -169,7 +169,7 @@ SpToDoPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Demo @ ' , aWindowPresenter application backend asString;
-		initialExtent: 500 @ 200;
+		initialExtent: 500 @ 300;
 		centered;
 		statusBar: statusBar;
 		toolbar: toolbar.
@@ -213,7 +213,7 @@ SpToDoPresenter >> showError: error [
 	self application newInform
 		title: 'Validation Error';
 		label: 'ERROR: ', error messageText;
-"		parentWindow: self window;"
+		parentWindow: self window;
 "		extent: 250 @ 150;"
 		openDialogWithSpec
 
