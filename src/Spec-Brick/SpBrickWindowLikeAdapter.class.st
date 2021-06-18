@@ -34,6 +34,23 @@ SpBrickWindowLikeAdapter >> centered [
 ]
 
 { #category : #API }
+SpBrickWindowLikeAdapter >> centeredRelativeTo: aSpWindowPresenter [
+	"Center the the window relative from another Bloc window. 
+	The action is deferred becasue this method was sent from presenter during
+	dialog initialization, when extent may not be set."
+
+	self defer: [
+		| referenceBlSpace deltaFromAnotherSpace |
+		referenceBlSpace := aSpWindowPresenter adapter widget.
+
+		deltaFromAnotherSpace :=
+			(referenceBlSpace windowExtent - widget windowExtent) // 2.
+
+		widget position: referenceBlSpace position + deltaFromAnotherSpace ]
+
+]
+
+{ #category : #API }
 SpBrickWindowLikeAdapter >> close [
 
 	widget close
