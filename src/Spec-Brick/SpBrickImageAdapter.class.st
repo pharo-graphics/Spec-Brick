@@ -7,7 +7,8 @@ Class {
 { #category : #'widget creation' }
 SpBrickImageAdapter >> initialAptitude [
 
-	^ BrGlamorousButtonIconAptitude new
+	^ BrGlamorousButtonRectangularAptitude new
+	  + BrGlamorousButtonIconAptitude new
 ]
 
 { #category : #'widget creation' }
@@ -24,6 +25,16 @@ SpBrickImageAdapter >> subscribeToPresenter [
 	self presenter
 		whenImageChangeDo: [ self updateImageAsIcon ];
 		whenAutoScaleChangeDo: [ self updateAutoScale ]
+]
+
+{ #category : #'widget update' }
+SpBrickImageAdapter >> updateAll [
+
+	super updateAll.
+
+	self
+		updateImageAsIcon;
+		updateAutoScale
 ]
 
 { #category : #'widget update' }
