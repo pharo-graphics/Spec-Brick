@@ -16,7 +16,7 @@ presenter openWithSpec.
 ```
 "
 Class {
-	#name : #SpToDoPresenter,
+	#name : #SpToDoListPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'listLabel',
@@ -33,7 +33,7 @@ Class {
 }
 
 { #category : #specs }
-SpToDoPresenter class >> defaultSpec [
+SpToDoListPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newLeftToRight
 		  borderWidth: 10;
@@ -54,13 +54,13 @@ SpToDoPresenter class >> defaultSpec [
 ]
 
 { #category : #actions }
-SpToDoPresenter >> completeAllTasks [
+SpToDoListPresenter >> completeAllTasks [
 
 	toDoList tasks do: [ :each | each completed: true ]
 ]
 
 { #category : #initialization }
-SpToDoPresenter >> connectPresenters [
+SpToDoListPresenter >> connectPresenters [
 
 	super connectPresenters.
 	
@@ -69,19 +69,19 @@ SpToDoPresenter >> connectPresenters [
 ]
 
 { #category : #actions }
-SpToDoPresenter >> deleteAllTasks [
+SpToDoListPresenter >> deleteAllTasks [
 
 	toDoList deleteAll
 ]
 
 { #category : #actions }
-SpToDoPresenter >> deleteTask [
+SpToDoListPresenter >> deleteTask [
 	
 	toDoList delete: list selectedItem
 ]
 
 { #category : #private }
-SpToDoPresenter >> iconFor: aToDoTask [ 
+SpToDoListPresenter >> iconFor: aToDoTask [ 
 	
 	| aForm |
 	aForm := self iconNamed: #smallOk.
@@ -93,7 +93,7 @@ SpToDoPresenter >> iconFor: aToDoTask [
 ]
 
 { #category : #initialization }
-SpToDoPresenter >> initializePresenters [
+SpToDoListPresenter >> initializePresenters [
 
 	listLabel := self newLabel
 		label: 'Tasks:';
@@ -138,7 +138,7 @@ SpToDoPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-SpToDoPresenter >> initializeToolbar [
+SpToDoListPresenter >> initializeToolbar [
 	
 	toolbar := self newToolbar.
 
@@ -162,7 +162,7 @@ SpToDoPresenter >> initializeToolbar [
 ]
 
 { #category : #initialization }
-SpToDoPresenter >> initializeWindow: aWindowPresenter [
+SpToDoListPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Demo @ ' , aWindowPresenter application backend asString;
@@ -173,7 +173,7 @@ SpToDoPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #actions }
-SpToDoPresenter >> openAddTaskDialog [
+SpToDoListPresenter >> openAddTaskDialog [
 
 	(SpToDoTaskDialog newApplication: self application model: toDoList)
 		parentWindow: self window;
@@ -181,13 +181,13 @@ SpToDoPresenter >> openAddTaskDialog [
 ]
 
 { #category : #private }
-SpToDoPresenter >> presentersThatRequireTaskSelected [
+SpToDoListPresenter >> presentersThatRequireTaskSelected [
 
 	^ { deleteButton. toggleCompletedButton }
 ]
 
 { #category : #initialization }
-SpToDoPresenter >> refresh [ 
+SpToDoListPresenter >> refresh [ 
 
 	list unselectAll.
 	list items: toDoList tasks.
@@ -196,7 +196,7 @@ SpToDoPresenter >> refresh [
 ]
 
 { #category : #private }
-SpToDoPresenter >> refreshAccordingToSelectedTask [
+SpToDoListPresenter >> refreshAccordingToSelectedTask [
 
 	| hasSelection |
 	hasSelection := list selection isEmpty not.
@@ -208,7 +208,7 @@ SpToDoPresenter >> refreshAccordingToSelectedTask [
 ]
 
 { #category : #private }
-SpToDoPresenter >> refreshDescriptionTextArea [
+SpToDoListPresenter >> refreshDescriptionTextArea [
 
 	| newDescription |
 	newDescription := list selectedItem
@@ -220,14 +220,14 @@ SpToDoPresenter >> refreshDescriptionTextArea [
 ]
 
 { #category : #initialization }
-SpToDoPresenter >> setModelBeforeInitialization: aSpToDoList [
+SpToDoListPresenter >> setModelBeforeInitialization: aSpToDoList [
 
 	toDoList := aSpToDoList.
 	toDoList whenUpdatedSend: #refresh to: self
 ]
 
 { #category : #actions }
-SpToDoPresenter >> toggleCompletedTask [
+SpToDoListPresenter >> toggleCompletedTask [
 	
 	| selectedTask |
 	selectedTask := list selectedItem.
