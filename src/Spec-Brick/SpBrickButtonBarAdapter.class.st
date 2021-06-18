@@ -9,7 +9,7 @@ SpBrickButtonBarAdapter >> buildWidget [
 
 	^ BrHorizontalPane new
 		  cellSpacing: 5;
-		  padding: (BlInsets top: 5 left: 0 bottom: 5 right: 15);
+		  padding: (BlInsets top: 5 left: 0 bottom: 5 right: 10);
 		  alignCenterRight;
 		  addChildren: self newBrickButtons;
 		  yourself
@@ -20,7 +20,7 @@ SpBrickButtonBarAdapter >> newBrickButtons [
 
 	^ self presenter items collect: [ :each | 
 		  each buildWithSpec
-			  hFitContent;
+			  hExact: 100;
 			  yourself ]
 ]
 
