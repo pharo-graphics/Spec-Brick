@@ -27,7 +27,7 @@ This repository has a demo Spec UI that you can open with the default backend (*
 ```smalltalk
 | aModel aPresenter |
 aModel := SpToDoList exampleWithSomeTasks.
-aPresenter := SpToDoPresenter on: aModel.
+aPresenter := SpToDoListPresenter on: aModel.
 aPresenter openWithSpec.
 ```
 
@@ -39,7 +39,7 @@ app := SpApplication new
 	useBackend: #Brick;
 	yourself.
 aModel := SpToDoList exampleWithSomeTasks.
-aPresenter := SpToDoPresenter newApplication: app model: aModel.
+aPresenter := SpToDoListPresenter newApplication: app model: aModel.
 aPresenter openWithSpec.
 ```
 
