@@ -43,7 +43,9 @@ aPresenter := SpToDoListPresenter newApplication: app model: aModel.
 aPresenter openWithSpec.
 ```
 
-Video: https://youtu.be/nYZS3zqdCQM (June of 2021 ~ commit 50dfb5f)
+Videos:
+- https://youtu.be/nYZS3zqdCQM (June/2021 ~ commit 50dfb5f)
+- https://youtu.be/DGqeRnspGas (June/2021 ~ commit 89b6cbe)
 
 
 ## Installation
