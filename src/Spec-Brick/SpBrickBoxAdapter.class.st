@@ -1,6 +1,6 @@
 Class {
 	#name : #SpBrickBoxAdapter,
-	#superclass : #SpBrickLayoutAdapter,
+	#superclass : #SpBrickDirectionableLayoutAdapter,
 	#instVars : [
 		'startPane',
 		'endPane'
@@ -8,7 +8,7 @@ Class {
 	#category : #'Spec-Brick-Adapters'
 }
 
-{ #category : #adding }
+{ #category : #'widget creation' }
 SpBrickBoxAdapter >> addChildElement: aBlElement with: aSpBoxConstraints [
 	"Add child to the Brick widget. This can be the start or end pane according to constraints's #isPlacedAtStart."
 
@@ -18,7 +18,7 @@ SpBrickBoxAdapter >> addChildElement: aBlElement with: aSpBoxConstraints [
 
 ]
 
-{ #category : #adding }
+{ #category : #'widget creation' }
 SpBrickBoxAdapter >> addConstraints: aSpBoxConstraints toChild: childBlElement [
 	"Inspired on SpMorphicBoxAdapter>>#addConstraints:toChild:"
 
@@ -36,23 +36,7 @@ SpBrickBoxAdapter >> addConstraints: aSpBoxConstraints toChild: childBlElement [
 	^ childBlElement
 ]
 
-{ #category : #'instance creation' }
-SpBrickBoxAdapter >> layout: aSpBoxLayout [
-
-	"Create widget via double-dispatch on the direction. See #newHorizontal and #newVertical."
-	widget := aSpBoxLayout direction newWidgetOn: self.
-
-	widget padding: (BlInsets all: aSpBoxLayout borderWidth).
-
-	aSpBoxLayout hasVAlign
-		ifTrue: [ aSpBoxLayout vAlign applyAsBrickVerticalAlignmentOn: widget ].
-	aSpBoxLayout hasHAlign
-		ifTrue: [ aSpBoxLayout hAlign applyAsBrickHorizontalAlignmentOn: widget ].
-
-	super layout: aSpBoxLayout
-]
-
-{ #category : #adding }
+{ #category : #'widget creation' }
 SpBrickBoxAdapter >> newChildBlElement: aPresenter constrainedBy: aSpBoxConstraints [
 	"Inspired on SpMorphicBoxAdapter>>#basicAdd:constraints:to:"
 
@@ -65,9 +49,9 @@ SpBrickBoxAdapter >> newChildBlElement: aPresenter constrainedBy: aSpBoxConstrai
 	^ newElement
 ]
 
-{ #category : #'instance creation' }
+{ #category : #hook }
 SpBrickBoxAdapter >> newHorizontal [
-	"Configure as horizontal. See #layout:."
+	"Configure as horizontal. See #newBrickWidget."
 
 	startPane := self newHorizontalPane.
 	endPane := self newHorizontalPane
@@ -80,17 +64,9 @@ SpBrickBoxAdapter >> newHorizontal [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
-SpBrickBoxAdapter >> newHorizontalPane [
-
-	^ BrHorizontalPane new
-		  matchParent;
-		  yourself
-]
-
-{ #category : #'instance creation' }
+{ #category : #hook }
 SpBrickBoxAdapter >> newVertical [
-	"Configure as vertical. See #layout:."
+	"Configure as vertical. See #newBrickWidget."
 
 	startPane := self newVerticalPane.
 	endPane := self newVerticalPane
@@ -103,15 +79,7 @@ SpBrickBoxAdapter >> newVertical [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
-SpBrickBoxAdapter >> newVerticalPane [
-
-	^ BrVerticalPane new
-		  matchParent;
-		  yourself
-]
-
-{ #category : #adding }
+{ #category : #'widget update' }
 SpBrickBoxAdapter >> updateAsExpandedChild: childBlElement with: aSpBoxConstraints [
 	
 	"If is not 'fill', we need to pad it with another (since it 'expands', but does not 'fill')"
@@ -127,7 +95,7 @@ SpBrickBoxAdapter >> updateAsExpandedChild: childBlElement with: aSpBoxConstrain
 	childBlElement matchParent
 ]
 
-{ #category : #adding }
+{ #category : #'widget update' }
 SpBrickBoxAdapter >> updateAsNonExpandedChild: childBlElement with: aSpBoxConstraints [
 	"Set up child to stay rigid in the layout direction."
 
@@ -140,7 +108,7 @@ SpBrickBoxAdapter >> updateAsNonExpandedChild: childBlElement with: aSpBoxConstr
 		childBlElement height: h ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'widget update' }
 SpBrickBoxAdapter >> updateChildPadding: aBlElement with: aSpBoxConstraints [
 
 	| insets |
@@ -149,4 +117,16 @@ SpBrickBoxAdapter >> updateChildPadding: aBlElement with: aSpBoxConstraints [
 		          ifFalse: [ BlInsets vertical: aSpBoxConstraints padding ].
 
 	aBlElement padding: insets
+]
+
+{ #category : #'widget update' }
+SpBrickBoxAdapter >> updateWidgetFromLayout [
+
+	widget padding: (BlInsets all: layout borderWidth).
+
+	layout hasVAlign ifTrue: [
+		layout vAlign applyAsBrickVerticalAlignmentOn: widget ].
+	layout hasHAlign ifTrue: [
+		layout hAlign applyAsBrickHorizontalAlignmentOn: widget ].
+
 ]

@@ -21,8 +21,6 @@ SpBrickLayoutAdapter >> add: aPresenter constraints: constraints [
 	| aBlElement |
 	aPresenter owner: self presenter. 
 
-	self widget ifNil: [ 1halt. ^ self ]. "When and why could it happen?"
-
 	aBlElement := self 
 		newChildBlElement: aPresenter
 		constrainedBy: constraints.
@@ -46,7 +44,7 @@ SpBrickLayoutAdapter >> addConstraints: constraints toChild: childBlElement [
 
 { #category : #'widget creation' }
 SpBrickLayoutAdapter >> buildWidget [
-	"Answer nil to postpone instance creation (not enough information at this moment)."
+	"Answer nil to postpone instance creation until we know the layout (not enough information at this moment). See #newBrickWidget."
 
 	^ nil
 ]
@@ -61,7 +59,9 @@ SpBrickLayoutAdapter >> buildWithSpec: aString [
 { #category : #protocol }
 SpBrickLayoutAdapter >> layout: aLayout [
 
-	layout := aLayout
+	layout := aLayout.
+	widget := self newBrickWidget.
+	self updateWidgetFromLayout.
 ]
 
 { #category : #'instance creation' }
@@ -84,6 +84,13 @@ SpBrickLayoutAdapter >> newBlElementFrom: aPresenter constraints: constraints [
 	^ newElement
 ]
 
+{ #category : #protocol }
+SpBrickLayoutAdapter >> newBrickWidget [
+	"Answer the new Brick widget, based on the SpExecutableLayout in the slot named #layout."
+
+	^ self subclassResponsibility	
+]
+
 { #category : #adding }
 SpBrickLayoutAdapter >> newChildBlElement: aPresenter constrainedBy: constraints [
 	"Answer a new Brick widget that corresponds to the received Spec presenter. The answer should follow the specified layout constraints.
@@ -92,4 +99,11 @@ SpBrickLayoutAdapter >> newChildBlElement: aPresenter constrainedBy: constraints
 
 	^ self subclassResponsibility
 
+]
+
+{ #category : #protocol }
+SpBrickLayoutAdapter >> updateWidgetFromLayout [
+	"Prepare widget based on layout specifications before adding children."
+
+	self subclassResponsibility	
 ]
