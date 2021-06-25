@@ -39,6 +39,12 @@ SpBrickAdapterTest >> simulateKeyPress: aBlKeyboardKey on: aBlElement [
 ]
 
 { #category : #running }
+SpBrickAdapterTest >> waitBlocSpace [
+
+	0.5 second wait
+]
+
+{ #category : #running }
 SpBrickAdapterTest >> waitUI [
 
 	self assert: (self waitUITimeout: 500 milliSeconds)

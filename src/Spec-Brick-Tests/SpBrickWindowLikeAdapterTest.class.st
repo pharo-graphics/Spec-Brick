@@ -200,9 +200,3 @@ SpBrickWindowLikeAdapterTest >> testWithoutDecorations [
 
 	self assert: brickWindow borderless
 ]
-
-{ #category : #running }
-SpBrickWindowLikeAdapterTest >> waitBlocSpace [
-
-	0.5 second wait
-]
