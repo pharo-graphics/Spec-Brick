@@ -11,9 +11,11 @@ Class {
 SpBrickButtonAdapter >> initialAptitude [
 
 	^ BrGlamorousButtonExteriorAptitude new
-	  + BrGlamorousButtonRectangularAptitude new
+	  + BrGlamorousButtonLayoutAptitude new
 	  + BrGlamorousButtonIconAptitude new
 	  + BrGlamorousButtonLabelAptitude new
+	  + (BrStyleCommonAptitude new default: [ :aStyle | 
+			   aStyle padding: (BlInsets all: 5) ])
 ]
 
 { #category : #'widget creation' }
