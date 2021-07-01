@@ -10,6 +10,7 @@ SpBrickAbstractTextAdapter >> initialAptitude [
 	^ BrGlamorousRegularEditorAptitude + "BrGlamorousButtonExteriorAptitude" (BrStyleCommonAptitude new
 			default: [ :aStyle | 
 				aStyle
+					padding: (BlInsets all: 5);
 					background: BrGlamorousColors defaultButtonBackgroundColor;
 					border: (BlBorder
 					    paint: BrGlamorousColors defaultButtonBorderColor
