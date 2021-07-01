@@ -7,7 +7,9 @@ Class {
 		'titleInput',
 		'descriptionLabel',
 		'descriptionTextArea',
-		'toDoList'
+		'toDoList',
+		'priorityLabel',
+		'priorityDropList'
 	],
 	#category : #'Spec-Brick-Examples-ToDoList-Presenters'
 }
@@ -15,20 +17,27 @@ Class {
 { #category : #specs }
 SpToDoTaskDialog class >> defaultSpec [
 
-	^ SpBoxLayout newTopToBottom
+	^ SpBoxLayout newVertical
 		  borderWidth: 5;
 		  spacing: 5;
 		  add: #titleLabel expand: false;
 		  add: #titleInput expand: false;
+		  add: (SpBoxLayout newHorizontal
+				add: #priorityLabel expand: false;
+				add: #priorityDropList;
+				yourself);
 		  add: #descriptionLabel expand: false;
 		  add: #descriptionTextArea;
 		  yourself
+
 ]
 
 { #category : #actions }
 SpToDoTaskDialog >> accept [
 
-	[ 	toDoList addNewTaskTitled: titleInput text described: descriptionTextArea text.
+	[ 	| newTask |
+		newTask := toDoList addNewTaskTitled: titleInput text described: descriptionTextArea text.
+		newTask priority: priorityDropList selectedItem.
 		titleInput text: ''.
 		super accept.
 	]	on: SpToDoListValidationError
@@ -57,6 +66,20 @@ SpToDoTaskDialog >> initializePresenter [
 		              yourself.
 
 	titleInput := self newTextInput.
+
+
+	priorityLabel := self newLabel
+		              label: 'Priority:';
+		              yourself.
+
+	priorityDropList := self newDropList
+"		display: [ :item | item name ];"
+		display: [ :item | item ifNil: [ '-- none ---' ] ifNotNil: [ item name ] ];
+		iconBlock: [ :item | self iconNamed: #empty ];
+		items: SpToDoTaskPriority allPredefined;
+		selectIndex: 1;
+		yourself.
+
 
 	descriptionLabel := self newLabel
 		                    label: 'Description:';

@@ -18,6 +18,7 @@ SpToDoList class >> exampleWithSomeTasks [
 * Button';
 		  addNewTaskTitled: 'Commit it' described: 'Place a good comment, of course.';
 		  addNewTaskTitled: 'Push to repository' described: 'This is obvious but...';
+		  in: [ :list | list tasks first priority: SpToDoTaskPriority high ];
 		  yourself
 ]
 
@@ -30,6 +31,8 @@ SpToDoList >> addNewTaskTitled: aString described: anotherString [
 
 	tasks add: newTask.
 	self announceUpdated.
+
+	^ newTask	
 ]
 
 { #category : #announcements }

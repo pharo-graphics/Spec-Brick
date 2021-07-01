@@ -5,7 +5,8 @@ Class {
 		'title',
 		'description',
 		'completed',
-		'toDoList'
+		'toDoList',
+		'priority'
 	],
 	#category : #'Spec-Brick-Examples-ToDoList-Model'
 }
@@ -46,6 +47,7 @@ SpToDoTask >> initializeTitle: aString described: anotherString in: aSpToDoList 
 	title := aString.
 	description := anotherString.
 	completed := false.
+	priority := SpToDoTaskPriority medium.
 ]
 
 { #category : #testing }
@@ -66,6 +68,18 @@ SpToDoTask >> printOn: aStream [
 	aStream
 		nextPutAll: ' completed: ';
 		print: completed
+]
+
+{ #category : #accessing }
+SpToDoTask >> priority [
+	^ priority
+]
+
+{ #category : #accessing }
+SpToDoTask >> priority: aPriority [
+
+	priority := aPriority.
+	toDoList announceUpdated
 ]
 
 { #category : #accessing }

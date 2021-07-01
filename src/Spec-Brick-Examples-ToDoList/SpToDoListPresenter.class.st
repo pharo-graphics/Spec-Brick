@@ -83,18 +83,6 @@ SpToDoListPresenter >> deleteTask [
 	toDoList delete: list selectedItem
 ]
 
-{ #category : #private }
-SpToDoListPresenter >> iconFor: aToDoTask [ 
-	
-	| aForm |
-	aForm := self iconNamed: #smallOk.
-
-	aToDoTask isCompleted
-		ifFalse: [ aForm := aForm dimmed: 0.2 ].
-	
-	^ aForm
-]
-
 { #category : #initialization }
 SpToDoListPresenter >> initializePresenters [
 
@@ -103,8 +91,8 @@ SpToDoListPresenter >> initializePresenters [
 		yourself.
 	
 	list := self newList
-		displayIcon: [ :aToDoTask | self iconFor: aToDoTask ];
-		display: [ :aToDoTask | aToDoTask title ];
+		displayIcon: [ :aToDoTask | self taskIconFor: aToDoTask ];
+		display: [ :aToDoTask | self taskDisplayFor: aToDoTask ];
 		whenActivatedDo: [ self toggleCompletedTask ];
 		yourself.
 
@@ -116,12 +104,6 @@ SpToDoListPresenter >> initializePresenters [
 		disable;
 		yourself.
 	
-	list := self newList
-		displayIcon: [ :aToDoTask | self iconFor: aToDoTask ];
-		display: [ :aToDoTask | aToDoTask title ];
-		whenActivatedDo: [ self toggleCompletedTask ];
-		yourself.
-
 	toggleCompletedButton := self newButton
 		label: 'Toggle done';
 		icon: (self iconNamed: #smallOk);
@@ -227,6 +209,26 @@ SpToDoListPresenter >> setModelBeforeInitialization: aSpToDoList [
 
 	toDoList := aSpToDoList.
 	toDoList whenUpdatedSend: #refresh to: self
+]
+
+{ #category : #private }
+SpToDoListPresenter >> taskDisplayFor: aToDoTask [
+
+	^ '{1} ({2} priority)' format: { 
+			  aToDoTask title.
+			  aToDoTask priority name }
+]
+
+{ #category : #private }
+SpToDoListPresenter >> taskIconFor: aToDoTask [ 
+	
+	| aForm |
+	aForm := self iconNamed: #smallOk.
+
+	aToDoTask isCompleted
+		ifFalse: [ aForm := aForm dimmed: 0.2 ].
+	
+	^ aForm
 ]
 
 { #category : #actions }
