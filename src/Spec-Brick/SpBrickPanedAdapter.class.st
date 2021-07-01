@@ -16,8 +16,9 @@ SpBrickPanedAdapter >> addChildElement: aBlElement with: aSpPanedConstraints [
 			aBlElement constraintsDo:[:c |
 				c linear weight: layout positionOfSlider ].
 			
-			widget addChild: aBlElement as: #firstPaned.
-			widget addChild: resizer as: #resizer  ]
+			widget
+				addChild: aBlElement as: #firstPaned;
+				addChild: resizer as: #resizer  ]
 		ifTrue: [ 
 			aBlElement constraintsDo:[:c |
 				c linear weight: (1 - layout positionOfSlider) ].
