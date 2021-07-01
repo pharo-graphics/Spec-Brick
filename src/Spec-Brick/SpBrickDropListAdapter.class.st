@@ -13,42 +13,77 @@ SpBrickDropListAdapter >> elementAt: index [
 { #category : #'widget creation' }
 SpBrickDropListAdapter >> initialAptitude [
 
-	^ BrGlamorousButtonWithLabelAndIconAptitude +
-			(BrGlamorousWithDropdownAptitude
-				handle: [ self newBrickWidgetWhenPopupIsVisible ]
-				content: [ self newPopupList ])
+	^ self initialAptitudeWhenPopupIsHidden
+]
 
+{ #category : #'widget creation' }
+SpBrickDropListAdapter >> initialAptitudeWhenPopupIsHidden [
+
+	^ BrGlamorousButtonExteriorAptitude new
+	  + BrGlamorousButtonLayoutAptitude new
+	  + BrGlamorousButtonLabelAptitude new
+	  + BrGlamorousButtonIconAptitude new
+	  + (BrStyleCommonAptitude new default: [ :aStyle |
+			   aStyle padding: (BlInsets all: 5) ])
+	  + (BrWithDropdownAptitude
+			   handle: [ self newBrickWidgetWhenPopupIsVisible ]
+			   content: [ self newPopupList ])
+]
+
+{ #category : #private }
+SpBrickDropListAdapter >> initialAptitudeWhenPopupIsVisible [
+
+	^ BrGlamorousButtonExteriorAptitude new
+	  + BrGlamorousButtonLayoutAptitude new
+	  + BrGlamorousButtonLabelAptitude new
+	  + BrGlamorousButtonIconAptitude new
+	  + (BrStyleCommonAptitude new default: [ :aStyle | 
+			   aStyle padding: (BlInsets all: 5) ])
 ]
 
 { #category : #'widget creation' }
 SpBrickDropListAdapter >> newBrickWidget [
 
-	^ BrButton new
-"		  hMatchParent;"
-		  icon: (BlElement new
-				   size: 8 @ 8;
-				   geometry: (BlPolygonGeometry vertices: { 
-								    (0 @ 0).
-								    (8 @ 0).
-								    ((8 / 2) rounded @ 8) });
-				   background: Color lightGray;
-				   margin: (BlInsets left: 6);
-				   constraintsDo: [ :c | c linear vertical alignCenter ]);
-		  yourself
+	^ self newBrickWidgetWhenPopupIsHidden
 ]
 
 { #category : #'widget creation' }
+SpBrickDropListAdapter >> newBrickWidgetWhenPopupIsHidden [
+
+	^ BrButton new
+		  icon: self newIcon;
+		  yourself
+
+]
+
+{ #category : #private }
 SpBrickDropListAdapter >> newBrickWidgetWhenPopupIsVisible [
 
-	| tmp |
-	tmp := self newBrickWidget
-		       aptitude: BrGlamorousButtonWithLabelAndIconAptitude
-			       - BrGlamorousButtonExteriorAptitude;
+	| result |
+	result := self newBrickWidgetWhenPopupIsHidden
+		       aptitude: self initialAptitudeWhenPopupIsVisible;
 		       yourself.
 	
-	self updateFromSelectedItem: tmp.
+	result matchParent.
+	
+	self updateFromSelectedItem: result.
 
-	^ tmp
+	^ result
+]
+
+{ #category : #private }
+SpBrickDropListAdapter >> newIcon [
+
+	^ BlElement new
+		  size: 8 @ 8;
+		  geometry: (BlPolygonGeometry vertices: { 
+						   (0 @ 0).
+						   (8 @ 0).
+						   ((8 / 2) rounded @ 8) });
+		  background: Color lightGray;
+		  margin: (BlInsets left: 6);
+		  constraintsDo: [ :c | c linear vertical alignCenter ];
+		  yourself
 ]
 
 { #category : #private }
