@@ -25,7 +25,8 @@ SpToDoTaskDialog class >> defaultSpec [
 		  add: (SpBoxLayout newHorizontal
 				add: #priorityLabel expand: false;
 				add: #priorityDropList;
-				yourself);
+				yourself)
+				expand: false;
 		  add: #descriptionLabel expand: false;
 		  add: #descriptionTextArea;
 		  yourself

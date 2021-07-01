@@ -16,7 +16,7 @@ Class {
 { #category : #accessing }
 SpToDoTaskPriority class >> allPredefined [
 
-	^ { low. high. medium }
+	^ { self low. self high. self medium }
 ]
 
 { #category : #accessing }
