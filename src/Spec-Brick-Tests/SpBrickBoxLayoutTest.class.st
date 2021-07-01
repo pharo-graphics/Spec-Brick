@@ -68,6 +68,27 @@ SpBrickBoxLayoutTest >> testMixAddWithAddLast: aSpBoxLayout [
 ]
 
 { #category : #tests }
+SpBrickBoxLayoutTest >> testSpacing [
+
+	| presenter spacing |
+	presenter := self newApplication new: SpPresenter.
+	
+	spacing := 17.
+	
+	presenter layout: (SpBoxLayout newHorizontal
+		spacing: spacing;
+		add: presenter newLabel;
+		addLast: presenter newLabel;
+		yourself).
+
+	presenter buildWithSpec.
+	
+	self assert: presenter adapter startPane layout cellSpacing equals: spacing.
+	self assert: presenter adapter endPane layout cellSpacing equals: spacing.
+
+]
+
+{ #category : #tests }
 SpBrickBoxLayoutTest >> testVertical [
 
 	self testMixAddWithAddLast: self layoutClass newVertical.

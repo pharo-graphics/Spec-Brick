@@ -35,22 +35,25 @@ Class {
 { #category : #specs }
 SpToDoListPresenter class >> defaultSpec [
 
-	^ SpBoxLayout newLeftToRight
-		  borderWidth: 10;
-		  add: (SpBoxLayout newTopToBottom
-				   add: #listLabel expand: false;
-				   add: #list;
-				   add: (SpBoxLayout newLeftToRight
-						    add: #toggleCompletedButton;
-						    add: #deleteButton;
-						    yourself)
-				   expand: false;
-				   yourself);
-		  add: (SpBoxLayout newTopToBottom
-				   add: #descriptionLabel expand: false;
-				   add: #descriptionTextArea;
-				   yourself);
-		  yourself
+	^ SpBoxLayout newTopToBottom
+		  borderWidth: 5;
+		  spacing: 5;
+		  add: (SpPanedLayout newLeftToRight
+				   positionOfSlider: 60 percent;
+				   add: (SpBoxLayout newTopToBottom
+						    add: #listLabel expand: false;
+						    add: #list;
+						    add: (SpBoxLayout newLeftToRight
+								     add: #toggleCompletedButton;
+								     add: #deleteButton;
+								     yourself)
+						    expand: false;
+						    yourself);
+				   add: (SpBoxLayout newTopToBottom
+						    add: #descriptionLabel expand: false;
+						    add: #descriptionTextArea;
+						    yourself);
+				   yourself)
 ]
 
 { #category : #actions }

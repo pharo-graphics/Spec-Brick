@@ -16,7 +16,8 @@ Class {
 SpToDoTaskDialog class >> defaultSpec [
 
 	^ SpBoxLayout newTopToBottom
-		  borderWidth: 10;
+		  borderWidth: 5;
+		  spacing: 5;
 		  add: #titleLabel expand: false;
 		  add: #titleInput expand: false;
 		  add: #descriptionLabel expand: false;

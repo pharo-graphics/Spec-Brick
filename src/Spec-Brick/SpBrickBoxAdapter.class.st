@@ -36,6 +36,12 @@ SpBrickBoxAdapter >> addConstraints: aSpBoxConstraints toChild: childBlElement [
 	^ childBlElement
 ]
 
+{ #category : #accessing }
+SpBrickBoxAdapter >> endPane [
+
+	^ endPane
+]
+
 { #category : #'widget creation' }
 SpBrickBoxAdapter >> newChildBlElement: aPresenter constrainedBy: aSpBoxConstraints [
 	"Inspired on SpMorphicBoxAdapter>>#basicAdd:constraints:to:"
@@ -79,6 +85,12 @@ SpBrickBoxAdapter >> newVertical [
 		  yourself
 ]
 
+{ #category : #accessing }
+SpBrickBoxAdapter >> startPane [
+
+	^ startPane
+]
+
 { #category : #'widget update' }
 SpBrickBoxAdapter >> updateAsExpandedChild: childBlElement with: aSpBoxConstraints [
 	
@@ -109,6 +121,13 @@ SpBrickBoxAdapter >> updateAsNonExpandedChild: childBlElement with: aSpBoxConstr
 ]
 
 { #category : #'widget update' }
+SpBrickBoxAdapter >> updateBorderWidth [
+	"API: sent from Presenter. See SpBoxLayout>>#borderWidth:"
+
+	widget padding: (BlInsets all: layout borderWidth).
+]
+
+{ #category : #'widget update' }
 SpBrickBoxAdapter >> updateChildPadding: aBlElement with: aSpBoxConstraints [
 
 	| insets |
@@ -120,9 +139,19 @@ SpBrickBoxAdapter >> updateChildPadding: aBlElement with: aSpBoxConstraints [
 ]
 
 { #category : #'widget update' }
+SpBrickBoxAdapter >> updateSpacing [
+	"API: sent from Presenter. See SpBoxLayout>>#spacing:"
+
+	startPane cellSpacing: layout spacing.
+	endPane cellSpacing: layout spacing
+]
+
+{ #category : #'widget update' }
 SpBrickBoxAdapter >> updateWidgetFromLayout [
 
-	widget padding: (BlInsets all: layout borderWidth).
+	self
+		updateBorderWidth;
+		updateSpacing.
 
 	layout hasVAlign ifTrue: [
 		layout vAlign applyAsBrickVerticalAlignmentOn: widget ].
