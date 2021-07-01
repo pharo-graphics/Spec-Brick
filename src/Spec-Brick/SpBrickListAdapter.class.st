@@ -1,6 +1,6 @@
 Class {
 	#name : #SpBrickListAdapter,
-	#superclass : #SpBrickWidgetAdapter,
+	#superclass : #SpBrickListLikeAdapter,
 	#category : #'Spec-Brick-Adapters'
 }
 
