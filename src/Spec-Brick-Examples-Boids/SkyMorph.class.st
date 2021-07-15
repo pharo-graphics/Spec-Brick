@@ -11,7 +11,7 @@ Class {
 		'surface',
 		'flock'
 	],
-	#category : #'Spec-Brick-Examples-Boids'
+	#category : #'Spec-Brick-Examples-Boids-Morphic'
 }
 
 { #category : #private }

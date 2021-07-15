@@ -12,7 +12,7 @@ Class {
 		'toolbar',
 		'sky'
 	],
-	#category : #'Spec-Brick-Examples-Boids'
+	#category : #'Spec-Brick-Examples-Boids-Morphic'
 }
 
 { #category : #'initialize-release' }
@@ -84,7 +84,7 @@ PharoBoids >> window [
 		window := StandardWindow labelled: 'PharoBoids'.
 		window model: self.
 		window announcer
-			on: WindowResizing 
+			when: WindowResizing 
 			do: [:ann | self sky extent: ann newSize].
 		window]
 ]

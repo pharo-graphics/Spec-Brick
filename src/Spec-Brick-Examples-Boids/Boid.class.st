@@ -36,7 +36,7 @@ Class {
 		'SeparationRadius',
 		'Speedlimit'
 	],
-	#category : #'Spec-Brick-Examples-Boids'
+	#category : #'Spec-Brick-Examples-Boids-Model'
 }
 
 { #category : #accessing }
@@ -137,10 +137,11 @@ Boid >> color: aColor [
 
 { #category : #'looking at others' }
 Boid >> distanceFrom: aBoid [
-	^ self position dist: aBoid position
+
+	^ self position distanceTo: aBoid position
 ]
 
-{ #category : #drawing }
+{ #category : #'drawing - Morphic' }
 Boid >> drawBallOn: aCanvas [
 	"Draw the body of a boid."
 	
@@ -169,16 +170,17 @@ Boid >> drawBallOn: aCanvas [
 	aCanvas draw.
 ]
 
-{ #category : #drawing }
+{ #category : #'drawing - Morphic' }
 Boid >> drawOn: aCanvas [
-	self drawBallOn: aCanvas;
+	self
+		drawBallOn: aCanvas;
 		drawTailOn: aCanvas
 
 	
 
 ]
 
-{ #category : #drawing }
+{ #category : #'drawing - Morphic' }
 Boid >> drawTailOn: aCanvas [
 	"Draw the tail of the boid, that indicates it's speed."
 	
@@ -214,7 +216,7 @@ Boid >> flock: aCollection [
 
 { #category : #'looking at others' }
 Boid >> isInFieldOfVision: aBoid [
-	|vector1 vector2 cosinusAngle|
+	| vector1 vector2 cosinusAngle |
 	vector1 := self velocity - self position.
 	(vector1 = (0@0)) ifTrue: [^ true ].
 	vector2 := aBoid position - self position.
