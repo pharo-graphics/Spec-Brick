@@ -1,11 +1,11 @@
 Class {
-	#name : #SpBrickTextPresenterTest,
+	#name : #SpBrickTextAdapterTest,
 	#superclass : #SpBrickAbstractTextAdapterTest,
 	#category : #'Spec-Brick-Tests-Adapters'
 }
 
 { #category : #running }
-SpBrickTextPresenterTest >> specWidgetClass [
+SpBrickTextAdapterTest >> specWidgetClass [
 
 	^ SpTextPresenter
 ]

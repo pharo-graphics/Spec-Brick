@@ -36,6 +36,9 @@ SpBrickAbstractTextAdapterTest >> testText [
 	"Initial text"
 	self assert: brickWidget text asString equals: specWidget text.
 
+	"We don't want to get a BlRopedText"
+	self assert: specWidget text class equals: ByteString.
+
 	"spec -> brick"
 	specWidget text: 'Brick'.
 	self waitUI.
