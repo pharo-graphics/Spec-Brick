@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'boid'
 	],
-	#category : #'Spec-Brick-Examples-Boids-Tests'
+	#category : #'Spec-Brick-Examples-Boids-Model-Tests'
 }
 
 { #category : #running }

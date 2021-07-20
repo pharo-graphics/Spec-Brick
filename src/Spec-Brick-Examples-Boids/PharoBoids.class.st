@@ -12,7 +12,7 @@ Class {
 		'toolbar',
 		'sky'
 	],
-	#category : #'Spec-Brick-Examples-Boids-Morphic'
+	#category : #'Spec-Brick-Examples-Boids-UI-MorphicAthens'
 }
 
 { #category : #'initialize-release' }
