@@ -2,35 +2,27 @@ Class {
 	#name : #BoidsSkyElement,
 	#superclass : #BlElement,
 	#instVars : [
-		'flock',
-		'steppingAnimation'
+		'steppingAnimation',
+		'simulation'
 	],
 	#category : #'Spec-Brick-Examples-Boids-UI-SpecBloc'
 }
 
 { #category : #examples }
-BoidsSkyElement class >> exampleWith30Boids [
+BoidsSkyElement class >> exampleWithManyBoids [
 
 	^ self new
-		  addBoids: 30;
 		  ensureStepping;
 		  yourself
 ]
 
-{ #category : #accessing }
-BoidsSkyElement >> addBoids: anInteger [
-	"Add a bunch of new random boids to the flock."
-
-	anInteger timesRepeat: [ 
-		flock add:
-			(Boid randomInBounds: self extent asIntegerPoint inFlock: flock) ]
-]
-
 { #category : #drawing }
 BoidsSkyElement >> drawOnSpartaCanvas: aCanvas [
+
 	super drawOnSpartaCanvas: aCanvas.
 
-	flock do: [ :eachBoid | eachBoid drawOnSpartaCanvas: aCanvas ]
+	simulation boids do: [ :eachBoid | 
+		eachBoid drawOnSpartaCanvas: aCanvas ]
 ]
 
 { #category : #accessing }
@@ -54,10 +46,17 @@ BoidsSkyElement >> ensureStepping [
 BoidsSkyElement >> initialize [
 
 	super initialize.
-	
-	flock := OrderedCollection new.
+	self initializeSimulation.
 	self background: Color lightGray.
 	self subscribeResizing.
+]
+
+{ #category : #initialization }
+BoidsSkyElement >> initializeSimulation [
+	
+	simulation := BoidsSimulation exampleWithManyBoids.
+	simulation extent: self size asIntegerPoint.
+
 ]
 
 { #category : #testing }
@@ -78,9 +77,15 @@ BoidsSkyElement >> newSteppingAnimation [
 ]
 
 { #category : #accessing }
+BoidsSkyElement >> simulation [
+
+	^ simulation
+]
+
+{ #category : #accessing }
 BoidsSkyElement >> step [
 
-	flock do: [ :eachBoid | eachBoid move ].
+	simulation move.
 	self invalidate.
 ]
 
@@ -89,5 +94,5 @@ BoidsSkyElement >> subscribeResizing [
 
 	self
 		addEventHandlerOn: BlElementExtentChangedEvent
-		do: [ :anEvent | flock do: [ :each | each bounds: self size ] ]
+		do: [ :anEvent | simulation extent: self size ]
 ]

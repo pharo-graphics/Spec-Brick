@@ -4,8 +4,8 @@ Class {
 	#instVars : [
 		'toolbar',
 		'skyPresenter',
-		'skyElement',
-		'toggleCirclingButton'
+		'toggleCirclingButton',
+		'simulationElement'
 	],
 	#category : #'Spec-Brick-Examples-Boids-UI-SpecBloc'
 }
@@ -19,14 +19,14 @@ BoidsSkyPresenter class >> defaultSpec [
 ]
 
 { #category : #examples }
-BoidsSkyPresenter class >> exampleWith30Boids [
+BoidsSkyPresenter class >> exampleWithManyBoids [
 
 	| app model presenter |
 	app := SpApplication new 
 		useBackend: #Brick;
 		yourself.
 
-	model := BoidsSkyElement exampleWith30Boids.
+	model := BoidsSkyElement exampleWithManyBoids.
 	presenter := self newApplication: app model: model.
 	presenter openWithSpec
 ]
@@ -38,10 +38,10 @@ BoidsSkyPresenter >> initializePresenters [
 
 	skyPresenter := self instantiate: SpBlElementPresenter.
 
-	skyElement constraintsDo: [ :c |
+	simulationElement constraintsDo: [ :c |
 		c horizontal matchParent.
 		c vertical matchParent ].
-	skyPresenter element: skyElement.
+	skyPresenter element: simulationElement.
 	
 	self initializeToolbar.
 ]
@@ -52,21 +52,21 @@ BoidsSkyPresenter >> initializeToolbar [
 	toolbar := self newToolbar.
 
 	toolbar addItem: (self newToolbarButton
-		action: [ skyElement ensureStepping ];
+		action: [ simulationElement ensureStepping ];
 		label: 'Start';
 		help: 'Let the boids fly' translated;
 		icon: (self iconNamed: #testGreen);
 		yourself).
 
 	toolbar addItem: (self newToolbarButton
-		action: [ skyElement ensureNotStepping ];
+		action: [ simulationElement ensureNotStepping ];
 		label: 'Stop';
 		help: 'Freeze the boids' translated;
 		icon: (self iconNamed: #testRed);
 		yourself).
 
 	toolbar addItem: (self newToolbarButton
-		action: [ Boid toggleCircling ];
+		action: [ simulationElement simulation toggleCircling ];
 		label: 'Circle?';
 		help: 'Toggle circling' translated;
 		icon: (self iconNamed: #smallUpdate);
@@ -87,5 +87,5 @@ BoidsSkyPresenter >> initializeWindow: aWindowPresenter [
 { #category : #initialization }
 BoidsSkyPresenter >> setModelBeforeInitialization: aSkyElement [
 
-	skyElement := aSkyElement
+	simulationElement := aSkyElement
 ]
