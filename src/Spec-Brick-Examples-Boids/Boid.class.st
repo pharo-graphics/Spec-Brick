@@ -124,39 +124,11 @@ Boid >> drawBallOn: aCanvas [
 	aCanvas draw.
 ]
 
-{ #category : #'drawing - Bloc' }
-Boid >> drawBallOnSpartaCanvas: aCanvas [
-	"Draw the body of a boid."
-	
-	| aPath |
-	aPath := aCanvas shape
-		circleAt: self position
-		radius: self radius.
-		
-	aCanvas figure
-		path: aPath;
-		background: self color;
-		border: self color muchDarker;
-		width: 1;
-		draw
-
-]
-
 { #category : #'drawing - Morphic' }
 Boid >> drawOn: aCanvas [
 	self
 		drawBallOn: aCanvas;
 		drawTailOn: aCanvas
-
-	
-
-]
-
-{ #category : #'drawing - Bloc' }
-Boid >> drawOnSpartaCanvas: aCanvas [
-	self
-		drawBallOnSpartaCanvas: aCanvas;
-		drawTailOnSpartaCanvas: aCanvas
 
 	
 
@@ -175,24 +147,7 @@ Boid >> drawTailOn: aCanvas [
 	aCanvas drawShape: path.	
 ]
 
-{ #category : #'drawing - Bloc' }
-Boid >> drawTailOnSpartaCanvas: aCanvas [
-	"Draw the tail of the boid, that indicates it's speed."
-
-	| aPath |
-	aPath := aCanvas shape
-		line: self position
-		to: self position - self velocity.
-
-	aCanvas figure
-		path: aPath;
-		border: self color muchDarker;
-		width: 1;
-		draw
-
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Boid >> extent [
 
 	^ (self radius * 2) asPoint

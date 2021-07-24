@@ -1,6 +1,6 @@
 Class {
 	#name : #BoidsSimulation,
-	#superclass : #Object,
+	#superclass : #Model,
 	#instVars : [
 		'alignmentRadius',
 		'cohesionRadius',
@@ -34,7 +34,7 @@ BoidsSimulation class >> exampleWithManyBoids [
 BoidsSimulation >> addBoid: aBoid [
 	"Add a new boid with a initial position and velocity already established."
 
-	boids add: aBoid
+	^ boids add: aBoid
 ]
 
 { #category : #private }
@@ -55,7 +55,7 @@ BoidsSimulation >> addRandomBoid [
 		velocity: velocity;
 		yourself.
 	
-	self addBoid: newBoid
+	^ self addBoid: newBoid
 ]
 
 { #category : #accessing }

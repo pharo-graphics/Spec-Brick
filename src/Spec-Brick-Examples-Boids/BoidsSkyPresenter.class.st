@@ -5,9 +5,12 @@ Class {
 		'toolbar',
 		'skyPresenter',
 		'toggleCirclingButton',
-		'simulationElement'
+		'simulationElement',
+		'startButton',
+		'stopButton',
+		'stepButton'
 	],
-	#category : #'Spec-Brick-Examples-Boids-UI-SpecBloc'
+	#category : #'Spec-Brick-Examples-Boids-UI-Bloc'
 }
 
 { #category : #specs }
@@ -32,6 +35,34 @@ BoidsSkyPresenter class >> exampleWithManyBoids [
 ]
 
 { #category : #initialization }
+BoidsSkyPresenter >> doStart [
+
+	simulationElement ensureStepping.
+	self refreshToolbar.
+]
+
+{ #category : #initialization }
+BoidsSkyPresenter >> doStep [
+
+	simulationElement step
+	"No need to refresh toolbar in this case"
+]
+
+{ #category : #initialization }
+BoidsSkyPresenter >> doStop [
+
+	simulationElement ensureNotStepping.
+	self refreshToolbar.
+]
+
+{ #category : #initialization }
+BoidsSkyPresenter >> doToggleCircling [
+
+	simulationElement simulation toggleCircling.
+	self refreshToolbar.
+]
+
+{ #category : #initialization }
 BoidsSkyPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -44,6 +75,7 @@ BoidsSkyPresenter >> initializePresenters [
 	skyPresenter element: simulationElement.
 	
 	self initializeToolbar.
+	self refreshToolbar.
 ]
 
 { #category : #initialization }
@@ -51,23 +83,29 @@ BoidsSkyPresenter >> initializeToolbar [
 
 	toolbar := self newToolbar.
 
-	toolbar addItem: (self newToolbarButton
-		action: [ simulationElement ensureStepping ];
-		label: 'Start';
-		help: 'Let the boids fly' translated;
-		icon: (self iconNamed: #testGreen);
-		yourself).
-
-	toolbar addItem: (self newToolbarButton
-		action: [ simulationElement ensureNotStepping ];
+	toolbar addItem: (stopButton := self newToolbarButton
+		action: [ self doStop ];
 		label: 'Stop';
 		help: 'Freeze the boids' translated;
 		icon: (self iconNamed: #testRed);
 		yourself).
 
-	toolbar addItem: (self newToolbarButton
-		action: [ simulationElement simulation toggleCircling ];
-		label: 'Circle?';
+	toolbar addItem: (startButton := self newToolbarButton
+		action: [ self doStart ];
+		label: 'Start';
+		help: 'Let the boids fly' translated;
+		icon: (self iconNamed: #testGreen);
+		yourself).
+
+	toolbar addItem: (stepButton := self newToolbarButton
+		action: [ self doStep ];
+		label: 'Step';
+		help: 'Do one step' translated;
+		icon: (self iconNamed: #smallRedo); "smallRedo testNotRun"
+		yourself).
+
+	toolbar addItem: (toggleCirclingButton := self newToolbarButton
+		action: [ self doToggleCircling ];
 		help: 'Toggle circling' translated;
 		icon: (self iconNamed: #smallUpdate);
 		yourself).
@@ -82,6 +120,20 @@ BoidsSkyPresenter >> initializeWindow: aWindowPresenter [
 		title: 'Boids';
 		initialExtent: 510@560;
 		toolbar: toolbar.
+]
+
+{ #category : #initialization }
+BoidsSkyPresenter >> refreshToolbar [
+
+	startButton enabled: simulationElement isSteppingAnimation not.
+	stepButton enabled: simulationElement isSteppingAnimation not.
+	stopButton enabled: simulationElement isSteppingAnimation.
+	
+	toggleCirclingButton label: 
+		(simulationElement simulation isCircling
+			ifTrue: [ 'Circle' ]
+			ifFalse: [ 'Free' ])
+
 ]
 
 { #category : #initialization }
