@@ -1,3 +1,8 @@
+"
+I'm an example of drawing boids simulation by overriding #drawOnSpartaCanvas:
+
+See an example on class side.
+"
 Class {
 	#name : #BoidsSkyElement,
 	#superclass : #BlElement,
@@ -11,9 +16,17 @@ Class {
 { #category : #examples }
 BoidsSkyElement class >> exampleWithManyBoids [
 
-	^ self new
+	| exampleElement |
+	exampleElement := self new
 		  ensureStepping;
-		  yourself
+		  yourself.
+
+	exampleElement constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical matchParent ].
+
+	^ exampleElement openInNewSpace
+
 ]
 
 { #category : #drawing }

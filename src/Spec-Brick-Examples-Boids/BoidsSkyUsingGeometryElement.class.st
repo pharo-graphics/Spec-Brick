@@ -13,6 +13,22 @@ Class {
 	#category : #'Spec-Brick-Examples-Boids-UI-Bloc2'
 }
 
+{ #category : #examples }
+BoidsSkyUsingGeometryElement class >> exampleWithManyBoids [
+
+	| exampleElement |
+	exampleElement := self new
+		  ensureStepping;
+		  yourself.
+
+	exampleElement constraintsDo: [ :c |
+		c horizontal matchParent.
+		c vertical matchParent ].
+
+	^ exampleElement openInNewSpace
+
+]
+
 { #category : #accessing }
 BoidsSkyUsingGeometryElement >> ensureNotStepping [
 	
