@@ -50,7 +50,7 @@ Videos:
 
 ## Installation
 
-Evaluate the following script on [Pharo 9](https://pharo.org/download):
+Evaluate the following script on [Pharo 9 or 10](https://pharo.org/download):
 
 ```smalltalk
 Metacello new
