@@ -3,3 +3,95 @@ Class {
 	#superclass : #SpBrickWidgetAdapter,
 	#category : #'Spec-Brick-Adapters'
 }
+
+{ #category : #accessing }
+SpBrickListLikeAdapter >> elementAt: anInteger [
+
+	^ widget viewModel itemAt: anInteger
+]
+
+{ #category : #'as yet unclassified' }
+SpBrickListLikeAdapter >> presenterUpdateSelection: aBrSelectionChanged [ 
+	"Inform the presenter with the new selection"
+	
+	self presenter selection selectIndexes: aBrSelectionChanged indices
+]
+
+{ #category : #refreshing }
+SpBrickListLikeAdapter >> refreshList [
+
+	widget invalidate
+]
+
+{ #category : #factory }
+SpBrickListLikeAdapter >> refreshWidgetSelection [
+	"Act after a change in the presenter's selection. This could be a change in:
+	- the selection mode (simple, multiple)
+	- the selected item(s)
+	- initialization on build process
+	"
+
+	| indices |
+	indices := self presenter selection selectedIndexes.
+
+	self flag: #todo. "This should break the eventual cycle, but could have a more general solution"
+	indices = self widget selectedIndices
+		ifTrue: [ ^ self ].
+
+	Halt if:[ indices size > 1 ]. "Not yet implemented for multiple selection"
+
+	indices isEmpty
+		ifTrue: [ widget deselectAll ]
+		ifFalse: [ widget selectOne: indices anyOne ]
+
+]
+
+{ #category : #'widget creation' }
+SpBrickListLikeAdapter >> strongSelectionChangedToIndex: itemIndex [
+	"Inspired on SpMorphicListAdapter>>#strongSelectionChanged:"
+
+	self presenter activatesOnDoubleClick
+		ifTrue: [ self presenter doubleClickAtIndex: itemIndex ]
+]
+
+{ #category : #'widget creation' }
+SpBrickListLikeAdapter >> subscribeToPresenter [
+	"Subscribe to the presenter so the widget updates on every change announcement."
+
+	self presenter
+		whenModelChangedDo: [ self updateItems ]";
+		whenSelectionChangedDo: [ self refreshWidgetSelection ]."
+]
+
+{ #category : #'widget creation' }
+SpBrickListLikeAdapter >> subscribeToWidget [
+
+	widget
+		when: BrSelectionChanged
+			do: [ :anEvent | self presenterUpdateSelection: anEvent ];
+		when: BrSelectionDoubleClicked
+			do: [ :anEvent |
+				anEvent selection ifNotEmpty: [ :theIndices | 
+					self strongSelectionChangedToIndex: theIndices first ] ].
+]
+
+{ #category : #updating }
+SpBrickListLikeAdapter >> updateAll [
+
+	super updateAll.
+	self updateItems
+]
+
+{ #category : #updating }
+SpBrickListLikeAdapter >> updateEnabled [
+	"Overriden to do nothing. Morphic backend also ignores this property."
+	
+	self flag: #todo. "refactoring?"
+]
+
+{ #category : #updating }
+SpBrickListLikeAdapter >> updateItems [
+
+	widget deselectAll.
+	widget items: self presenter items
+]
