@@ -4,30 +4,26 @@ Class {
 	#category : #'Spec-Brick-Adapters'
 }
 
-{ #category : #adding }
+{ #category : #hook }
 SpBrickPanedAdapter >> addChildElement: aBlElement with: aSpPanedConstraints [ 
 
-	widget hasChildren 
-		ifFalse:  [ 
-			| resizer |
-			resizer := BlRightResizerElement new.
-			resizer attachTo: aBlElement.
-			
-			aBlElement constraintsDo:[:c |
+	widget childrenCount = 1
+		ifTrue:  [
+			self resizer attachTo: aBlElement.
+
+			aBlElement constraintsDo: [ :c |
 				c linear weight: layout positionOfSlider ].
 			
-			widget
-				addChild: aBlElement as: #firstPaned;
-				addChild: resizer as: #resizer  ]
-		ifTrue: [ 
-			aBlElement constraintsDo:[:c |
+			widget addChild: aBlElement at: 1 as: #firstPaned  ]
+		ifFalse: [ 
+			aBlElement constraintsDo: [ :c |
 				c linear weight: (1 - layout positionOfSlider) ].
 
 			widget addChild: aBlElement as: #secondPaned ]
 
 ]
 
-{ #category : #'instance creation' }
+{ #category : #hook }
 SpBrickPanedAdapter >> addConstraints: aSpPanedConstraints toChild: childBlElement [ 
 	"Inspired by SpMorphicPanedAdapter>>#addConstraints:toChild:"
 
@@ -36,7 +32,7 @@ SpBrickPanedAdapter >> addConstraints: aSpPanedConstraints toChild: childBlEleme
 	^ childBlElement
 ]
 
-{ #category : #adding }
+{ #category : #private }
 SpBrickPanedAdapter >> newChildBlElement: aPresenter constrainedBy: aSpPanedConstraints [
 	"Inspired on SpMorphicPanedAdapter>>#basicAdd:constraints:to:"
 
@@ -52,12 +48,22 @@ SpBrickPanedAdapter >> newChildBlElement: aPresenter constrainedBy: aSpPanedCons
 SpBrickPanedAdapter >> newHorizontal [
 
 	^ self newHorizontalPane
+		  addChild: SpBrickHorizontalResizerElement new as: #resizer;
+		  yourself
 ]
 
 { #category : #hook }
 SpBrickPanedAdapter >> newVertical [
 
 	^ self newVerticalPane
+		  addChild: SpBrickVerticalResizerElement new as: #resizer;
+		  yourself
+]
+
+{ #category : #accessing }
+SpBrickPanedAdapter >> resizer [
+
+	^ widget childNamed: #resizer
 ]
 
 { #category : #'widget update' }
