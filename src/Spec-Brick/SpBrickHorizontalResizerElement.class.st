@@ -13,8 +13,8 @@ SpBrickHorizontalResizerElement >> initializeHandleAndListener [
 		c ignoreByLayout.
 		c ignored horizontal alignRight.
 		c ignored vertical alignCenter.
-		c horizontal exact: 5.
-		c vertical exact: 25 ].
+		c horizontal exact: self handleThickness.
+		c vertical exact: self handleLength ].
 	
 	resizerListener := BlResizerRightListener new.
 	handleElement addEventHandler: resizerListener.

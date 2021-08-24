@@ -29,7 +29,7 @@ SpBrickAdapterTest >> newApplication [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 SpBrickAdapterTest >> simulateKeyPress: aBlKeyboardKey on: aBlElement [
 
 	aBlElement inUIProcessDo: [ 

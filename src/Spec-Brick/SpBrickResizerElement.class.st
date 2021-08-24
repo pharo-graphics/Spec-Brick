@@ -21,6 +21,18 @@ SpBrickResizerElement >> handleElement [
 	^ handleElement
 ]
 
+{ #category : #private }
+SpBrickResizerElement >> handleLength [
+
+	^ 30
+]
+
+{ #category : #private }
+SpBrickResizerElement >> handleThickness [
+
+	^ 5
+]
+
 { #category : #initialization }
 SpBrickResizerElement >> initialize [
 
@@ -40,8 +52,8 @@ SpBrickResizerElement >> initializeHandleAndListener [
 SpBrickResizerElement >> newHandle [
 
 	^ BlElement new
-		opacity: 0.5;
-		background: BrGlamorousColors successBackgroundColor;
+		opacity: 0.25;
+		background: BrGlamorousColors pressedButtonBorderColor;
 "		border: (BlBorder paint: BrGlamorousColors defaultHeaderTextColor width: 1);"
 		yourself
 
