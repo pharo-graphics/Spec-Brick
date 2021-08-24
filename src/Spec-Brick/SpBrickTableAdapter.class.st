@@ -9,22 +9,21 @@ SpBrickTableAdapter >> addColumnFor: aSpTableColumn [
 
 	| addedColumn |
 	addedColumn := aSpTableColumn acceptColumnVisitor: self.
-	
+
 	addedColumn title: aSpTableColumn title.
 
-	aSpTableColumn isExpandable ifFalse: [
-		addedColumn width: aSpTableColumn width ]
-
+	aSpTableColumn width
+		ifNil: [ addedColumn matchParent ]
+		ifNotNil: [ addedColumn width: aSpTableColumn width ]
 ]
 
 { #category : #'instance creation' }
 SpBrickTableAdapter >> buildWidget [
 
 	^ BrColumnedList new
-rowStencil:
+		  rowStencil:
 			  BrGlamorousColumnedListSelectableRowElementStencilBuilder new;
-				padding: (BlInsets top: 5)
-				yourself
+		  yourself
 ]
 
 { #category : #'widget creation' }
@@ -32,7 +31,8 @@ SpBrickTableAdapter >> subscribeToPresenter [
 
 	super subscribeToPresenter.
 	self presenter
-		whenColumnsChangedDo: [ self updateColumns ]
+		whenColumnsChangedDo: [ self updateColumns ];
+		whenShowColumnHeadersChangedDo:[ self updateColumns ]
 
 ]
 
@@ -41,16 +41,19 @@ SpBrickTableAdapter >> updateAll [
 
 	super updateAll.
 	self updateColumns
-
 ]
 
 { #category : #'widget creation' }
 SpBrickTableAdapter >> updateColumns [
 
 	widget removeAllColumns.
-
 	self presenter columns do: [ :each |
 		self addColumnFor: each ].
+	
+	"widget removeAptitude: BrColumnedListHeaderAptitude."
+	self flag: #todo. "How to refresh the header?"
+	self presenter isShowingColumnHeaders
+		ifTrue: [ widget addAptitude: BrColumnedListHeaderAptitude ]
 ]
 
 { #category : #visiting }
@@ -59,13 +62,15 @@ SpBrickTableAdapter >> visitImageColumn: aSpImageTableColumn [
 	^ widget column
 		  cellStencil: [
 			BlElement new
-				constraintsDo: [ :c | c horizontal matchParent ];
+				constraintsDo: [ :c |
+					c horizontal matchParent.
+					c vertical matchParent ];
 				yourself ];
 		  dataBinder: [ :aBlElement :eachItem | 
 			  | aForm |
 			  aForm := aSpImageTableColumn evaluation cull: eachItem.
 			  aBlElement
-				  size: aForm extent;
+"				  size: aForm extent;"
 				  background: aForm ];
 		  yourself
 ]

@@ -45,6 +45,7 @@ SpBrickTableAdapterTest >> testStringColumn [
 				title: 'hex'
 				evaluated: [ :n | n hex ]);
 		items: (3 to: 7);
+		showColumnHeaders;
 		addColumn:
 			(SpStringTableColumn
 				 title: 'squared'
@@ -58,5 +59,7 @@ SpBrickTableAdapterTest >> testStringColumn [
 	"There are two cells, one for each column."
 	self assert: firstRow size equals: 2.
 	self assert: firstRow first text asString equals: '16r3'.
-	self assert: firstRow second text asString equals: '9'
+	self assert: firstRow second text asString equals: '9'.
+	
+	self flag: #todo. "Assert on header"
 ]
