@@ -83,7 +83,7 @@ SpBrickTableAdapter >> visitStringColumn: aSpStringTableColumn [
 			  BrLabel new
 				  hMatchParent;
 				  vFitContent;
-				  aptitude: BrGlamorousLabelAptitude new;
+				  aptitude: BrGlamorousListLabelAptitude new;
 				  yourself ];
 		  dataBinder: [ :aLabel :eachItem | 
 			  aLabel text: (aSpStringTableColumn evaluation cull: eachItem) ]
