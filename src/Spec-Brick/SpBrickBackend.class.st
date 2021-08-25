@@ -19,8 +19,9 @@ SpBrickBackend >> adapterBindingsClass [
 { #category : #'deferred message' }
 SpBrickBackend >> defer: aBlock [
 
-	1halt.
-	BlHost pickHost universe defer: aBlock
+	BlHost pickHost universe defer: aBlock.
+	self flag: #todo. "Not tested. Used?" 
+	'SpBrickBackend>>defer:' traceCr.
 ]
 
 { #category : #printing }

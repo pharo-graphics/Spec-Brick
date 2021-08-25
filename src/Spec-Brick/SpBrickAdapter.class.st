@@ -61,7 +61,7 @@ SpBrickAdapter >> defer: aBlockClosure [
 	aHost universe pulse.
 	aHost universe defer: [ 
 		aHost universe pulse.
-		aHost uiProcessDo: aBlockClosure.
+		aHost universe defer: aBlockClosure.
 		aHost universe pulse ].
 	aHost universe pulse
 "
