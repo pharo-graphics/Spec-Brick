@@ -34,3 +34,22 @@ SpBrickBackend >> printOn: aStream [
 		nextPut: $)
 
 ]
+
+{ #category : #'ui - dialogs' }
+SpBrickBackend >> selectFileTitle: aString [
+
+	| answer selectorElement aSpace aSemaphore |
+	answer := nil.
+	aSemaphore := Semaphore new.
+
+	aSpace := BlSpace new.
+	selectorElement := BrFileSelector new 
+		okAction: [ :f | answer := f. aSpace close. aSemaphore signal ];
+		buttonLabel: 'Select file';
+		yourself.
+
+	aSpace addChild: selectorElement; show.
+
+	aSemaphore wait.
+	^ answer
+]
