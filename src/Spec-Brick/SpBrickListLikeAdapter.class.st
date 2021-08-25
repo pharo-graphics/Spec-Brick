@@ -59,8 +59,12 @@ SpBrickListLikeAdapter >> subscribeToPresenter [
 	"Subscribe to the presenter so the widget updates on every change announcement."
 
 	self presenter
-		whenModelChangedDo: [ self updateItems ]";
+		whenModelChangedDo: [ self updateItems ].";
 		whenSelectionChangedDo: [ self refreshWidgetSelection ]."
+		
+	self presenter verticalAlignment
+		whenChangedDo: [ self updateScrollBar ].
+
 ]
 
 { #category : #'widget creation' }
@@ -79,7 +83,9 @@ SpBrickListLikeAdapter >> subscribeToWidget [
 SpBrickListLikeAdapter >> updateAll [
 
 	super updateAll.
-	self updateItems
+	self
+		updateItems;
+		updateScrollBar
 ]
 
 { #category : #updating }
@@ -94,4 +100,11 @@ SpBrickListLikeAdapter >> updateItems [
 
 	widget deselectAll.
 	widget items: self presenter items
+]
+
+{ #category : #'widget creation' }
+SpBrickListLikeAdapter >> updateScrollBar [
+
+	widget scrollToIndex:
+		self presenter verticalAlignment desiredVisibleRow
 ]

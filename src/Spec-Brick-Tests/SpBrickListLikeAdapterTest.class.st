@@ -8,6 +8,28 @@ Class {
 }
 
 { #category : #tests }
+SpBrickListLikeAdapterTest >> testDesiredVisibleRow [
+
+	| someItems scrollable |
+	someItems := 1 to: 100.
+	specWidget items: someItems.
+
+	self waitBlocSpace.
+
+	self flag: #todo. "We're assuming too much of implementation details."
+	scrollable := brickWidget childNamed: #scrollable.
+	self assert: (scrollable children first childNamed: #theLabel) text asString equals: '1'.
+	self deny: (scrollable children last childNamed: #theLabel) text asString equals: '100'.
+
+	specWidget verticalAlignment desiredVisibleRow: 100.
+	self waitBlocSpace.
+	
+	self deny: (scrollable children first childNamed: #theLabel) text asString equals: '1'.
+	self assert: (scrollable children last childNamed: #theLabel) text asString equals: '100'.
+
+]
+
+{ #category : #tests }
 SpBrickListLikeAdapterTest >> testItems [
 
 	| someItems |
