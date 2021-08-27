@@ -24,20 +24,20 @@ SpBrickListLikeAdapter >> newContextMenuAptitude [
 					yourself" ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'widget update' }
 SpBrickListLikeAdapter >> presenterUpdateSelection: aBrSelectionChanged [ 
 	"Inform the presenter with the new selection"
 	
 	self presenter selection selectIndexes: aBrSelectionChanged indices
 ]
 
-{ #category : #refreshing }
+{ #category : #'widget update' }
 SpBrickListLikeAdapter >> refreshList [
 
 	widget invalidate
 ]
 
-{ #category : #factory }
+{ #category : #'widget update' }
 SpBrickListLikeAdapter >> refreshWidgetSelection [
 	"Act after a change in the presenter's selection. This could be a change in:
 	- the selection mode (simple, multiple)
@@ -93,7 +93,7 @@ SpBrickListLikeAdapter >> subscribeToWidget [
 					self strongSelectionChangedToIndex: theIndices first ] ].
 ]
 
-{ #category : #updating }
+{ #category : #'widget update' }
 SpBrickListLikeAdapter >> updateAll [
 
 	super updateAll.
@@ -102,14 +102,14 @@ SpBrickListLikeAdapter >> updateAll [
 		updateScrollBar
 ]
 
-{ #category : #updating }
+{ #category : #'widget update' }
 SpBrickListLikeAdapter >> updateEnabled [
 	"Overriden to do nothing. Morphic backend also ignores this property."
 	
 	self flag: #todo. "refactoring?"
 ]
 
-{ #category : #updating }
+{ #category : #'widget update' }
 SpBrickListLikeAdapter >> updateItems [
 
 	widget deselectAll.
