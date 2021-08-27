@@ -28,7 +28,7 @@ SpBrickListAdapter >> initialAptitude [
 SpBrickListAdapter >> newBrickItem [
 	"Answer a BlElement that can be used to represent a list item."
 
-	| iconElement labelElement |
+	| iconElement labelElement itemAptitude |
 	
 	iconElement := BlElement new
 		               size: 16 asPoint;
@@ -43,15 +43,21 @@ SpBrickListAdapter >> newBrickItem [
 		                aptitude: BrGlamorousListLabelAptitude new;
 		                yourself.
 
-	^ BrHorizontalPane new
-		  hMatchParent;
-		  vFitContent;
-		  aptitude: (BrStyleCommonAptitude new
+	itemAptitude := BrStyleCommonAptitude new
 				   selected: [ :aStyle | 
 					   aStyle background: BrGlamorousColors selectedListItemColor ];
 				   hovered: [ :aStyle | 
 					   aStyle background: BrGlamorousColors hoveredListItemColor ];
-				   yourself);
+				   yourself.
+
+	self flag: #todo. "What happens when it's updated?"
+	self presenter contextMenu ifNotNil: [
+		itemAptitude := itemAptitude + self newContextMenuAptitude ].
+
+	^ BrHorizontalPane new
+		  hMatchParent;
+		  vFitContent;
+		  aptitude: itemAptitude;
 		  addChild: iconElement as: #theIcon;
 		  addChild: labelElement as: #theLabel;
 		  yourself

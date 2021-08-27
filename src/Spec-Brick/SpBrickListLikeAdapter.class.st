@@ -10,6 +10,20 @@ SpBrickListLikeAdapter >> elementAt: anInteger [
 	^ widget viewModel itemAt: anInteger
 ]
 
+{ #category : #'widget update' }
+SpBrickListLikeAdapter >> newContextMenuAptitude [
+
+	^ BrGlamorousWithContextMenuAptitude
+			content: [
+				self presenter contextMenu value buildWithSpec" halt.
+				BrGlamorousSimpleContextMenuContent new
+					items:
+						{('Change to blue' -> [ :e | e background: Color blue ]).
+						('Change to red' -> [ :e | e background: Color red ]).
+						('Change to green' -> [ :e | e background: Color green ])};
+					yourself" ]
+]
+
 { #category : #'as yet unclassified' }
 SpBrickListLikeAdapter >> presenterUpdateSelection: aBrSelectionChanged [ 
 	"Inform the presenter with the new selection"
