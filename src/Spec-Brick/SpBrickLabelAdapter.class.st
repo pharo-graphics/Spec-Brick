@@ -39,5 +39,5 @@ SpBrickLabelAdapter >> updateEnabled [
 { #category : #'widget update' }
 SpBrickLabelAdapter >> updateText [
 
-	widget text: self presenter label
+	widget text: (self presenter label ifNil: '')
 ]
