@@ -58,13 +58,16 @@ SpBrickTableAdapter >> updateAll [
 SpBrickTableAdapter >> updateColumns [
 
 	widget removeAllColumns.
-	self presenter columns do: [ :each |
-		self addColumnFor: each ].
-	
-	"widget removeAptitude: BrColumnedListHeaderAptitude."
-	self flag: #todo. "How to refresh the header?"
-	self presenter isShowingColumnHeaders
-		ifTrue: [ widget addAptitude: BrColumnedListHeaderAptitude ]
+	self presenter columns do: [ :each | self addColumnFor: each ].
+
+	"This is a way update it"
+	widget aptitude
+		findActor: SpBrickColumnedListHeaderAptitude
+		ifFound: [ :headerAptitude |
+			widget aptitude remove: headerAptitude ].
+	self presenter isShowingColumnHeaders ifTrue: [
+		widget addAptitude: SpBrickColumnedListHeaderAptitude ]
+
 ]
 
 { #category : #visiting }
