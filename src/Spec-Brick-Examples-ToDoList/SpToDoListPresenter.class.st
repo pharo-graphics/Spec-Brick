@@ -71,6 +71,30 @@ SpToDoListPresenter >> connectPresenters [
 		self refreshAccordingToSelectedTask ]
 ]
 
+{ #category : #initialization }
+SpToDoListPresenter >> contextMenuForSelectedTask [
+
+	| aTask menu |
+	aTask := list selectedItem.
+
+	menu := self newMenu.
+
+	menu addGroup: [ :aGroup | 
+		aGroup
+			addItem: [ :item | 
+				item
+					name: 'Toggle done';
+					iconName: #smallOk;
+					action: [ self toggleCompletedTask ] ];
+			addItem: [ :item | 
+				item
+					name: 'Delete';
+					iconName: #remove;
+					action: [ self deleteTask ] ] ].
+
+	^ menu
+]
+
 { #category : #actions }
 SpToDoListPresenter >> deleteAllTasks [
 
@@ -94,6 +118,7 @@ SpToDoListPresenter >> initializePresenters [
 		displayIcon: [ :aToDoTask | self taskIconFor: aToDoTask ];
 		display: [ :aToDoTask | self taskDisplayFor: aToDoTask ];
 		whenActivatedDo: [ self toggleCompletedTask ];
+		contextMenu: [ self contextMenuForSelectedTask ];
 		yourself.
 
 	descriptionLabel := self newLabel
@@ -171,7 +196,7 @@ SpToDoListPresenter >> presentersThatRequireTaskSelected [
 	^ { deleteButton. toggleCompletedButton }
 ]
 
-{ #category : #initialization }
+{ #category : #private }
 SpToDoListPresenter >> refresh [ 
 
 	list unselectAll.
