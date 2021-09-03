@@ -7,17 +7,14 @@ Class {
 { #category : #factory }
 SpBrickMenuAdapter >> addMenuGroup: aSpMenuGroupPresenter [
 
-	| items |
-	items := aSpMenuGroupPresenter menuItems
-		collect: [ :each | each name -> each action ].
-
-	widget items: widget items, items
+	self flag: #todo. "We're just flatttening all groups."
+	widget items: widget items, aSpMenuGroupPresenter menuItems
 ]
 
 { #category : #factory }
 SpBrickMenuAdapter >> buildWidget [
 
-	^ BrGlamorousSimpleContextMenuContent new
+	^ SpBrickContextMenu new
 ]
 
 { #category : #'updating screen' }
