@@ -1,7 +1,7 @@
 "
 I'm a Brick representation for a SpMenuPresenter.
 
-My items are instances of SpMenuItemPresenter, from which I take the icon, name and action to build Bloc elements.
+My model items are instances of SpMenuItemPresenter, from which I take the icon, name and action to build Bloc elements.
 
 "
 Class {
