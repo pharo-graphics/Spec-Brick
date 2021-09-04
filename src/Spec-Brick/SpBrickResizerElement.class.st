@@ -52,9 +52,9 @@ SpBrickResizerElement >> initializeHandleAndListener [
 SpBrickResizerElement >> newHandle [
 
 	^ BlElement new
-		opacity: 0.25;
-		background: BrGlamorousColors pressedButtonBorderColor;
-"		border: (BlBorder paint: BrGlamorousColors defaultHeaderTextColor width: 1);"
+		opacity: 0.75;
+		background: BrGlamorousColors defaultHeaderTextColor;
+		aptitude: (BrGlamorousButtonExteriorAptitude new);
 		yourself
 
 ]
