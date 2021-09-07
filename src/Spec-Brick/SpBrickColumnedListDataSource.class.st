@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickColumnedListDataSource,
 	#superclass : #BrColumnedListDataSource,
-	#category : #'Spec-Brick-Widgets'
+	#category : #'Spec-Brick-Widgets-ColumnedList'
 }
 
 { #category : #'instance creation' }

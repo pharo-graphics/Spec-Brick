@@ -1,7 +1,7 @@
 Class {
 	#name : #SpBrickColumnedListHeaderAptitude,
 	#superclass : #BrAptitude,
-	#category : #'Spec-Brick-Widgets'
+	#category : #'Spec-Brick-Widgets-ColumnedList'
 }
 
 { #category : #private }

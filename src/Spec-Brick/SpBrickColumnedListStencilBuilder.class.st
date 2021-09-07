@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'customBlock'
 	],
-	#category : #'Spec-Brick-Widgets'
+	#category : #'Spec-Brick-Widgets-ColumnedList'
 }
 
 { #category : #'api - instantiation' }

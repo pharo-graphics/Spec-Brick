@@ -20,7 +20,7 @@ SpBrickTableAdapter >> addColumnFor: aSpTableColumn [
 { #category : #'instance creation' }
 SpBrickTableAdapter >> buildWidget [
 
-	^ BrColumnedList new
+	^ SpBrickColumnedList new
 		  rowStencil: self newRowStencilBuilder;
 		  yourself
 ]
