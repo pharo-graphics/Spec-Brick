@@ -21,20 +21,21 @@ SpBrickTableAdapter >> addColumnFor: aSpTableColumn [
 SpBrickTableAdapter >> buildWidget [
 
 	^ BrColumnedList new
-		  rowStencil: self newBrickItem;
+		  rowStencil: self newRowStencilBuilder;
 		  yourself
 ]
 
 { #category : #'instance creation' }
-SpBrickTableAdapter >> newBrickItem [
-		
-	self flag: #todo. "Check this"
-	^ SpBrickColumnedListStencilBuilder new
-		customBlock: [ :element |
-			self presenter contextMenu ifNotNil: [
-				element addAptitude: self newContextMenuAptitude ] ];
-		yourself
+SpBrickTableAdapter >> newRowStencilBuilder [
 
+	^ SpBrickColumnedListStencilBuilder new
+		  customBlock: [ :element | 
+			  self presenter contextMenu ifNotNil: [ 
+					  element addAptitude: self newContextMenuAptitude ].
+			  element
+				  when: BlMouseDownEvent
+				  do: [ :aBlEvent | self onMouseDownOnItem: aBlEvent ] ];
+		  yourself
 ]
 
 { #category : #'widget creation' }
