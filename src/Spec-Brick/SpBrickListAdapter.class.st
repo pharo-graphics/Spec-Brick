@@ -13,6 +13,8 @@ SpBrickListAdapter >> bind: anItemElement with: anItem [
 	(anItemElement childWithId: #theLabel)
 		text: (self presenter displayValueFor: anItem).
 
+	anItemElement userData at: #specModel put: anItem.
+
 	^ anItemElement
 
 ]
@@ -57,6 +59,8 @@ SpBrickListAdapter >> newBrickItem [
 	^ BrHorizontalPane new
 		  hMatchParent;
 		  vFitContent;
+		  when: BlMouseDownEvent do: [ :aBlEvent |
+				self onMouseDownOnItem: aBlEvent ];
 		  aptitude: itemAptitude;
 		  addChild: iconElement as: #theIcon;
 		  addChild: labelElement as: #theLabel;
@@ -69,6 +73,15 @@ SpBrickListAdapter >> newBrickWidget [
 	^ BrSimpleList new
 		  itemStencil: [ self newBrickItem ];
 		  itemDataBinder: [ :anItemElement :anItem | 
-			  self bind: anItemElement with: anItem ];
+				self bind: anItemElement with: anItem ];
+		  itemDataUnbinder: [ :anItemElement |
+				self unbind: anItemElement ];
 		  yourself
+]
+
+{ #category : #'item element' }
+SpBrickListAdapter >> unbind: anItemElement [
+
+	anItemElement userData removeKey: #specModel
+
 ]

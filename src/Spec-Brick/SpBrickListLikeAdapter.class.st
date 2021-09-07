@@ -11,10 +11,27 @@ SpBrickListLikeAdapter >> elementAt: anInteger [
 ]
 
 { #category : #'widget update' }
+SpBrickListLikeAdapter >> mouseButtonToShowContextMenu [
+
+	^ BlMouseButton secondary
+]
+
+{ #category : #'widget update' }
 SpBrickListLikeAdapter >> newContextMenuAptitude [
 
-	^ BrGlamorousWithContextMenuAptitude content: [ 
-		  self presenter contextMenu value buildWithSpec ]
+	^ (BrGlamorousWithContextMenuAptitude content: [ 
+			   self presenter contextMenu value buildWithSpec ])
+		  mouseButton: self mouseButtonToShowContextMenu;
+		  yourself
+]
+
+{ #category : #'item element' }
+SpBrickListLikeAdapter >> onMouseDownOnItem: aBlMouseEvent [
+
+	| itemModel |
+	aBlMouseEvent button = self mouseButtonToShowContextMenu ifFalse: [ ^ self ].
+	itemModel := aBlMouseEvent currentTarget userData at: #specModel.
+	self presenter selectItem: itemModel
 ]
 
 { #category : #'widget update' }
