@@ -111,7 +111,7 @@ SpBrickBoxLayoutTest >> testVerticalPadding [
 		select: [ :each | each isKindOf: BrLabel ]
 		thenCollect: [ :each | each padding ].
 	
-	presenter window close.
+	presenter withWindowDo: [ :w | w close ].
 	
 	self assert: labelPaddings first equals: (BlInsets vertical: 11).
 	self assert: labelPaddings second equals: (BlInsets vertical: 22).
