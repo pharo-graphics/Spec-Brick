@@ -57,7 +57,7 @@ Evaluate the following script on [Pharo 9 or 10](https://pharo.org/download):
 ```smalltalk
 Metacello new
 	baseline: 'SpecBrick';
-	repository: 'github://pharo-graphics/Spec-Brick:main/src';
+	repository: 'github://pharo-graphics/Spec-Brick/src';
 	onConflictUseIncoming;
 	load
 ```
