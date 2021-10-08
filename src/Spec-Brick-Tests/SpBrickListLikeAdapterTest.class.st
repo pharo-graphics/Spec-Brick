@@ -7,6 +7,12 @@ Class {
 	#category : #'Spec-Brick-Tests-Adapters'
 }
 
+{ #category : #testing }
+SpBrickListLikeAdapterTest class >> isAbstract [
+
+	^ self = SpBrickListLikeAdapterTest
+]
+
 { #category : #tests }
 SpBrickListLikeAdapterTest >> testDesiredVisibleRow [
 

@@ -10,7 +10,7 @@ Class {
 { #category : #testing }
 SpBrickWindowLikeAdapterTest class >> isAbstract [
 
-	^ self name = SpBrickWindowLikeAdapterTest
+	^ self = SpBrickWindowLikeAdapterTest
 ]
 
 { #category : #hook }
