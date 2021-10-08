@@ -1,6 +1,9 @@
 Class {
 	#name : #SpBrickImageAdapter,
 	#superclass : #SpBrickWidgetAdapter,
+	#instVars : [
+		'nullIcon'
+	],
 	#category : #'Spec-Brick-Adapters'
 }
 
@@ -17,6 +20,12 @@ SpBrickImageAdapter >> newBrickWidget [
 	^ BrButton new
 		  fitContent;
 		  yourself
+]
+
+{ #category : #accessing }
+SpBrickImageAdapter >> nullIcon [
+
+	^ nullIcon ifNil: [ nullIcon := Form extent: 0 asPoint ]
 ]
 
 { #category : #'widget creation' }
@@ -52,5 +61,8 @@ SpBrickImageAdapter >> updateAutoScale [
 { #category : #'widget update' }
 SpBrickImageAdapter >> updateImageAsIcon [
 
-	widget icon: self presenter image
+	| iconForm |
+	iconForm := self presenter image ifNil: [ self nullIcon ].
+
+	widget icon: iconForm
 ]
