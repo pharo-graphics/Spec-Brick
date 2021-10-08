@@ -1,5 +1,7 @@
 # Spec-Brick
 
+[![Tests](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/Tests.yml/badge.svg)](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/Tests.yml)
+
 [Brick](https://github.com/pharo-graphics/Brick) backend for [Spec](https://github.com/pharo-spec/Spec). 
 
 Brick is a widget library on top of [Bloc](https://github.com/pharo-graphics/Bloc).
