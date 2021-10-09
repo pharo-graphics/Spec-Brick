@@ -1,5 +1,6 @@
 # Spec-Brick
 
+[![License](https://img.shields.io/github/license/pharo-graphics/Spec-Brick.svg)](./LICENSE)
 [![Tests](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/Tests.yml/badge.svg)](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/Tests.yml)
 
 [Brick](https://github.com/pharo-graphics/Brick) backend for [Spec](https://github.com/pharo-spec/Spec). 
