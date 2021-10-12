@@ -1,7 +1,7 @@
 # Spec-Brick
 
 [![License](https://img.shields.io/github/license/pharo-graphics/Spec-Brick.svg)](./LICENSE)
-[![Tests](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/Tests.yml/badge.svg)](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/Tests.yml)
+[![Tests](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/test.yml)
 
 [Brick](https://github.com/pharo-graphics/Brick) backend for [Spec](https://github.com/pharo-spec/Spec). 
 
@@ -66,6 +66,17 @@ Metacello new
 Alternatively, you can do it by terminal (MacOS, linux... and should work as well in Windows with MINGW64). 
 Create a directory and execute `<this_repo>/scripts/build.sh`, which first downloads the Pharo image and VM and then loads the project.
 
+## CI status including dependencies
+
+
+| Project | Badge |
+| ------- | ----- |
+| Sparta | [![Sparta CI](https://github.com/pharo-graphics/sparta/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/sparta/actions/workflows/test.yml) |
+| Fenster | [![Fenster CI](https://github.com/pharo-graphics/fenster/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/fenster/actions/workflows/test.yml) |
+| Bloc | [![Bloc CI](https://github.com/pharo-graphics/Bloc/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Bloc/actions/workflows/test.yml) |
+| BlocPac | [![BlocPac CI](https://github.com/pharo-graphics/bloc-pac/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/bloc-pac/actions/workflows/test.yml) |
+| Brick | [![Brick CI](https://github.com/pharo-graphics/Brick/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Brick/actions/workflows/test.yml) |
+| Spec-Brick | [![Spec-Brick CI](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/test.yml) |
 
 ## License
 
