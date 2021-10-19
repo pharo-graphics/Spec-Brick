@@ -10,6 +10,12 @@ SpBrickDropListAdapter >> elementAt: index [
 	^ self presenter getList at: index
 ]
 
+{ #category : #accessing }
+SpBrickDropListAdapter >> hasElements [
+
+	^ self presenter getList notEmpty
+]
+
 { #category : #'widget creation' }
 SpBrickDropListAdapter >> initialAptitude [
 
@@ -125,10 +131,17 @@ SpBrickDropListAdapter >> updateFromSelectedItem [
 { #category : #'widget creation' }
 SpBrickDropListAdapter >> updateFromSelectedItem: aBrButton [
 
-	| wrappedSelectedItem |
-	wrappedSelectedItem := self elementAt: self presenter selectedIndex.
+	self hasElements
+		ifTrue: [ 
+			| wrappedSelectedItem |
+			wrappedSelectedItem := self elementAt: self presenter selectedIndex.
 
-	aBrButton
-		label: (self presenter displayForItem: wrappedSelectedItem)";
-		icon: (self presenter getIconFor: wrappedSelectedItem)"
+			aBrButton
+				label: (self presenter displayForItem: wrappedSelectedItem)";
+				icon: (self presenter getIconFor: wrappedSelectedItem)" ] 
+		ifFalse: [
+			aBrButton
+				label: ''
+		 ]
+
 ]
