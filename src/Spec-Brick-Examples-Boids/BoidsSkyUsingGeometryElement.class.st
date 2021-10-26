@@ -10,11 +10,11 @@ Class {
 		'steppingAnimation',
 		'simulation'
 	],
-	#category : #'Spec-Brick-Examples-Boids-UI-Bloc2'
+	#category : #'Spec-Brick-Examples-Boids-UI-Bloc'
 }
 
 { #category : #examples }
-BoidsSkyUsingGeometryElement class >> exampleWithManyBoids [
+BoidsSkyUsingGeometryElement class >> exampleElement [
 
 	| exampleElement |
 	exampleElement := self new
@@ -25,8 +25,13 @@ BoidsSkyUsingGeometryElement class >> exampleWithManyBoids [
 		c horizontal matchParent.
 		c vertical matchParent ].
 
-	^ exampleElement openInNewSpace
+	^ exampleElement
+]
 
+{ #category : #examples }
+BoidsSkyUsingGeometryElement class >> exampleOpenInNewSpace [
+
+	^ self exampleElement openInNewSpace
 ]
 
 { #category : #accessing }

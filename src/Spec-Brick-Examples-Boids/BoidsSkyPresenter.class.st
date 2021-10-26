@@ -10,7 +10,7 @@ Class {
 		'stopButton',
 		'stepButton'
 	],
-	#category : #'Spec-Brick-Examples-Boids-UI-Bloc'
+	#category : #'Spec-Brick-Examples-Boids-UI-Spec'
 }
 
 { #category : #specs }
@@ -22,14 +22,27 @@ BoidsSkyPresenter class >> defaultSpec [
 ]
 
 { #category : #examples }
-BoidsSkyPresenter class >> exampleWithManyBoids [
+BoidsSkyPresenter class >> exampleBloc1 [
 
 	| app model presenter |
 	app := SpApplication new 
 		useBackend: #Brick;
 		yourself.
 
-	model := BoidsSkyElement exampleWithManyBoids.
+	model := BoidsSkyElement exampleElement.
+	presenter := self newApplication: app model: model.
+	presenter openWithSpec
+]
+
+{ #category : #examples }
+BoidsSkyPresenter class >> exampleBloc2 [
+
+	| app model presenter |
+	app := SpApplication new 
+		useBackend: #Brick;
+		yourself.
+
+	model := BoidsSkyUsingGeometryElement exampleElement.
 	presenter := self newApplication: app model: model.
 	presenter openWithSpec
 ]

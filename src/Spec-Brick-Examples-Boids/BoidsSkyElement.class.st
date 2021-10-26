@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #examples }
-BoidsSkyElement class >> exampleWithManyBoids [
+BoidsSkyElement class >> exampleElement [
 
 	| exampleElement |
 	exampleElement := self new
@@ -25,8 +25,13 @@ BoidsSkyElement class >> exampleWithManyBoids [
 		c horizontal matchParent.
 		c vertical matchParent ].
 
-	^ exampleElement openInNewSpace
+	^ exampleElement
+]
 
+{ #category : #examples }
+BoidsSkyElement class >> exampleOpenInNewSpace [
+
+	^ self exampleElement openInNewSpace
 ]
 
 { #category : #drawing }
