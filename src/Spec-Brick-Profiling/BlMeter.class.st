@@ -36,6 +36,12 @@ BlMeter >> openUI [
 ]
 
 { #category : #API }
+BlMeter >> reportsAsPagesUsing: aBuilder [
+
+	self subclassResponsibility
+]
+
+{ #category : #API }
 BlMeter >> startMetering [
 
 	self subclassResponsibility

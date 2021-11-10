@@ -14,6 +14,15 @@ BlFFILogger >> openUI [
 ]
 
 { #category : #API }
+BlFFILogger >> reportsAsPagesUsing: aBuilder [
+
+	^ { (SpNotebookPage
+		   title: 'FFI logger'
+		   provider: [ 
+		   aBuilder instantiate: TFLMainPresenter on: loggerCopy ]) }
+]
+
+{ #category : #API }
 BlFFILogger >> startMetering [
 
 	"Ensure prepared"

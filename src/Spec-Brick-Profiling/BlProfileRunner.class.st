@@ -1,5 +1,9 @@
 "
-I'm a facade to profile cases.
+I'm in charge of profiling cases.
+
+A case can be profiled in two ways:
+- #run, profiles the body.
+- #runOnOpen, profiles only the opening.
 
 See my class-side for an example.
 
@@ -39,7 +43,7 @@ BlProfileRunner class >> exampleAll [
 
 				] ] ].
 
-	[	runners do: #runIgnoringOpeningSpace.
+	[	runners do: #run.
 		runners do: #openUIs ] fork.
 
 ]
@@ -60,7 +64,7 @@ BlProfileRunner class >> exampleOnlyOneCase [
 		enableASProfiler;
 		yourself.
 
-	[ runner runIgnoringOpeningSpace; openUIs ] fork.
+	[ runner run; openUIs ] fork.
 
 ]
 
@@ -117,6 +121,19 @@ BlProfileRunner >> initialize [
 ]
 
 { #category : #API }
+BlProfileRunner >> openMeterReports [
+
+	| notebook meterPresenters |
+	notebook := SpNotebookPresenter new.
+	meterPresenters := meters flatCollect: [ :each | 
+		                   each reportsAsPagesUsing: notebook ].
+
+	meterPresenters do: [ :each | notebook addPage: each ].
+
+	notebook openWithSpec title: case asString
+]
+
+{ #category : #API }
 BlProfileRunner >> openUIs [
 
 	meters do: #openUI
@@ -148,23 +165,25 @@ BlProfileRunner >> profilers: aCollection [
 
 { #category : #running }
 BlProfileRunner >> run [
-
-	self withBlocParametersDo: [ 
-		self withStartedMetersDo: [ 
-			case openSpace.
-			[ case executeBody ] ensure: [ case closeSpace ] ] ]
-]
-
-{ #category : #running }
-BlProfileRunner >> runIgnoringOpeningSpace [
+	"Profile the body of the case."
 
 	self withBlocParametersDo: [ 
 		case openSpace.
-		self withStartedMetersDo: [ 
-			[ case executeBody ] ensure: [ case closeSpace ] ] ]
+		[ self withStartedMetersDo: [ case executeBody ] ] 
+			ensure: [ case closeSpace ] ]
 ]
 
 { #category : #running }
+BlProfileRunner >> runOnOpen [
+	"Profile the opening of the case."
+
+	self withBlocParametersDo: [ 
+		[ self withStartedMetersDo: [ case openSpace ] ]
+			ensure: [ case closeSpace ] ]
+
+]
+
+{ #category : #private }
 BlProfileRunner >> withBlocParametersDo: aBlockClosure [
 
 	| systemHostClass systemSpartaCanvas |
@@ -182,7 +201,7 @@ BlProfileRunner >> withBlocParametersDo: aBlockClosure [
 
 ]
 
-{ #category : #running }
+{ #category : #private }
 BlProfileRunner >> withStartedMetersDo: aBlockClosure [
 
 	meters do: [ :each |

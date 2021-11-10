@@ -71,6 +71,15 @@ BlFrameMeter >> reportOn: stream [
 ]
 
 { #category : #API }
+BlFrameMeter >> reportsAsPagesUsing: aBuilder [
+
+	^ { (SpNotebookPage title: 'FPS' provider: [ 
+		   aBuilder newText
+			   text: self reportAsString;
+			   yourself ]) }
+]
+
+{ #category : #API }
 BlFrameMeter >> startMetering [
 	"Start a high-priority process that will tally the space's frame id. The id of a space increases on every new frame.
 	"

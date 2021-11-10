@@ -14,6 +14,14 @@ BlTelemetryMeter >> openUI [
 ]
 
 { #category : #API }
+BlTelemetryMeter >> reportsAsPagesUsing: aBuilder [
+
+	^ { (SpNotebookPage
+		   title: 'Telemetry'
+		   provider: [ loggerCopy inspectorTreeIn: aBuilder ]) }
+]
+
+{ #category : #API }
 BlTelemetryMeter >> startMetering [
 
 	BlTelemetryLogger instance
