@@ -1,3 +1,6 @@
+"
+I'm a profiling case where a text editor is scrolled down multiple times.
+"
 Class {
 	#name : #BlTextEditorProfileCase,
 	#superclass : #BlProfileCase,
@@ -10,7 +13,7 @@ Class {
 }
 
 { #category : #hooks }
-BlTextEditorProfileCase >> executeAfterOpen [ 
+BlTextEditorProfileCase >> executeBody [ 
 
 	self lapseToWaitBetween wait.
 	self numberOfScrollDowns timesRepeat: [ |b|

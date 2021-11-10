@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #examples }
-BlProfileRunner class >> example [
+BlProfileRunner class >> exampleAll [
 
 	| hosts canvases cases runners |
 	hosts := { BlOSWindowSDL2Host. BlMorphicWindowHost }.
@@ -41,6 +41,26 @@ BlProfileRunner class >> example [
 
 	[	runners do: #runIgnoringOpeningSpace.
 		runners do: #openUIs ] fork.
+
+]
+
+{ #category : #examples }
+BlProfileRunner class >> exampleOnlyOneCase [
+
+	| case runner |
+	case := BlBoidsProfileCase new
+		hostClass: BlOSWindowSDL2Host;
+		spartaCanvasClass: BlSpartaCairoCanvasBuilder;
+		yourself.
+
+	runner := (BlProfileRunner newForCase: case)
+		enableTelemetry;
+		enableFPS;
+		enableFFILogger;
+		enableASProfiler;
+		yourself.
+
+	[ runner runIgnoringOpeningSpace; openUIs ] fork.
 
 ]
 
@@ -132,7 +152,7 @@ BlProfileRunner >> run [
 	self withBlocParametersDo: [ 
 		self withStartedMetersDo: [ 
 			case openSpace.
-			[ case executeAfterOpen ] ensure: [ case closeSpace ] ] ]
+			[ case executeBody ] ensure: [ case closeSpace ] ] ]
 ]
 
 { #category : #running }
@@ -141,7 +161,7 @@ BlProfileRunner >> runIgnoringOpeningSpace [
 	self withBlocParametersDo: [ 
 		case openSpace.
 		self withStartedMetersDo: [ 
-			[ case executeAfterOpen ] ensure: [ case closeSpace ] ] ]
+			[ case executeBody ] ensure: [ case closeSpace ] ] ]
 ]
 
 { #category : #running }

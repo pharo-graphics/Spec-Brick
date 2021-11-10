@@ -1,5 +1,5 @@
 "
-Profiling case where Boids example is opened in a window during some seconds.
+Profiling case where Boids example is shown in a space during some seconds.
 "
 Class {
 	#name : #BlBoidsProfileCase,
@@ -23,7 +23,7 @@ BlBoidsProfileCase >> duration: anObject [
 ]
 
 { #category : #hooks }
-BlBoidsProfileCase >> executeAfterOpen [
+BlBoidsProfileCase >> executeBody [
 
 	self duration wait
 ]

@@ -1,3 +1,13 @@
+"
+I'm a Bloc case to be profiled. 
+
+Concrete cases define several hooks:
+- newElement, that answers a BlElement that will be added and shown in a space.
+- executeBody, that defines the code to profile.
+
+Cases have a hostClass and a spartaCanvasClass that must be set to the space and the Bloc global before openSpace.
+
+"
 Class {
 	#name : #BlProfileCase,
 	#superclass : #Object,
@@ -9,14 +19,14 @@ Class {
 	#category : #'Spec-Brick-Profiling'
 }
 
-{ #category : #initialization }
+{ #category : #API }
 BlProfileCase >> closeSpace [
 
 	space close
 ]
 
-{ #category : #hooks }
-BlProfileCase >> executeAfterOpen [
+{ #category : #API }
+BlProfileCase >> executeBody [
 ]
 
 { #category : #accessing }
@@ -46,7 +56,7 @@ BlProfileCase >> newElement [
 	^ self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 BlProfileCase >> openSpace [
 
 	self flag: #todo. "Handle Host and SpartaCanvas here? (instead of in runner)"
