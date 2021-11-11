@@ -95,6 +95,12 @@ BlProfileRunner >> enableASProfiler [
 ]
 
 { #category : #convenience }
+BlProfileRunner >> enableFFICounter [
+
+	self addMeter: BlFFICounter new
+]
+
+{ #category : #convenience }
 BlProfileRunner >> enableFFILogger [
 
 	self addMeter: BlFFILogger new
