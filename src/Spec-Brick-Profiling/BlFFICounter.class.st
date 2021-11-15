@@ -8,12 +8,6 @@ Class {
 }
 
 { #category : #API }
-BlFFICounter >> openUI [
-
-	self notYetImplemented
-]
-
-{ #category : #API }
 BlFFICounter >> reportsAsPagesUsing: aBuilder [
 
 	^ { (SpNotebookPage title: 'FFI Function Name Counts' provider: [ 

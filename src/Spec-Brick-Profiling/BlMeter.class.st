@@ -30,12 +30,6 @@ BlMeter >> case: aCase [
 ]
 
 { #category : #API }
-BlMeter >> openUI [
-
-	self subclassResponsibility
-]
-
-{ #category : #API }
 BlMeter >> reportsAsPagesUsing: aBuilder [
 
 	self subclassResponsibility

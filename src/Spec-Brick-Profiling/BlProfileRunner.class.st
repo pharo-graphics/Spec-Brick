@@ -50,12 +50,64 @@ BlProfileRunner class >> exampleAll [
 ]
 
 { #category : #examples }
+BlProfileRunner class >> exampleAll_tmp [
+
+	| hosts canvases cases runners |
+	hosts := { BlOSWindowSDL2Host. BlMorphicWindowHost }.
+	canvases := { BlSpartaCairoCanvasBuilder. BlSpartaSkiaCanvasBuilder}.
+	cases := { BlSimpleElementProfileCase new }.
+	runners := hosts flatCollect: [:eachHost |
+		canvases flatCollect: [:eachCanvas |
+			cases collect: [ :eachCase |
+				| case |
+				case := eachCase copy
+					hostClass: eachHost;
+					spartaCanvasClass: eachCanvas;
+					yourself.
+
+				(BlProfileRunner newForCase: case)
+					enableTelemetry;
+					enableFPS;
+					enableFFILogger;
+					enableFFICounter;
+					enableASProfiler;
+					yourself
+
+				] ] ].
+
+	[	runners do: #run.
+		runners do: #openMeterReports ] fork.
+
+]
+
+{ #category : #examples }
 BlProfileRunner class >> exampleOnlyOneCase [
 
 	| case runner |
 	case := BlBoidsProfileCase new
 		hostClass: BlOSWindowSDL2Host;
 		spartaCanvasClass: BlSpartaCairoCanvasBuilder;
+		yourself.
+
+	runner := (BlProfileRunner newForCase: case)
+		enableTelemetry;
+		enableFPS;
+		enableFFICounter;
+		enableFFILogger;
+		enableASProfiler;
+		yourself.
+
+	[ runner run; openMeterReports ] fork.
+
+]
+
+{ #category : #examples }
+BlProfileRunner class >> exampleOnlyOneCase_tmp [
+
+	| case runner |
+	case := BlSimpleElementProfileCase new
+		hostClass: BlOSWindowSDL2Host;
+		spartaCanvasClass: BlSpartaSkiaCanvasBuilder;
 		yourself.
 
 	runner := (BlProfileRunner newForCase: case)
@@ -143,13 +195,6 @@ BlProfileRunner >> openMeterReports [
 		provider: [ Smalltalk tools inspector onObject: self ].
 
 	notebook openWithSpec title: case asString
-]
-
-{ #category : #API }
-BlProfileRunner >> openUIs [
-
-	meters do: #openUI
-
 ]
 
 { #category : #printing }

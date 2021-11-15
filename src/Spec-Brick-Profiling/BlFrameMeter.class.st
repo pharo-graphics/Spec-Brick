@@ -19,15 +19,6 @@ BlFrameMeter >> fpsFrom: frameAndMicrosendTimestampA to: frameAndMicrosendTimest
 
 ]
 
-{ #category : #API }
-BlFrameMeter >> openUI [
-
-	UIManager default 
-		edit: self reportAsString
-		label: 'Frame report'
-
-]
-
 { #category : #private }
 BlFrameMeter >> registerSampleNow [
 

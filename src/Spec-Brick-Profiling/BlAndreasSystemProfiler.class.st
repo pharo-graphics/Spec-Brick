@@ -8,40 +8,6 @@ Class {
 }
 
 { #category : #API }
-BlAndreasSystemProfiler >> openUI [
-
-	"profiler doReport."
-
-	UIManager default edit: (String streamContents: [ :strm |
-		profiler reportGCStatsOn: strm.
-		profiler reportProcessStatsOn: strm.
-		]) label: 'GC and Process Metrics'.
-
-	profiler saucoAsReport 
-		colorMap: (SaCategoryPrefixColorMap new 
-			mapPrefixes: #(
-				'Fenster'
-				'Sparta-Cairo'
-				'Sparta-Skia'
-				'Sparta')
-				from: (Color fromHexString: 'b721ff');
-			mapPrefixes: #(
-				'Bloc-Universe'
-				'Bloc-Space'
-				'BlocHost'
-				'Bloc')
-				from: (Color fromHexString: 'F1C40F');
-			mapPrefixes: #(
-				'BlocPac'
-				'Brick'
-				'Spec-Brick')
-				from: (Color fromHexString: '009efd');
-			yourself)	;
-		inspect.
-
-]
-
-{ #category : #API }
 BlAndreasSystemProfiler >> reportsAsPagesUsing: aBuilder [
 
 	^ { 

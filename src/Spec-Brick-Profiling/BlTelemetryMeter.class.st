@@ -8,12 +8,6 @@ Class {
 }
 
 { #category : #API }
-BlTelemetryMeter >> openUI [
-
-	loggerCopy inspect
-]
-
-{ #category : #API }
 BlTelemetryMeter >> reportsAsPagesUsing: aBuilder [
 
 	^ { (SpNotebookPage

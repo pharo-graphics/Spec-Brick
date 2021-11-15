@@ -8,12 +8,6 @@ Class {
 }
 
 { #category : #API }
-BlFFILogger >> openUI [
-
-	(TFLMainPresenter on: loggerCopy) openWithSpec
-]
-
-{ #category : #API }
 BlFFILogger >> reportsAsPagesUsing: aBuilder [
 
 	^ { (SpNotebookPage
