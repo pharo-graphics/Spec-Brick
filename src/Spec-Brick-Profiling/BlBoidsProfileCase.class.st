@@ -3,33 +3,36 @@ Profiling case where Boids example is shown in a space during some seconds.
 "
 Class {
 	#name : #BlBoidsProfileCase,
-	#superclass : #BlProfileCase,
+	#superclass : #BlFixedDurationProfileCase,
 	#instVars : [
-		'duration'
+		'boidsSkyElementClass'
 	],
 	#category : #'Spec-Brick-Profiling'
 }
 
 { #category : #accessing }
-BlBoidsProfileCase >> duration [
+BlBoidsProfileCase >> boidsSkyElementClass [
 
-	^ duration ifNil: [ duration := 10 seconds ]
+	^ boidsSkyElementClass
 ]
 
 { #category : #accessing }
-BlBoidsProfileCase >> duration: anObject [
+BlBoidsProfileCase >> boidsSkyElementClass: aBoidsSkyElementClass [
 
-	duration := anObject
+	boidsSkyElementClass := aBoidsSkyElementClass
 ]
 
 { #category : #hooks }
-BlBoidsProfileCase >> executeBody [
+BlBoidsProfileCase >> initialize [ 
 
-	self duration wait
+	super initialize.
+	
+	boidsSkyElementClass := BoidsCustomDrawSkyElement
+
 ]
 
 { #category : #hooks }
 BlBoidsProfileCase >> newElement [
 
-	^ BoidsSkyElement exampleElement
+	^ boidsSkyElementClass new
 ]

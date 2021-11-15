@@ -134,9 +134,13 @@ BlProfileRunner >> openMeterReports [
 	| notebook meterPresenters |
 	notebook := SpNotebookPresenter new.
 	meterPresenters := meters flatCollect: [ :each | 
-		                   each reportsAsPagesUsing: notebook ].
+		each reportsAsPagesUsing: notebook ].
 
 	meterPresenters do: [ :each | notebook addPage: each ].
+
+	notebook
+		addPageTitle: 'Inspect'
+		provider: [ Smalltalk tools inspector onObject: self ].
 
 	notebook openWithSpec title: case asString
 ]
