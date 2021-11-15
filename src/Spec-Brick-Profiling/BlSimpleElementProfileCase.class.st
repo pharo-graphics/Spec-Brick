@@ -1,3 +1,6 @@
+"
+I'm a profiling case with an animated BlElement.
+"
 Class {
 	#name : #BlSimpleElementProfileCase,
 	#superclass : #BlFixedDurationProfileCase,
@@ -11,8 +14,9 @@ Class {
 BlSimpleElementProfileCase >> newElement [
 
 	^ element := BlElement new
-		relocate: 50 asPoint;
-		border: (BlBorder paint: Color gray width: 3);
+		relocate: 100 asPoint;
+		size: 100 asPoint;
+		border: (BlBorder paint: Color gray width: 4);
 		addAnimation: (self newSteppingAnimation);
 		yourself
 ]
@@ -20,19 +24,5 @@ BlSimpleElementProfileCase >> newElement [
 { #category : #'instance creation' }
 BlSimpleElementProfileCase >> newSteppingAnimation [
 
-	| colorGenerator |
-	colorGenerator := Generator on: [ :generator | 
-		| nextIndex wheel|
-		nextIndex := 1.
-		wheel := Color wheel: 50.
-		[ generator yield: (wheel at: nextIndex).
-		nextIndex := (nextIndex + 1) \\ wheel size + 1 ] repeat ].
-
-	^ BlNumberTransition new
-		  from: 0;
-		  to: 1;
-		  onStepDo: [ :t |
-			element background: colorGenerator next ];
-		  beInfinite;
-		  yourself
+	^ self subclassResponsibility
 ]
