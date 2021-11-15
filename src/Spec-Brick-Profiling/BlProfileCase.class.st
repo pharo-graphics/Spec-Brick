@@ -49,6 +49,20 @@ BlProfileCase >> initialize [
 	space := BlSpace new
 ]
 
+{ #category : #printing }
+BlProfileCase >> label [
+
+	| className ending beginning |
+	beginning := 'Bl'.
+	ending := 'ProfileCase'.
+
+	className := self className.
+	((className endsWith: ending) and: [ 
+		 className beginsWith: beginning ]) ifFalse: [ self notYetImplemented ].
+
+	^ (className allButFirst: beginning size) allButLast: ending size
+]
+
 { #category : #hooks }
 BlProfileCase >> newElement [
 	"Answer the element under study."
@@ -81,6 +95,18 @@ BlProfileCase >> printOn: aStream [
 		print: spartaCanvasClass label;
 		nextPutAll: ')'.
 
+]
+
+{ #category : #printing }
+BlProfileCase >> shortDescription [
+
+	^ String streamContents: [ :aStream | 
+		  aStream
+			  nextPutAll: self label;
+			  nextPutAll: ' | ';
+			  nextPutAll: hostClass label;
+			  nextPutAll: ' | ';
+			  nextPutAll: spartaCanvasClass label ]
 ]
 
 { #category : #accessing }

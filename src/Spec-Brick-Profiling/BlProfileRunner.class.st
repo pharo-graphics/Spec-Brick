@@ -191,10 +191,13 @@ BlProfileRunner >> openMeterReports [
 	meterPresenters do: [ :each | notebook addPage: each ].
 
 	notebook
-		addPageTitle: 'Inspect'
+		addPageTitle: 'Raw'
 		provider: [ Smalltalk tools inspector onObject: self ].
 
-	notebook openWithSpec title: case asString
+	notebook openWithSpec
+		title: case shortDescription;
+		extent: 800@600
+
 ]
 
 { #category : #printing }
