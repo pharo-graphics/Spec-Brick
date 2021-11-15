@@ -36,6 +36,21 @@ Boid class >> newIn: aBoidsSimulation [
 		yourself
 ]
 
+{ #category : #'instance creation' }
+Boid class >> newIn: aBoidsSimulation random: aRandom [
+
+	^ (self newIn: aBoidsSimulation)
+		color: (Color random: aRandom);
+		position:
+			(aBoidsSimulation extent x atRandom: aRandom) @ 
+			(aBoidsSimulation extent y atRandom: aRandom);
+		velocity:
+			(aBoidsSimulation velocityLimit - ((2 * aBoidsSimulation velocityLimit) atRandom: aRandom)) @
+			(aBoidsSimulation velocityLimit - ((2 * aBoidsSimulation velocityLimit) atRandom: aRandom));
+		yourself
+
+]
+
 { #category : #'flocking rules' }
 Boid >> align [
 	"Steer towards average heading of flockmates."
@@ -80,7 +95,7 @@ Boid >> cohere [
 { #category : #accessing }
 Boid >> color [
 
-	^ color ifNil: [ color := Color random ]
+	^ color
 ]
 
 { #category : #accessing }
@@ -229,7 +244,7 @@ Boid >> printOn: aStream [
 
 { #category : #accessing }
 Boid >> radius [
-	^radius ifNil: [ radius := self class defaultRadius ] 
+	^radius ifNil: [ radius := 7 ] 
 ]
 
 { #category : #accessing }

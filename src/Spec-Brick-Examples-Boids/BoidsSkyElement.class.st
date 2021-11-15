@@ -1,7 +1,10 @@
 "
-I'm an example of drawing boids simulation by overriding #drawOnSpartaCanvas:
+I'm a representation of a BoidsSimulation in Bloc.
 
-See an example on class side.
+Please refer to that class for more information.
+
+My subclasses define alternative implementations to draw the boids in Bloc.
+
 "
 Class {
 	#name : #BoidsSkyElement,
@@ -13,71 +16,11 @@ Class {
 	#category : #'Spec-Brick-Examples-Boids-UI-Bloc'
 }
 
-{ #category : #examples }
-BoidsSkyElement class >> exampleElement [
+{ #category : #initialization }
+BoidsSkyElement >> boidWasAddedToSimulation: aBoid [
+	"Hook to act after a new boid was added to the simulation"
 
-	| exampleElement |
-	exampleElement := self new
-		  ensureStepping;
-		  yourself.
-
-	exampleElement constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
-
-	^ exampleElement
-]
-
-{ #category : #examples }
-BoidsSkyElement class >> exampleOpenInNewSpace [
-
-	^ self exampleElement openInNewSpace
-]
-
-{ #category : #drawing }
-BoidsSkyElement >> drawOnSpartaCanvas: aCanvas [
-
-	super drawOnSpartaCanvas: aCanvas.
-
-	simulation boids do: [ :each |
-		self
-			drawOnSpartaCanvas: aCanvas bodyOf: each;
-			drawOnSpartaCanvas: aCanvas velocityOf: each ]
-
-]
-
-{ #category : #drawing }
-BoidsSkyElement >> drawOnSpartaCanvas: aCanvas bodyOf: aBoid [
-	"Draw the body of a boid."
-	
-	| aPath |
-	aPath := aCanvas shape
-		circleAt: aBoid position
-		radius: aBoid radius.
-	
-	aCanvas figure
-		path: aPath;
-		background: aBoid color;
-		border: aBoid color muchDarker;
-		width: 1;
-		draw
-
-]
-
-{ #category : #drawing }
-BoidsSkyElement >> drawOnSpartaCanvas: aCanvas velocityOf: aBoid [
-	"Draw the tail of the boid, that indicates it's speed."
-
-	| aPath |
-	aPath := aCanvas shape
-		line: aBoid position
-		to: aBoid position - aBoid velocity.
-	
-	aCanvas figure
-		path: aPath;
-		border: aBoid color muchDarker;
-		width: 1;
-		draw
+	self subclassResponsibility
 
 ]
 
@@ -102,18 +45,27 @@ BoidsSkyElement >> ensureStepping [
 BoidsSkyElement >> initialize [
 
 	super initialize.
-	self background: Color lightGray.
+	self 
+		background: Color lightGray;
+		  constraintsDo: [ :c | 
+			  c horizontal matchParent.
+			  c vertical matchParent ];
+		subscribeClickToAddBoid;
+		subscribeExtentChangeToResizeSimulation "--> This is key because 
+			simulation is initialized on first resize."
 
-	self initializeSimulation.
-	self subscribeResizing.
-	self subscribeClick.
 ]
 
 { #category : #initialization }
 BoidsSkyElement >> initializeSimulation [
+	"Initialize the simulation and start stepping. This requires that my area is not zero."
+
+	simulation := BoidsSimulation exampleWithSomeBoidsExtent: self size asIntegerPoint.
+
+	simulation boids do: [ :each |
+		self boidWasAddedToSimulation: each ].
 	
-	simulation := BoidsSimulation exampleWithManyBoids.
-	simulation extent: self size asIntegerPoint.
+	self ensureStepping.
 
 ]
 
@@ -148,19 +100,30 @@ BoidsSkyElement >> step [
 ]
 
 { #category : #initialization }
-BoidsSkyElement >> subscribeClick [
+BoidsSkyElement >> subscribeClickToAddBoid [
 
 	self
 		addEventHandlerOn: BlClickEvent
 		do: [ :anEvent |
-			simulation addRandomBoid position: anEvent localPosition.
-				self invalidate; requestLayout. ]
+			| aBoid |
+			aBoid := Boid newIn: simulation random: SharedRandom globalGenerator.
+			aBoid position: anEvent localPosition.
+			simulation addBoid: aBoid.
+			self boidWasAddedToSimulation: aBoid ]
+
 ]
 
 { #category : #initialization }
-BoidsSkyElement >> subscribeResizing [
+BoidsSkyElement >> subscribeExtentChangeToResizeSimulation [
 
 	self
 		addEventHandlerOn: BlElementExtentChangedEvent
-		do: [ :anEvent | simulation extent: self size asIntegerPoint ]
+		do: [ :anEvent |
+			"The first time this event occurs, it just initializes the boids.
+			The next times, the simulation extent must be updated."
+			simulation
+				ifNil: [ self initializeSimulation ]
+				ifNotNil: [ 
+					self size asIntegerPoint traceCr.
+					simulation extent: self size asIntegerPoint ] ]
 ]

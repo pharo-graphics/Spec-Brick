@@ -1,3 +1,7 @@
+"
+I'm a Spec2 interface for a BoidsSkyElement, with actions to live play with the simulation.
+
+"
 Class {
 	#name : #BoidsSkyPresenter,
 	#superclass : #SpPresenter,
@@ -5,10 +9,10 @@ Class {
 		'toolbar',
 		'skyPresenter',
 		'toggleCirclingButton',
-		'simulationElement',
 		'startButton',
 		'stopButton',
-		'stepButton'
+		'stepButton',
+		'boidsSkyElement'
 	],
 	#category : #'Spec-Brick-Examples-Boids-UI-Spec'
 }
@@ -29,7 +33,7 @@ BoidsSkyPresenter class >> exampleBloc1 [
 		useBackend: #Brick;
 		yourself.
 
-	model := BoidsSkyElement exampleElement.
+	model := BoidsCustomDrawSkyElement new.
 	presenter := self newApplication: app model: model.
 	presenter openWithSpec
 ]
@@ -42,36 +46,42 @@ BoidsSkyPresenter class >> exampleBloc2 [
 		useBackend: #Brick;
 		yourself.
 
-	model := BoidsSkyUsingGeometryElement exampleElement.
+	model := BoidsSkyUsingGeometryElement new.
 	presenter := self newApplication: app model: model.
 	presenter openWithSpec
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
+BoidsSkyPresenter >> doInspectSimulation [
+
+	boidsSkyElement simulation inspect
+]
+
+{ #category : #actions }
 BoidsSkyPresenter >> doStart [
 
-	simulationElement ensureStepping.
+	boidsSkyElement ensureStepping.
 	self refreshToolbar.
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 BoidsSkyPresenter >> doStep [
 
-	simulationElement step
+	boidsSkyElement step
 	"No need to refresh toolbar in this case"
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 BoidsSkyPresenter >> doStop [
 
-	simulationElement ensureNotStepping.
+	boidsSkyElement ensureNotStepping.
 	self refreshToolbar.
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 BoidsSkyPresenter >> doToggleCircling [
 
-	simulationElement simulation toggleCircling.
+	boidsSkyElement simulation toggleCircling.
 	self refreshToolbar.
 ]
 
@@ -81,11 +91,7 @@ BoidsSkyPresenter >> initializePresenters [
 	super initializePresenters.
 
 	skyPresenter := self instantiate: SpBlElementPresenter.
-
-	simulationElement constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
-	skyPresenter element: simulationElement.
+	skyPresenter element: boidsSkyElement.
 	
 	self initializeToolbar.
 	self refreshToolbar.
@@ -123,6 +129,12 @@ BoidsSkyPresenter >> initializeToolbar [
 		icon: (self iconNamed: #smallUpdate);
 		yourself).
 
+	toolbar addItem: (self newToolbarButton
+		action: [ self doInspectSimulation ];
+		help: 'Inspect' translated;
+		icon: (self iconNamed: #smallInspectIt);
+		yourself).
+
 ]
 
 { #category : #initialization }
@@ -138,19 +150,20 @@ BoidsSkyPresenter >> initializeWindow: aWindowPresenter [
 { #category : #initialization }
 BoidsSkyPresenter >> refreshToolbar [
 
-	startButton enabled: simulationElement isSteppingAnimation not.
-	stepButton enabled: simulationElement isSteppingAnimation not.
-	stopButton enabled: simulationElement isSteppingAnimation.
+	startButton enabled: boidsSkyElement isSteppingAnimation not.
+	stepButton enabled: boidsSkyElement isSteppingAnimation not.
+	stopButton enabled: boidsSkyElement isSteppingAnimation.
 	
+	boidsSkyElement simulation ifNotNil: [
 	toggleCirclingButton label: 
-		(simulationElement simulation isCircling
+		(boidsSkyElement simulation isCircling
 			ifTrue: [ 'Circle' ]
-			ifFalse: [ 'Free' ])
+			ifFalse: [ 'Free' ])]
 
 ]
 
 { #category : #initialization }
-BoidsSkyPresenter >> setModelBeforeInitialization: aSkyElement [
+BoidsSkyPresenter >> setModelBeforeInitialization: aBoidsSkyElement [
 
-	simulationElement := aSkyElement
+	boidsSkyElement := aBoidsSkyElement
 ]

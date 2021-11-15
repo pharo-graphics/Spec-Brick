@@ -1,8 +1,7 @@
 "
-I render a bunch of Boids on the sky. I am inspired by AthensDemoMorph.
+I render a bunch of Boids on the sky.
 
-To see in action, do:
-MorphicAthensExample new.
+For more information, refer to `MorphicAthensExample`.
 "
 Class {
 	#name : #BoidsSimulationMorph,
@@ -39,8 +38,7 @@ BoidsSimulationMorph >> initialize [
 { #category : #initialization }
 BoidsSimulationMorph >> initializeSimulation [
 	
-	simulation := BoidsSimulation exampleWithManyBoids.
-	simulation extent: self defaultExtent.
+	simulation := BoidsSimulation exampleWithSomeBoidsExtent: self defaultExtent.
 
 ]
 

@@ -1,3 +1,21 @@
+"
+I'm an implementation of boids, a simulation of flocking creatures.
+
+The Boid class is my key collaborator.
+
+The basic flocking model consists of three simple steering behaviors which describe how an individual boid maneuvers based on the positions and velocities its nearby flockmates:
+
+* Separation: steer to avoid crowding local flockmates alignment diagram 	
+* Alignment: steer towards the average heading of local flockmates cohesion diagram
+* Cohesion: steer to move toward the average position of local flockmates
+
+I also implement:
+* Fall through: If a flock falls off one edge of the sky, it reappear at the opposite edge.
+* Circling: When enabled, boids tend to circle around the center of the sky.
+
+Reference: http://www.red3d.com/cwr/boids/
+
+"
 Class {
 	#name : #BoidsSimulation,
 	#superclass : #Model,
@@ -18,44 +36,40 @@ Class {
 }
 
 { #category : #examples }
-BoidsSimulation class >> exampleWithManyBoids [
+BoidsSimulation class >> exampleWithSomeBoidsExtent: anIntegerPoint [
 
-	| instance |
-	instance := self new.
-	instance extent: 100 asPoint. "ToDo"
-
-	"Add a bunch of new random boids."
-	50 timesRepeat: [ instance addRandomBoid ].
-
-	^ instance	
+	^ self
+		  newExtent: anIntegerPoint
+		  random: SharedRandom globalGenerator
+		  numberOfBoids: 50
 ]
 
-{ #category : #private }
+{ #category : #'instance creation' }
+BoidsSimulation class >> newExtent: anIntegerPoint [
+	
+	^ self new
+		extent: anIntegerPoint;
+		yourself
+]
+
+{ #category : #'instance creation' }
+BoidsSimulation class >> newExtent: anIntegerPoint random: aRandom numberOfBoids: aNumber [
+
+	| aSimulation |
+	aSimulation := self newExtent: anIntegerPoint.
+
+	aNumber timesRepeat: [ 
+		aSimulation addBoid: 
+			(Boid newIn: aSimulation random: aRandom) ].
+
+	^ aSimulation
+]
+
+{ #category : #accessing }
 BoidsSimulation >> addBoid: aBoid [
 	"Add a new boid with a initial position and velocity already established."
 
 	^ boids add: aBoid
-]
-
-{ #category : #private }
-BoidsSimulation >> addRandomBoid [
-	"Add a new boid with a random position and velocity. Extent needs to be established as a precondition."
-
-	| position velocity newBoid |
-	position := 
-		(extent x atRandom) @ 
-		(extent y atRandom).
-
-	velocity :=
-		(velocityLimit - (2 * velocityLimit) atRandom) @
-		(velocityLimit - (2 * velocityLimit) atRandom).
-	
-	newBoid := self newBoid
-		position: position;
-		velocity: velocity;
-		yourself.
-	
-	^ self addBoid: newBoid
 ]
 
 { #category : #accessing }
@@ -118,8 +132,10 @@ BoidsSimulation >> extent [
 ]
 
 { #category : #accessing }
-BoidsSimulation >> extent: aPoint [
-	extent := aPoint
+BoidsSimulation >> extent: anIntegerPoint [
+	"Set the extent, with a Point whose coordinates are Integer."
+
+	extent := anIntegerPoint
 ]
 
 { #category : #moving }

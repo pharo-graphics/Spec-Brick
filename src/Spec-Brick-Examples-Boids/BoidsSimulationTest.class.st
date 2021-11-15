@@ -11,9 +11,7 @@ Class {
 BoidsSimulationTest >> testFallThrough [
 
 	| simulation boid |
-	simulation := BoidsSimulation new
-		bounds: 100@100;
-		yourself.
+	simulation := BoidsSimulation newExtent: 100@100.
 
 	boid := (Boid newIn: simulation)
 		radius: 10;

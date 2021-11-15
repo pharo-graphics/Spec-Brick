@@ -5,75 +5,20 @@ See an example on class side.
 "
 Class {
 	#name : #BoidsSkyUsingGeometryElement,
-	#superclass : #BlElement,
-	#instVars : [
-		'steppingAnimation',
-		'simulation'
-	],
+	#superclass : #BoidsSkyElement,
 	#category : #'Spec-Brick-Examples-Boids-UI-Bloc'
 }
 
 { #category : #examples }
-BoidsSkyUsingGeometryElement class >> exampleElement [
-
-	| exampleElement |
-	exampleElement := self new
-		  ensureStepping;
-		  yourself.
-
-	exampleElement constraintsDo: [ :c |
-		c horizontal matchParent.
-		c vertical matchParent ].
-
-	^ exampleElement
-]
-
-{ #category : #examples }
 BoidsSkyUsingGeometryElement class >> exampleOpenInNewSpace [
 
-	^ self exampleElement openInNewSpace
-]
-
-{ #category : #accessing }
-BoidsSkyUsingGeometryElement >> ensureNotStepping [
-	
-	steppingAnimation ifNotNil: [
-		steppingAnimation stop.
-		steppingAnimation := nil ]
-]
-
-{ #category : #accessing }
-BoidsSkyUsingGeometryElement >> ensureStepping [
-
-	steppingAnimation ifNil: [
-		steppingAnimation := self newSteppingAnimation.
-		self addAnimation: steppingAnimation ]
-
+	^ self new openInNewSpace
 ]
 
 { #category : #initialization }
-BoidsSkyUsingGeometryElement >> initialize [
+BoidsSkyUsingGeometryElement >> boidWasAddedToSimulation: aBoid [
 
-	super initialize.
-	self initializeSimulation.
-	self background: Color lightGray.
-	self subscribeResizing.
-]
-
-{ #category : #initialization }
-BoidsSkyUsingGeometryElement >> initializeSimulation [
-	
-	simulation := BoidsSimulation exampleWithManyBoids.
-	simulation extent: self size asIntegerPoint.
-
-	simulation boids do: [ :each |
-		self addChild: (self newElementForBoid: each) ].
-]
-
-{ #category : #testing }
-BoidsSkyUsingGeometryElement >> isSteppingAnimation [
-
-	^ steppingAnimation isRunning
+	self addChild: (self newElementForBoid: aBoid)
 ]
 
 { #category : #initialization }
@@ -84,26 +29,9 @@ BoidsSkyUsingGeometryElement >> newElementForBoid: aBoid [
 			size: aBoid extent;
 			background: aBoid color;
 			border: (BlBorder paint: aBoid color muchDarker width: 2);
-			geometry: BlTriangleGeometry "BlBoidGeometry" new;
+			geometry: BlTriangleGeometry new;
 			yourself
 
-]
-
-{ #category : #initialization }
-BoidsSkyUsingGeometryElement >> newSteppingAnimation [
-
-	^ BlNumberTransition new
-		  from: 0;
-		  to: 1;
-		  onStepDo: [ :t | self step ];
-		  beInfinite;
-		  yourself
-]
-
-{ #category : #accessing }
-BoidsSkyUsingGeometryElement >> simulation [
-
-	^ simulation
 ]
 
 { #category : #accessing }
@@ -114,17 +42,12 @@ BoidsSkyUsingGeometryElement >> step [
 	self invalidate.
 ]
 
-{ #category : #initialization }
-BoidsSkyUsingGeometryElement >> subscribeResizing [
-
-	self
-		addEventHandlerOn: BlElementExtentChangedEvent
-		do: [ :anEvent | simulation extent: self size ]
-]
-
 { #category : #accessing }
 BoidsSkyUsingGeometryElement >> updateChildrenFromBoids [
 	
-	self childrenDo: [:each | each updateFromBoid ]
+	self childrenDo: [:each |
+		each transformDo: [ :aBuilder |
+			aBuilder rotateBy: each boid velocity degrees.
+			aBuilder translateBy: each boid position ] ]
 
 ]
