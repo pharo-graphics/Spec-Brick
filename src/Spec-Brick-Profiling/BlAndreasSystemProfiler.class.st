@@ -47,7 +47,7 @@ BlAndreasSystemProfiler >> reportsAsPagesUsing: aBuilder [
 	^ { 
 	
 	
-	SpNotebookPage title: 'Stats' provider: [
+	SpNotebookPage title: 'VM Stats' provider: [
 		(aBuilder newText
 			   text: (String streamContents: [ :strm |
 			profiler reportGCStatsOn: strm.

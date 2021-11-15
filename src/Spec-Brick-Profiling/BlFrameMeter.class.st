@@ -24,7 +24,7 @@ BlFrameMeter >> openUI [
 
 	UIManager default 
 		edit: self reportAsString
-		label: 'Frames report'
+		label: 'Frame report'
 
 ]
 
@@ -38,42 +38,63 @@ BlFrameMeter >> registerSampleNow [
 { #category : #printing }
 BlFrameMeter >> reportAsString [
 
-	^ String streamContents: [ :stream | self reportOn: stream ]
+	^ String streamContents: [ :stream | self reportAsStringOn: stream ]
 ]
 
 { #category : #printing }
-BlFrameMeter >> reportOn: stream [
+BlFrameMeter >> reportAsStringOn: stream [
 
 	stream
-		<< 'Number of samples: ';
+		<< 'Number of samples:';
+		cr;
+		tab;
 		print: framesAndMicrosendTimestamps size;
+		cr.
+
+	framesAndMicrosendTimestamps size >= 1 ifFalse: [ ^ self ].
+
+	stream
+		<< 'Frame count:';
+		cr;
+		tab;
+		print: framesAndMicrosendTimestamps last key;
 		cr.
 
 	framesAndMicrosendTimestamps size >= 2 ifFalse: [ ^ self ].
 
 	stream
-		<< 'Frames per second: ';
-		<< (self totalFPS printShowingDecimalPlaces: 1);
+		<< 'Average frequency (frames per second):';
 		cr;
-		<< 'Sampled seconds: ';
+		tab;
+		<< (self totalFPS printShowingDecimalPlaces: 1);
+		<< ' fps';
+		cr;
+		<< 'Sampled seconds:';
+		cr;
+		tab;
 		print: self totalSeconds asFloat;
-		cr;cr.
+		cr.
 
 	framesAndMicrosendTimestamps size > 2 ifFalse: [ ^ self ].
 
-	stream << 'Detail:'; cr.
+	stream << 'Inter-sample frequency:'; cr.
 	framesAndMicrosendTimestamps overlappingPairsWithIndexDo: [ :a :b :index |
 		stream
+			tab;
 			print: index;
+			<< '-';
+			print: index + 1;
 			<< ': ';
 			<< ((self fpsFrom: a to: b) printShowingDecimalPlaces: 1);
+			<< ' fps';
 			cr ]
+
 ]
 
 { #category : #API }
 BlFrameMeter >> reportsAsPagesUsing: aBuilder [
 
-	^ { (SpNotebookPage title: 'FPS' provider: [ 
+	^ { (SpNotebookPage title: 'Frame Report' provider: [ 
 		   aBuilder newText
 			   text: self reportAsString;
 			   yourself ]) }

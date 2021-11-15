@@ -38,13 +38,14 @@ BlProfileRunner class >> exampleAll [
 					enableTelemetry;
 					enableFPS;
 					enableFFILogger;
+					enableFFICounter;
 					enableASProfiler;
 					yourself
 
 				] ] ].
 
 	[	runners do: #run.
-		runners do: #openUIs ] fork.
+		runners do: #openMeterReports ] fork.
 
 ]
 
@@ -60,11 +61,12 @@ BlProfileRunner class >> exampleOnlyOneCase [
 	runner := (BlProfileRunner newForCase: case)
 		enableTelemetry;
 		enableFPS;
+		enableFFICounter;
 		enableFFILogger;
 		enableASProfiler;
 		yourself.
 
-	[ runner run; openUIs ] fork.
+	[ runner run; openMeterReports ] fork.
 
 ]
 

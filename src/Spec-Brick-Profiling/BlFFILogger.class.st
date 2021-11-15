@@ -17,9 +17,9 @@ BlFFILogger >> openUI [
 BlFFILogger >> reportsAsPagesUsing: aBuilder [
 
 	^ { (SpNotebookPage
-		   title: 'FFI logger'
+		   title: 'FFI Recorded Calls'
 		   provider: [ 
-		   aBuilder instantiate: TFLMainPresenter on: loggerCopy ]) }
+		   aBuilder instantiate: TFLCallsPresenter on: loggerCopy ]) }
 ]
 
 { #category : #API }
