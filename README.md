@@ -17,11 +17,45 @@ Other Spec backends are:
 - Morphic (the default)
 - [GTK](https://github.com/pharo-spec/Spec-Gtk)
 
-## Warning
+
+## Supported Features
 
 :warning: 
 This backend still **covers a very small part of Spec**: partial coverage of a few widgets. To see the current state, you can check the Example subsection below, the SUnit tests, and the hierarchy of `SpBrickAdapter`.
 :warning:
+
+This is supported:
+
+- Widgets:
+  - Label
+  - Button
+    - icon + text
+    - enabled/disabled
+  - Tool bar
+  - Menu bar
+  - Text and Text input
+    - enabled/disabled
+  - Drop list (ugly transition open/closed)
+  - List and Table
+    - icon + text
+    - enabled/disabled
+    - columns
+    - header
+    - selection action (single-click)
+    - strong-selection action (double-click and enter key)
+    - context menu (not recursive)
+- Window and Dialog
+- Layouts
+  - Box
+    - Horizontal or vertical
+    - Margin (borderWidth)
+    - spacing:
+    - borderWidth:
+    - For each child:
+      - padding
+      - expand
+  - Paned: similar to box
+
 
 ## Example
 
@@ -66,8 +100,8 @@ Metacello new
 Alternatively, you can do it by terminal (MacOS, linux... and should work as well in Windows with MINGW64). 
 Create a directory and execute `<this_repo>/scripts/build.sh`, which first downloads the Pharo image and VM and then loads the project.
 
-## CI status including dependencies
 
+## CI status including dependencies
 
 | Project | Badge |
 | ------- | ----- |
@@ -77,6 +111,7 @@ Create a directory and execute `<this_repo>/scripts/build.sh`, which first downl
 | BlocPac | [![BlocPac CI](https://github.com/pharo-graphics/bloc-pac/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/bloc-pac/actions/workflows/test.yml) |
 | Brick | [![Brick CI](https://github.com/pharo-graphics/Brick/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Brick/actions/workflows/test.yml) |
 | Spec-Brick | [![Spec-Brick CI](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Spec-Brick/actions/workflows/test.yml) |
+
 
 ## License
 
