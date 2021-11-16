@@ -46,7 +46,7 @@ BlProfileCase >> initialize [
 
 	super initialize.
 
-	space := BlSpace new
+	self resetSpace.
 ]
 
 { #category : #printing }
@@ -83,6 +83,12 @@ BlProfileCase >> openSpace [
 
 ]
 
+{ #category : #copying }
+BlProfileCase >> postCopy [
+
+	self resetSpace
+]
+
 { #category : #printing }
 BlProfileCase >> printOn: aStream [
 
@@ -94,6 +100,13 @@ BlProfileCase >> printOn: aStream [
 		nextPutAll: ', ';
 		print: spartaCanvasClass label;
 		nextPutAll: ')'.
+
+]
+
+{ #category : #initialization }
+BlProfileCase >> resetSpace [
+
+	space := BlSpace new
 
 ]
 
