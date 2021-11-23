@@ -17,9 +17,9 @@ Class {
 { #category : #examples }
 BlCanvasBenchmarkComparison class >> example [
 
-	(self new
+	self new
 		 run;
-		 csvTableString) inspect
+		 inspect
 ]
 
 { #category : #private }
@@ -37,8 +37,8 @@ BlCanvasBenchmarkComparison >> csvTableString [
 
 		benchSelectors sorted do: [:each |
 			| freqOfSkia freqOfCairo |
-			freqOfCairo := (results at: { SpartaCairoExamples. each }) frequency.
-			freqOfSkia := (results at: { SkiaCanvasExamples. each }) frequency.
+			freqOfCairo := (results at: { SpartaCairoExamples. each }) first frequency.
+			freqOfSkia := (results at: { SkiaCanvasExamples. each }) first frequency.
 			stream 
 				<< ('{1};{2};{3};{4}' format: {
 					each allButFirst: self benchmarkSelectiorPrefix size.
@@ -64,6 +64,27 @@ BlCanvasBenchmarkComparison >> initialize [
 	benchSelectors := benchSelectors copyWithout: #benchmarkFillRectangleWithForm.
 
 
+]
+
+{ #category : #'as yet unclassified' }
+BlCanvasBenchmarkComparison >> inspectorForResultingCanvasIn: aBuilder [
+	<inspectorPresentationOrder: 1 title: 'Resulting Canvas'>
+
+	results ifNil: [ ^ aBuilder newNullPresenter ].
+	
+	^ aBuilder newTable 
+		items: benchSelectors;
+		addColumn: ((SpStringTableColumn 
+			evaluated: [ :each | each allButFirst: self benchmarkSelectiorPrefix size ])
+			beNotExpandable;
+			yourself);
+		addColumn: (SpImageTableColumn
+			title: 'Cairo'
+			evaluated: [ :each | (results at: { SpartaCairoExamples. each }) second asMorph ]);
+		addColumn: (SpImageTableColumn
+			title: 'Skia'
+			evaluated: [ :each | (results at: { SkiaCanvasExamples. each }) second asMorph ]);
+		yourself
 ]
 
 { #category : #printing }
@@ -96,12 +117,8 @@ BlCanvasBenchmarkComparison >> run [
 	results := OrderedDictionary new.
 	canvasExamplesClasses do: [ :canvasExamplesClass |
 		benchSelectors do: [ :selector |
-			| result |
-			result := [
-				canvasExamplesClass new perform: selector
-				] value."onErrorDo: [:error | error ]."
 			results
 				at: { canvasExamplesClass. selector }
-				put: result ] ].
-	 
+				put: (canvasExamplesClass new perform: selector) ] ]
+
 ]

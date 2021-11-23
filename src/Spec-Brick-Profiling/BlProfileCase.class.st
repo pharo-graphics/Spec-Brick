@@ -79,7 +79,9 @@ BlProfileCase >> openSpace [
 		addChild: self newElement;
 		forceLayout.
 		
-	space show.
+	space
+		title: self label;
+		show.
 
 ]
 
