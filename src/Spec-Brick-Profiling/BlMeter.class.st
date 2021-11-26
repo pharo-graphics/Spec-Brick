@@ -29,6 +29,18 @@ BlMeter >> case: aCase [
 	case := aCase
 ]
 
+{ #category : #printing }
+BlMeter >> reportAsString [
+
+	^ String streamContents: [ :stream | self reportAsStringOn: stream ]
+]
+
+{ #category : #printing }
+BlMeter >> reportAsStringOn: aStream [
+
+	self subclassResponsibility
+]
+
 { #category : #API }
 BlMeter >> reportsAsPagesUsing: aBuilder [
 

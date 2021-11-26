@@ -27,48 +27,42 @@ BlFrameMeter >> registerSampleNow [
 ]
 
 { #category : #printing }
-BlFrameMeter >> reportAsString [
-
-	^ String streamContents: [ :stream | self reportAsStringOn: stream ]
-]
-
-{ #category : #printing }
 BlFrameMeter >> reportAsStringOn: stream [
 
 	stream
 		<< 'Number of samples:';
-		cr;
+		lf;
 		tab;
 		print: framesAndMicrosendTimestamps size;
-		cr.
+		lf.
 
 	framesAndMicrosendTimestamps size >= 1 ifFalse: [ ^ self ].
 
 	stream
 		<< 'Frame count:';
-		cr;
+		lf;
 		tab;
 		print: framesAndMicrosendTimestamps last key;
-		cr.
+		lf.
 
 	framesAndMicrosendTimestamps size >= 2 ifFalse: [ ^ self ].
 
 	stream
 		<< 'Average frequency (frames per second):';
-		cr;
+		lf;
 		tab;
 		<< (self totalFPS printShowingDecimalPlaces: 1);
 		<< ' fps';
-		cr;
+		lf;
 		<< 'Sampled seconds:';
-		cr;
+		lf;
 		tab;
 		print: self totalSeconds asFloat;
-		cr.
+		lf.
 
 	framesAndMicrosendTimestamps size > 2 ifFalse: [ ^ self ].
 
-	stream << 'Inter-sample frequency:'; cr.
+	stream << 'Inter-sample frequency:'; lf.
 	framesAndMicrosendTimestamps overlappingPairsWithIndexDo: [ :a :b :index |
 		stream
 			tab;
@@ -78,7 +72,7 @@ BlFrameMeter >> reportAsStringOn: stream [
 			<< ': ';
 			<< ((self fpsFrom: a to: b) printShowingDecimalPlaces: 1);
 			<< ' fps';
-			cr ]
+			lf ]
 
 ]
 

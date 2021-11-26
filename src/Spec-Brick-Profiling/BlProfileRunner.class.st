@@ -215,6 +215,24 @@ BlProfileRunner >> profilers: aCollection [
 	meters := aCollection
 ]
 
+{ #category : #API }
+BlProfileRunner >> reportMeterReportsOnStdout [
+
+	| logStream |
+	logStream := Stdio stdout.
+
+	logStream nextPutAll: case shortDescription; lf.
+
+	meters do: [ :each | 
+		logStream 
+			nextPutAll: each asString;
+			lf;
+			nextPutAll: each reportAsString;
+			lf ].
+
+	logStream nextPutAll: '---'; lf.
+]
+
 { #category : #running }
 BlProfileRunner >> run [
 	"Profile the body of the case."
