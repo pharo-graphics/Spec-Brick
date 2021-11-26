@@ -50,7 +50,35 @@ BlProfileRunner class >> exampleAll [
 ]
 
 { #category : #examples }
-BlProfileRunner class >> exampleAll_tmp [
+BlProfileRunner class >> exampleBoidsFFI [
+
+	| hosts canvases cases runners |
+	hosts := { BlOSWindowSDL2Host. BlMorphicWindowHost }.
+	canvases := { BlSpartaCairoCanvasBuilder. BlSpartaSkiaCanvasBuilder}.
+	cases := { BlBoidsProfileCase new }.
+	runners := hosts flatCollect: [:eachHost |
+		canvases flatCollect: [:eachCanvas |
+			cases collect: [ :eachCase |
+				| case |
+				case := eachCase copy
+					hostClass: eachHost;
+					spartaCanvasClass: eachCanvas;
+					yourself.
+
+				(BlProfileRunner newForCase: case)
+					enableFFICounter;
+					enableFFILogger;
+					yourself
+
+				] ] ].
+
+	[	runners do: #run.
+		runners do: #openMeterReports ] fork.
+
+]
+
+{ #category : #examples }
+BlProfileRunner class >> exampleBoidsFPS [
 
 	| hosts canvases cases runners |
 	hosts := { BlOSWindowSDL2Host. BlMorphicWindowHost }.
@@ -77,40 +105,56 @@ BlProfileRunner class >> exampleAll_tmp [
 ]
 
 { #category : #examples }
-BlProfileRunner class >> exampleOnlyOneCase [
+BlProfileRunner class >> exampleBoidsFlameGraph [
 
-	| case runner |
-	case := BlBoidsProfileCase new
-		hostClass: BlOSWindowSDL2Host;
-		spartaCanvasClass: BlSpartaCairoCanvasBuilder;
-		yourself.
+	| hosts canvases cases runners |
+	hosts := { BlOSWindowSDL2Host. BlMorphicWindowHost }.
+	canvases := { BlSpartaCairoCanvasBuilder. BlSpartaSkiaCanvasBuilder}.
+	cases := { BlBoidsProfileCase new }.
+	runners := hosts flatCollect: [:eachHost |
+		canvases flatCollect: [:eachCanvas |
+			cases collect: [ :eachCase |
+				| case |
+				case := eachCase copy
+					hostClass: eachHost;
+					spartaCanvasClass: eachCanvas;
+					yourself.
 
-	runner := (BlProfileRunner newForCase: case)
-		enableTelemetry;
-		enableFPS;
-		enableFFICounter;
-		enableFFILogger;
-		enableASProfiler;
-		yourself.
+				(BlProfileRunner newForCase: case)
+					enableASProfiler;
+					yourself
 
-	[ runner run; openMeterReports ] fork.
+				] ] ].
+
+	[	runners do: #run.
+		runners do: #openMeterReports ] fork.
 
 ]
 
 { #category : #examples }
-BlProfileRunner class >> exampleOnlyOneCase_tmp [
+BlProfileRunner class >> exampleBoidsTelemetry [
 
-	| case runner |
-	case := BlTextEditorProfileCase new
-		hostClass: BlMorphicWindowHost;
-		spartaCanvasClass: BlSpartaCairoCanvasBuilder;
-		yourself.
+	| hosts canvases cases runners |
+	hosts := { BlOSWindowSDL2Host. BlMorphicWindowHost }.
+	canvases := { BlSpartaCairoCanvasBuilder. BlSpartaSkiaCanvasBuilder}.
+	cases := { BlBoidsProfileCase new }.
+	runners := hosts flatCollect: [:eachHost |
+		canvases flatCollect: [:eachCanvas |
+			cases collect: [ :eachCase |
+				| case |
+				case := eachCase copy
+					hostClass: eachHost;
+					spartaCanvasClass: eachCanvas;
+					yourself.
 
-	runner := (BlProfileRunner newForCase: case)
-		enableFPS;
-		yourself.
+				(BlProfileRunner newForCase: case)
+					enableTelemetry;
+					yourself
 
-	[ runner run; openMeterReports ] fork.
+				] ] ].
+
+	[	runners do: #run.
+		runners do: #openMeterReports ] fork.
 
 ]
 
