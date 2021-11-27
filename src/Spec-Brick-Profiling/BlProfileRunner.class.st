@@ -173,6 +173,12 @@ BlProfileRunner >> addMeter: aMeter [
 ]
 
 { #category : #accessing }
+BlProfileRunner >> case [
+
+	^ case
+]
+
+{ #category : #accessing }
 BlProfileRunner >> case: aProfileCase [ 
 	
 	case := aProfileCase 
@@ -216,6 +222,12 @@ BlProfileRunner >> initialize [
 	meters := OrderedCollection new.
 ]
 
+{ #category : #accessing }
+BlProfileRunner >> meters [
+
+	^ meters
+]
+
 { #category : #API }
 BlProfileRunner >> openMeterReports [
 
@@ -245,18 +257,6 @@ BlProfileRunner >> printOn: aStream [
 		print: case;
 		nextPut: $)
 
-]
-
-{ #category : #accessing }
-BlProfileRunner >> profilers [
-
-	^ meters
-]
-
-{ #category : #accessing }
-BlProfileRunner >> profilers: aCollection [
-
-	meters := aCollection
 ]
 
 { #category : #API }

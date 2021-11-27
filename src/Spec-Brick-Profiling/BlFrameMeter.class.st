@@ -19,6 +19,13 @@ BlFrameMeter >> fpsFrom: frameAndMicrosendTimestampA to: frameAndMicrosendTimest
 
 ]
 
+{ #category : #accessing }
+BlFrameMeter >> intermediateFPS [
+
+	^ framesAndMicrosendTimestamps overlappingPairsCollect: [ :a :b | 
+		  self fpsFrom: a to: b ]
+]
+
 { #category : #private }
 BlFrameMeter >> registerSampleNow [
 
@@ -63,14 +70,14 @@ BlFrameMeter >> reportAsStringOn: stream [
 	framesAndMicrosendTimestamps size > 2 ifFalse: [ ^ self ].
 
 	stream << 'Inter-sample frequency:'; lf.
-	framesAndMicrosendTimestamps overlappingPairsWithIndexDo: [ :a :b :index |
+	self intermediateFPS withIndexDo: [ :fps :index |
 		stream
 			tab;
 			print: index;
 			<< '-';
 			print: index + 1;
 			<< ': ';
-			<< ((self fpsFrom: a to: b) printShowingDecimalPlaces: 1);
+			<< (fps printShowingDecimalPlaces: 1);
 			<< ' fps';
 			lf ]
 

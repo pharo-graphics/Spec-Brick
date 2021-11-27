@@ -80,7 +80,7 @@ BlProfileCase >> openSpace [
 		forceLayout.
 		
 	space
-		title: self label;
+		title: self shortDescription;
 		show.
 
 ]
