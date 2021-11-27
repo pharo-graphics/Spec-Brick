@@ -1,7 +1,7 @@
 "
 I'm useful to run and report as String the benchmarks defined in TSpartaExamples.
 
-See example in class-side.
+See examples in class-side.
 "
 Class {
 	#name : #BlCanvasBenchmarkComparison,
@@ -15,39 +15,52 @@ Class {
 }
 
 { #category : #examples }
-BlCanvasBenchmarkComparison class >> example [
+BlCanvasBenchmarkComparison class >> exampleInspect [
 
 	self new
 		 run;
 		 inspect
 ]
 
+{ #category : #examples }
+BlCanvasBenchmarkComparison class >> exampleToStdout [
+
+	DataFrameMarkdownPrinter new
+		stream: Stdio stdout;
+		dataFrame: (BlCanvasBenchmarkComparison new run; asDataFrame);
+		write
+
+]
+
+{ #category : #printing }
+BlCanvasBenchmarkComparison >> asDataFrame [
+
+	| df benchLabels |
+	benchLabels := benchSelectors sorted collect: [ :each | self labelForBenchSelector: each ].
+
+	df := DataFrame
+		withRowNames: benchLabels
+		columnNames: #(Cairo Skia ratio).
+"		columnNames: (#(bench), (canvasExamplesClasses collect: [ :each | each label ]), #(ratio))."
+	benchSelectors sorted doWithIndex: [:each :index |
+		| freqOfSkia freqOfCairo |
+		freqOfCairo := (results at: { SpartaCairoExamples. each }) first frequency.
+		freqOfSkia := (results at: { SkiaCanvasExamples. each }) first frequency.
+		df
+			rowAt: index 
+			put: {
+				freqOfCairo printShowingDecimalPlaces: 2.
+				freqOfSkia printShowingDecimalPlaces: 2.
+				(freqOfCairo / freqOfSkia) printShowingDecimalPlaces: 2 } ].
+
+	^ df 
+
+]
+
 { #category : #private }
 BlCanvasBenchmarkComparison >> benchmarkSelectiorPrefix [
 
 	^ 'benchmark'
-]
-
-{ #category : #printing }
-BlCanvasBenchmarkComparison >> csvTableString [ 
-
-	^ String streamContents: [:stream | 
-
-		stream << 'bench;Cairo;Skia;ratio'; cr.
-
-		benchSelectors sorted do: [:each |
-			| freqOfSkia freqOfCairo |
-			freqOfCairo := (results at: { SpartaCairoExamples. each }) first frequency.
-			freqOfSkia := (results at: { SkiaCanvasExamples. each }) first frequency.
-			stream 
-				<< ('{1};{2};{3};{4}' format: {
-					each allButFirst: self benchmarkSelectiorPrefix size.
-					freqOfCairo printShowingDecimalPlaces: 2.
-					freqOfSkia printShowingDecimalPlaces: 2.
-					(freqOfCairo / freqOfSkia) printShowingDecimalPlaces: 2.
-				}); cr
-		]]
-
 ]
 
 { #category : #initialization }
@@ -88,27 +101,9 @@ BlCanvasBenchmarkComparison >> inspectorForResultingCanvasIn: aBuilder [
 ]
 
 { #category : #printing }
-BlCanvasBenchmarkComparison >> markdownTableString [ 
+BlCanvasBenchmarkComparison >> labelForBenchSelector: aBenchmarkSelector [
 
-	^ String streamContents: [:stream | 
-
-		stream
-			<< '| bench | Cairo | Skia | ratio |'; cr;
-			<< '|:------|-----:|------:|------:|'; cr.
-
-		benchSelectors sorted do: [:each |
-			| freqOfSkia freqOfCairo |
-			freqOfCairo := (results at: { SpartaCairoExamples. each }) frequency.
-			freqOfSkia := (results at: { SkiaCanvasExamples. each }) frequency.
-			stream 
-				<< ('|{1}|{2}|{3}|{4}|' format: {
-					each allButFirst: self benchmarkSelectiorPrefix size.
-					freqOfCairo printShowingDecimalPlaces: 2.
-					freqOfSkia printShowingDecimalPlaces: 2.
-					(freqOfCairo / freqOfSkia) printShowingDecimalPlaces: 2.
-				}); cr
-		]]
-
+	^ aBenchmarkSelector allButFirst: self benchmarkSelectiorPrefix size
 ]
 
 { #category : #running }
