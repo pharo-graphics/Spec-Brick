@@ -1,5 +1,5 @@
 "
-I'm useful to run and report as String the benchmarks defined in TSpartaExamples.
+I'm useful to run and report as String a collection of micro benchmarks defined in `BlCanvasBenchmarkRunner`.
 
 See examples in class-side.
 "
@@ -7,9 +7,9 @@ Class {
 	#name : #BlCanvasBenchmarkComparison,
 	#superclass : #Object,
 	#instVars : [
-		'results',
-		'canvasExamplesClasses',
-		'benchSelectors'
+		'benchSelectors',
+		'canvasClasses',
+		'runners'
 	],
 	#category : #'Spec-Brick-Profiling'
 }
@@ -27,40 +27,35 @@ BlCanvasBenchmarkComparison class >> exampleToStdout [
 
 	DataFrameMarkdownPrinter new
 		stream: Stdio stdout;
-		dataFrame: (BlCanvasBenchmarkComparison new run; asDataFrame);
+		dataFrame: (self new run; asDataFrame);
 		write
 
 ]
 
-{ #category : #printing }
+{ #category : #converting }
 BlCanvasBenchmarkComparison >> asDataFrame [
 
 	| df benchLabels |
-	benchLabels := benchSelectors sorted collect: [ :each | self labelForBenchSelector: each ].
+	benchLabels := benchSelectors collect: [ :each |
+		(runners detect: [ :eachRunner | eachRunner selector = each ]) selectorAsLabel ].
 
 	df := DataFrame
 		withRowNames: benchLabels
 		columnNames: #(Cairo Skia ratio).
-"		columnNames: (#(bench), (canvasExamplesClasses collect: [ :each | each label ]), #(ratio))."
-	benchSelectors sorted doWithIndex: [:each :index |
-		| freqOfSkia freqOfCairo |
-		freqOfCairo := (results at: { SpartaCairoExamples. each }) first frequency.
-		freqOfSkia := (results at: { SkiaCanvasExamples. each }) first frequency.
+
+	benchSelectors doWithIndex: [:each :index |
+		| runnerForSkia runnerForCairo |
+		runnerForCairo := self runnerForCanvas: SpartaCairoCanvas selector: each.
+		runnerForSkia := self runnerForCanvas: SkiaCanvas selector: each.
 		df
 			rowAt: index 
 			put: {
-				freqOfCairo printShowingDecimalPlaces: 2.
-				freqOfSkia printShowingDecimalPlaces: 2.
-				(freqOfCairo / freqOfSkia) printShowingDecimalPlaces: 2 } ].
+				runnerForCairo resultAsLabel.
+				runnerForSkia resultAsLabel.
+				(runnerForCairo result frequency / runnerForSkia result frequency) printShowingDecimalPlaces: 2 } ].
 
 	^ df 
 
-]
-
-{ #category : #private }
-BlCanvasBenchmarkComparison >> benchmarkSelectiorPrefix [
-
-	^ 'benchmark'
 ]
 
 { #category : #initialization }
@@ -68,52 +63,48 @@ BlCanvasBenchmarkComparison >> initialize [
 
 	super initialize.
 	
-	canvasExamplesClasses := TSpartaExamples users sorted: [:a :b | a name < b name ].
+	canvasClasses := { SkiaCanvas. SpartaCairoCanvas }.
 
-	benchSelectors := TSpartaExamples selectors
-		select: [:each | each beginsWith: self benchmarkSelectiorPrefix ].
-
-	"Error in Cairo"
+	benchSelectors := BlCanvasBenchmarkRunner selectorsForBenchmarks sorted.
+	"But avoid error in Cairo"
 	benchSelectors := benchSelectors copyWithout: #benchmarkFillRectangleWithForm.
-
 
 ]
 
-{ #category : #'as yet unclassified' }
-BlCanvasBenchmarkComparison >> inspectorForResultingCanvasIn: aBuilder [
-	<inspectorPresentationOrder: 1 title: 'Resulting Canvas'>
+{ #category : #newtools }
+BlCanvasBenchmarkComparison >> inspectorForRunners: aBuilder [
+	<inspectorPresentationOrder: 1 title: 'Runners'>
 
-	results ifNil: [ ^ aBuilder newNullPresenter ].
-	
-	^ aBuilder newTable 
-		items: benchSelectors;
-		addColumn: ((SpStringTableColumn 
-			evaluated: [ :each | each allButFirst: self benchmarkSelectiorPrefix size ])
-			beNotExpandable;
-			yourself);
-		addColumn: (SpImageTableColumn
-			title: 'Cairo'
-			evaluated: [ :each | (results at: { SpartaCairoExamples. each }) second asMorph ]);
-		addColumn: (SpImageTableColumn
-			title: 'Skia'
-			evaluated: [ :each | (results at: { SkiaCanvasExamples. each }) second asMorph ]);
+	^ aBuilder newList
+		items: (runners sorted: [ :a :b | a selector < b selector ]);
+		display: [ :each | each label ];
 		yourself
 ]
 
-{ #category : #printing }
-BlCanvasBenchmarkComparison >> labelForBenchSelector: aBenchmarkSelector [
+{ #category : #newtools }
+BlCanvasBenchmarkComparison >> inspectorForRunnersContext: aContext [
 
-	^ aBenchmarkSelector allButFirst: self benchmarkSelectiorPrefix size
+	aContext active: runners notNil
 ]
 
 { #category : #running }
 BlCanvasBenchmarkComparison >> run [
 
-	results := OrderedDictionary new.
-	canvasExamplesClasses do: [ :canvasExamplesClass |
-		benchSelectors do: [ :selector |
-			results
-				at: { canvasExamplesClass. selector }
-				put: (canvasExamplesClass new perform: selector) ] ]
+	runners := Array streamContents: [ :stream |
+		canvasClasses do: [ :canvasClass |
+			benchSelectors do: [ :selector |
+				stream nextPut: 
+					(BlCanvasBenchmarkRunner new
+						canvasClass: canvasClass;
+						selector: selector;
+						run;
+						yourself) ] ] ]
+]
 
+{ #category : #accessing }
+BlCanvasBenchmarkComparison >> runnerForCanvas: aSpartaCanvasClass selector: aSymbol [
+
+	^ runners detect: [ :eachRunner | 
+		  eachRunner canvasClass = aSpartaCanvasClass and: [ 
+			  eachRunner selector = aSymbol ] ]
 ]
