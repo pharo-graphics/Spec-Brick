@@ -11,7 +11,8 @@ Class {
 	#superclass : #BlElement,
 	#instVars : [
 		'steppingAnimation',
-		'simulation'
+		'simulation',
+		'randomGenerator'
 	],
 	#category : #'Spec-Brick-Examples-Boids-UI-Bloc'
 }
@@ -45,7 +46,9 @@ BoidsSkyElement >> ensureStepping [
 BoidsSkyElement >> initialize [
 
 	super initialize.
-	self 
+
+	self
+		useFixedRandomGenerator;
 		background: Color lightGray;
 		  constraintsDo: [ :c | 
 			  c horizontal matchParent.
@@ -60,7 +63,10 @@ BoidsSkyElement >> initialize [
 BoidsSkyElement >> initializeSimulation [
 	"Initialize the simulation and start stepping. This requires that my area is not zero."
 
-	simulation := BoidsSimulation exampleWithSomeBoidsExtent: self size asIntegerPoint.
+	simulation := BoidsSimulation
+			newExtent: self size asIntegerPoint
+			random: randomGenerator
+			numberOfBoids: 50.
 
 	simulation boids do: [ :each |
 		self boidWasAddedToSimulation: each ].
@@ -87,6 +93,18 @@ BoidsSkyElement >> newSteppingAnimation [
 ]
 
 { #category : #accessing }
+BoidsSkyElement >> randomGenerator [
+
+	^ randomGenerator
+]
+
+{ #category : #accessing }
+BoidsSkyElement >> randomGenerator: aRandom [
+
+	randomGenerator := aRandom
+]
+
+{ #category : #accessing }
 BoidsSkyElement >> simulation [
 
 	^ simulation
@@ -106,7 +124,7 @@ BoidsSkyElement >> subscribeClickToAddBoid [
 		addEventHandlerOn: BlClickEvent
 		do: [ :anEvent |
 			| aBoid |
-			aBoid := Boid newIn: simulation random: SharedRandom globalGenerator.
+			aBoid := Boid newIn: simulation random: randomGenerator.
 			aBoid position: anEvent localPosition.
 			simulation addBoid: aBoid.
 			self boidWasAddedToSimulation: aBoid ]
@@ -115,15 +133,28 @@ BoidsSkyElement >> subscribeClickToAddBoid [
 
 { #category : #initialization }
 BoidsSkyElement >> subscribeExtentChangeToResizeSimulation [
+	"Subscribe to BlElementExtentChangedEvent.
+	The first time this event occurs, it initializes the boids.
+	The next times, the simulation extent must be updated."
 
 	self
 		addEventHandlerOn: BlElementExtentChangedEvent
 		do: [ :anEvent |
-			"The first time this event occurs, it just initializes the boids.
-			The next times, the simulation extent must be updated."
 			simulation
 				ifNil: [ self initializeSimulation ]
-				ifNotNil: [ 
-					self size asIntegerPoint traceCr.
-					simulation extent: self size asIntegerPoint ] ]
+				ifNotNil: [ simulation extent: self size asIntegerPoint ] ]
+]
+
+{ #category : #accessing }
+BoidsSkyElement >> useFixedRandomGenerator [
+	"Set a Random instance with a fixed seed. Useful for exact repeatibility on benchmarks."
+
+	randomGenerator := Random seed: 1
+]
+
+{ #category : #accessing }
+BoidsSkyElement >> useGlobalRandomGenerator [
+	"Set the global Random as generator. Each simulator will be initialized slightly different."
+
+	randomGenerator := SharedRandom globalGenerator
 ]
