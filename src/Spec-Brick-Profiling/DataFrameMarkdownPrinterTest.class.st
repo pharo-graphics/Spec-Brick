@@ -4,7 +4,7 @@ A DataFrameMarkdownPrinterTest is a test class for testing the behavior of DataF
 Class {
 	#name : #DataFrameMarkdownPrinterTest,
 	#superclass : #TestCase,
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-Printing'
 }
 
 { #category : #tests }

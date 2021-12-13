@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'fixedDecimalPlaces'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-Printing'
 }
 
 { #category : #examples }

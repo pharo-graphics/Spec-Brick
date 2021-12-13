@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'element'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-MeteringCases'
 }
 
 { #category : #'instance creation' }

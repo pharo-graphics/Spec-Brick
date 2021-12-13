@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'printer'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-Printing'
 }
 
 { #category : #running }

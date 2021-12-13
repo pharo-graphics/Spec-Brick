@@ -15,7 +15,7 @@ Class {
 		'case',
 		'meters'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-MeteringCases'
 }
 
 { #category : #examples }

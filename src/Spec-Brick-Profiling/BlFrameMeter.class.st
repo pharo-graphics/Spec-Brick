@@ -5,7 +5,7 @@ Class {
 		'process',
 		'framesAndMicrosendTimestamps'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-MeteringCases'
 }
 
 { #category : #private }

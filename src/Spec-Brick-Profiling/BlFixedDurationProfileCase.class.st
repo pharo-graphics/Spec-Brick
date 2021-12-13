@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'duration'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-MeteringCases'
 }
 
 { #category : #accessing }

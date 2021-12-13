@@ -11,7 +11,7 @@ Class {
 		'canvasClasses',
 		'runners'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-MicroBench'
 }
 
 { #category : #examples }

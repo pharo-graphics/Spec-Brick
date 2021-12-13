@@ -12,7 +12,7 @@ Class {
 		'columnWidths',
 		'stringBlockClosure'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-Printing'
 }
 
 { #category : #accessing }
@@ -97,13 +97,13 @@ DataFrameMarkdownPrinter >> write [
 	| convertedColumns |	
 	convertedColumns := Array streamContents: [ :columnsStream |
 		"First column has the row names"
-		columnsStream nextPut: ({'#'}, dataFrame rowNames).
+		columnsStream nextPut: ({'#'}, (dataFrame rowNames collect: [ :each | each asString ])).
 		
 		"The body of the table"
 		dataFrame columns doWithIndex: [ :eachColumn :columnIndex |
 			columnsStream nextPut: 
 				(Array streamContents: [ :cellsStream |
-					cellsStream nextPut: (dataFrame columnNames at: columnIndex).
+					cellsStream nextPut: (dataFrame columnNames at: columnIndex) asString.
 					eachColumn doWithIndex: [ :cellValue :rowIndex |
 						cellsStream nextPut: (self
 							stringFor: cellValue

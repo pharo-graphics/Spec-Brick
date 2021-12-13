@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'loggerCopy'
 	],
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-MeteringCases'
 }
 
 { #category : #API }

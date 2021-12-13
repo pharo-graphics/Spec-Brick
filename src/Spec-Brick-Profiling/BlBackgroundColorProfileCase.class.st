@@ -4,7 +4,7 @@ I'm a profiling case with a BlElement that changes background color on each fram
 Class {
 	#name : #BlBackgroundColorProfileCase,
 	#superclass : #BlSimpleElementProfileCase,
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-MeteringCases'
 }
 
 { #category : #'instance creation' }

@@ -4,7 +4,7 @@ I'm a profiling case with a BlElement that translates during a period of time.
 Class {
 	#name : #BlTranslateProfileCase,
 	#superclass : #BlSimpleElementProfileCase,
-	#category : #'Spec-Brick-Profiling'
+	#category : #'Spec-Brick-Profiling-MeteringCases'
 }
 
 { #category : #'instance creation' }
