@@ -6,10 +6,25 @@ Class {
 		'random',
 		'boundingBox',
 		'numberOfCircles',
-		'frames'
+		'frames',
+		'spartaCanvasBuilderClass'
 	],
 	#category : #'Spec-Brick-Profiling-PlainCairo'
 }
+
+{ #category : #accessing }
+PCBlocBenchmarker >> beCairo [
+	
+	spartaCanvasBuilderClass := BlSpartaCairoCanvasBuilder
+
+]
+
+{ #category : #accessing }
+PCBlocBenchmarker >> beSkia [
+	
+	spartaCanvasBuilderClass := BlSpartaSkiaCanvasBuilder
+
+]
 
 { #category : #running }
 PCBlocBenchmarker >> closeWindow [
@@ -23,15 +38,16 @@ PCBlocBenchmarker >> currentFrameCount [
 	^ frames
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 PCBlocBenchmarker >> label [
 
-	^ 'Bloc'
+	^ 'Bloc+', spartaCanvasBuilderClass label
 ]
 
 { #category : #running }
 PCBlocBenchmarker >> openWindow [
 
+	Bloc preferableSpartaCanvas: spartaCanvasBuilderClass.
 	space := BlSpace new
 		host: BlMorphicWindowHost new;
 		yourself.

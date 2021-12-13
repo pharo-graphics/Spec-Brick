@@ -21,10 +21,10 @@ PCMorphicBenchmarker >> currentFrameCount [
 	^ morph frameCount
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 PCMorphicBenchmarker >> label [
 
-	^ 'Morphic+Athens+Cairo'
+	^ 'Athens+Cairo'
 ]
 
 { #category : #running }

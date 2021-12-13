@@ -4,25 +4,17 @@ Benchmarks to compare Sparta andd Athens-Cairo.
 
 Example of use:
 ~~~
-Bloc preferableSpartaCanvas: SkiaCanvas.
-blocSkia := PCBlocBenchmarker new
-	runInFork;
-	yourself.
 
-Bloc preferableSpartaCanvas: SpartaCairoCanvas.
-blocCairo := PCBlocBenchmarker new
-	runInFork;
-	yourself.
+PCBlocBenchmarker new
+	beSkia;
+	runInFork.
 
-morphicCairo := PCMorphicBenchmarker new
-	runInFork;
-	yourself.
+PCBlocBenchmarker new
+	beCairo;
+	runInFork.
 
-{
-blocSkia. 
-blocCairo. 
-morphicCairo 
-} do: #reportOnStdout
+PCMorphicBenchmarker new
+	runInFork.
 ~~~
 "
 Class {
@@ -52,7 +44,7 @@ PCBenchmarker >> currentFrameCount [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initializing }
 PCBenchmarker >> initialize [
 
 	super initialize.
@@ -60,7 +52,7 @@ PCBenchmarker >> initialize [
 	numberOfSeconds := 5.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 PCBenchmarker >> label [
 
 	^ self subclassResponsibility
@@ -82,8 +74,7 @@ PCBenchmarker >> report [
 { #category : #running }
 PCBenchmarker >> reportOn: aStream [
 
-	aStream
-		<< self label; lf.
+	aStream lf; << self label; lf; lf.
 
 	aStream << 'FPS: '.
 	(loggedFrames / numberOfSeconds) printOn: aStream showingDecimalPlaces: 2.
@@ -99,7 +90,7 @@ PCBenchmarker >> reportOn: aStream [
 		stream: aStream;
 		write.
 
-	aStream << '---'; lf.
+	aStream lf; lf.
 
 ]
 
@@ -117,7 +108,7 @@ PCBenchmarker >> run [
 	numberOfSeconds seconds wait.
 	self stopLogging.
 	self closeWindow.
-
+	self reportOnStdout.
 ]
 
 { #category : #running }
@@ -126,7 +117,7 @@ PCBenchmarker >> runInFork [
 	[ self run ] fork
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 PCBenchmarker >> startLogging [
 
 	"Ensure prepared"
@@ -142,7 +133,7 @@ PCBenchmarker >> startLogging [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 PCBenchmarker >> stopLogging [
 
 	| functionNamesSeries countsSeries |
