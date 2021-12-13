@@ -7,7 +7,8 @@ Class {
 		'boundingBox',
 		'numberOfCircles',
 		'frames',
-		'spartaCanvasBuilderClass'
+		'spartaCanvasBuilderClass',
+		'realStartTimestamp'
 	],
 	#category : #'Spec-Brick-Profiling-PlainCairo'
 }
@@ -26,14 +27,14 @@ PCBlocBenchmarker >> beSkia [
 
 ]
 
-{ #category : #running }
+{ #category : #hook }
 PCBlocBenchmarker >> closeWindow [
 
 	space close.
 ]
 
 { #category : #hook }
-PCBlocBenchmarker >> currentFrameCount [
+PCBlocBenchmarker >> frameCount [
 	
 	^ frames
 ]
@@ -44,12 +45,13 @@ PCBlocBenchmarker >> label [
 	^ 'Bloc+', spartaCanvasBuilderClass label
 ]
 
-{ #category : #running }
+{ #category : #hook }
 PCBlocBenchmarker >> openWindow [
 
 	Bloc preferableSpartaCanvas: spartaCanvasBuilderClass.
 	space := BlSpace new
 		host: BlMorphicWindowHost new;
+		title: self label;
 		yourself.
 	
 	random := Random seed: 1.
@@ -73,6 +75,9 @@ PCBlocBenchmarker >> openWindow [
 		space addChild: circle.
 	].
 
+	space addEventHandlerOn: BlSpaceShownEvent do: [ :evt |
+		realStartTimestamp := DateAndTime now
+	].
 	frames := 0.
 	space addEventHandlerOn: BlSpaceRenderEndEvent do: [ :evt | 
 		frames := frames + 1.
@@ -80,4 +85,10 @@ PCBlocBenchmarker >> openWindow [
 
 	space show.
 
+]
+
+{ #category : #hook }
+PCBlocBenchmarker >> realStartTimestamp [
+
+	^ realStartTimestamp
 ]

@@ -10,7 +10,8 @@ Class {
 		'surface',
 		'frameCount',
 		'boundingBox',
-		'random'
+		'random',
+		'startTimestamp'
 	],
 	#category : #'Spec-Brick-Profiling-PlainCairo'
 }
@@ -37,6 +38,9 @@ PCMorph class >> roundedRectanglePathOn: aCanvas [
 { #category : #drawing }
 PCMorph >> drawOn: aMorphicCanvas [
 
+	startTimestamp ifNil: [
+		startTimestamp := DateAndTime now ].
+
 	surface drawDuring: [ :aCanvas | self drawOnAthensCanvas: aCanvas ].
 
 	surface displayOnMorphicCanvas: aMorphicCanvas at: bounds origin
@@ -57,6 +61,12 @@ PCMorph >> initialize [
 
 	random := Random seed: 1.
 	frameCount := 0.
+]
+
+{ #category : #accessing }
+PCMorph >> startTimestamp [
+
+	^ startTimestamp
 ]
 
 { #category : #stepping }

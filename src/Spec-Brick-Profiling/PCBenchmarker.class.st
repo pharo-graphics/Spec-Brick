@@ -4,33 +4,39 @@ Benchmarks to compare Sparta andd Athens-Cairo.
 
 Example of use:
 ~~~
+[
+	{
+	PCBlocBenchmarker new
+		beSkia;
+		yourself.
+	PCBlocBenchmarker new
+		beCairo;
+		yourself.
+	PCAthensBenchmarker new.
+	} do: [:each |
+		Smalltalk garbageCollect.
+		1 second wait.
+		each run ]
 
-PCBlocBenchmarker new
-	beSkia;
-	runInFork.
-
-PCBlocBenchmarker new
-	beCairo;
-	runInFork.
-
-PCMorphicBenchmarker new
-	runInFork.
+] fork
 ~~~
 "
 Class {
 	#name : #PCBenchmarker,
 	#superclass : #Object,
 	#instVars : [
-		'loggedFrames',
 		'loggedCalls',
 		'loggedCallsRanking',
 		'numberOfSeconds',
-		'loggedSecondCount'
+		'loggedStartTime',
+		'loggedDuration',
+		'includesFFILogging',
+		'loggedFrameCount'
 	],
 	#category : #'Spec-Brick-Profiling-PlainCairo'
 }
 
-{ #category : #running }
+{ #category : #hook }
 PCBenchmarker >> closeWindow [
 
 	self subclassResponsibility
@@ -38,8 +44,14 @@ PCBenchmarker >> closeWindow [
 
 ]
 
+{ #category : #accessing }
+PCBenchmarker >> enableFFILogging [
+
+	includesFFILogging := true
+]
+
 { #category : #hook }
-PCBenchmarker >> currentFrameCount [
+PCBenchmarker >> frameCount [
 
 	^ self subclassResponsibility
 ]
@@ -50,6 +62,7 @@ PCBenchmarker >> initialize [
 	super initialize.
 	
 	numberOfSeconds := 5.
+	includesFFILogging := false.
 ]
 
 { #category : #printing }
@@ -58,57 +71,87 @@ PCBenchmarker >> label [
 	^ self subclassResponsibility
 ]
 
-{ #category : #running }
+{ #category : #hook }
 PCBenchmarker >> openWindow [
 	
 	self subclassResponsibility
 
 ]
 
-{ #category : #running }
+{ #category : #hook }
+PCBenchmarker >> realStartTimestamp [
+
+	^ self subclassResponsibility
+]
+
+{ #category : #printing }
 PCBenchmarker >> report [
 
 	^ String streamContents: [ :aStream | self reportOn: aStream ]
 ]
 
-{ #category : #running }
+{ #category : #printing }
+PCBenchmarker >> reportAsString [
+
+	^ String streamContents: [ :stream | self reportOn: stream ]
+]
+
+{ #category : #printing }
 PCBenchmarker >> reportOn: aStream [
 
-	aStream lf; << self label; lf; lf.
+	aStream << '# '; <<  self label; lf; lf.
 
-	aStream << 'FPS: '.
-	(loggedFrames / numberOfSeconds) printOn: aStream showingDecimalPlaces: 2.
-	aStream lf; lf.
+	aStream << 'Speed: '.
+	(loggedFrameCount / numberOfSeconds) printOn: aStream showingDecimalPlaces: 2.
+	aStream << 'fps'; lf; lf.
+
+	aStream << 'Duration: '.
+	loggedDuration totalSeconds printOn: aStream showingDecimalPlaces: 3.
+	aStream << 's'; lf; lf.
 	
-	aStream << 'Top FFI Calls:'; lf.
-	DataFrameMarkdownPrinter new
-		stringBlockClosure: [ :o :r :c |
-			(c = 2
-				ifTrue: [ o printShowingDecimalPlaces: 0 ]
-				ifFalse: [ o ]) asString ];
-		dataFrame: (loggedCallsRanking head: 15);
-		stream: aStream;
-		write.
+	includesFFILogging ifTrue: [ 
+		aStream << 'Top FFI Calls:'; lf; lf.
+		DataFrameMarkdownPrinter new
+			stringBlockClosure: [ :o :r :c |
+				(c = 2
+					ifTrue: [ o printShowingDecimalPlaces: 0 ]
+					ifFalse: [ o ]) asString ];
+			dataFrame: (loggedCallsRanking head: 15);
+			stream: aStream;
+			write.
+		].
 
 	aStream lf; lf.
 
 ]
 
-{ #category : #running }
+{ #category : #printing }
 PCBenchmarker >> reportOnStdout [
 
 	self reportOn: Stdio stdout
 ]
 
+{ #category : #printing }
+PCBenchmarker >> reportOnTranscript [
+
+	self reportAsString withInternalLineEndings traceCr
+]
+
 { #category : #running }
 PCBenchmarker >> run [
 
-	self startLogging.
+	includesFFILogging ifTrue: [ self startLogging ].
 	self openWindow.
 	numberOfSeconds seconds wait.
-	self stopLogging.
+	includesFFILogging ifTrue: [ self stopLogging ].
+
+	loggedFrameCount := self frameCount.
+	loggedDuration := DateAndTime now - self realStartTimestamp.
+
 	self closeWindow.
+
 	self reportOnStdout.
+	self reportOnTranscript.
 ]
 
 { #category : #running }
@@ -117,7 +160,7 @@ PCBenchmarker >> runInFork [
 	[ self run ] fork
 ]
 
-{ #category : #running }
+{ #category : #private }
 PCBenchmarker >> startLogging [
 
 	"Ensure prepared"
@@ -133,14 +176,10 @@ PCBenchmarker >> startLogging [
 
 ]
 
-{ #category : #running }
+{ #category : #private }
 PCBenchmarker >> stopLogging [
 
-	| functionNamesSeries countsSeries |
-	loggedFrames := self currentFrameCount.
-	Halt if: [ loggedFrames isNil ].
-	Halt if: [ loggedFrames = 0 ].
-
+	| functionNamesSeries callsPerFrameSeries |
 
 
 	loggedCalls := TFLCallLogger instance copy.
@@ -152,13 +191,13 @@ PCBenchmarker >> stopLogging [
 	functionNamesSeries := loggedCallsRanking keys asDataSeries
 		name: 'Function names';
 		yourself.
-	countsSeries := (loggedCallsRanking values
-		collect: [ :value | (value / loggedFrames) asFloat ]) asDataSeries
-			name: 'Calls per Second';
+	callsPerFrameSeries := (loggedCallsRanking values
+		collect: [ :value | (value / loggedFrameCount) asFloat ]) asDataSeries
+			name: 'Calls per Frame';
 			yourself.
 	loggedCallsRanking := functionNamesSeries asDataFrame
-		addColumn: countsSeries;
-		sortDescendingBy: countsSeries name;
+		addColumn: callsPerFrameSeries;
+		sortDescendingBy: callsPerFrameSeries name;
 		yourself.
 
 	TFLFunctionCounter stop; resetInstance.
