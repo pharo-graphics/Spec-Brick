@@ -9,41 +9,23 @@ Class {
 	#instVars : [
 		'surface',
 		'frameCount',
-		'boundingBox',
 		'random',
-		'startTimestamp'
+		'startTimestamp',
+		'surfaceExtent'
 	],
 	#category : #'Spec-Brick-Profiling-PlainCairo'
 }
 
-{ #category : #utilities }
-PCMorph class >> roundedRectanglePathOn: aCanvas [
-
-	^ aCanvas createPath: [:builder |
-		builder
-			absolute;
-			moveTo: 70@100;
-			lineTo: 330@100;
-			cwArcTo: 350@120 angle: 90 degreesToRadians;
-			lineTo: 350@280;
-			cwArcTo: 330@300 angle: 90 degreesToRadians;
-			lineTo: 70@300;
-			cwArcTo: 50@280 angle: 90 degreesToRadians;
-			lineTo: 50@120;
-			cwArcTo: 70@100 angle: 90 degreesToRadians ]
-
-
-]
-
 { #category : #drawing }
-PCMorph >> drawOn: aMorphicCanvas [
+PCMorph >> drawOn: aFormCanvas [
 
 	startTimestamp ifNil: [
+		surface := AthensCairoSurface extent: surfaceExtent.
 		startTimestamp := DateAndTime now ].
 
 	surface drawDuring: [ :aCanvas | self drawOnAthensCanvas: aCanvas ].
 
-	surface displayOnMorphicCanvas: aMorphicCanvas at: bounds origin
+	surface displayOnMorphicCanvas: aFormCanvas at: bounds origin
 ]
 
 { #category : #accessing }
@@ -56,9 +38,7 @@ PCMorph >> frameCount [
 PCMorph >> initialize [
 
 	super initialize.
-	boundingBox := 0@0 extent: 500@500.
-	surface := AthensCairoSurface extent: boundingBox extent.
-
+	surfaceExtent := 500@500.
 	random := Random seed: 1.
 	frameCount := 0.
 ]
@@ -86,4 +66,16 @@ PCMorph >> stepTime [
 PCMorph >> surface [
 
 	^ surface
+]
+
+{ #category : #accessing }
+PCMorph >> surfaceExtent [
+
+	^ surfaceExtent
+]
+
+{ #category : #accessing }
+PCMorph >> surfaceExtent: anObject [
+
+	surfaceExtent := anObject
 ]

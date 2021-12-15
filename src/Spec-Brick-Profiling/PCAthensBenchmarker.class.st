@@ -24,17 +24,19 @@ PCAthensBenchmarker >> frameCount [
 { #category : #printing }
 PCAthensBenchmarker >> label [
 
-	^ 'Athens+Cairo'
+	^ 'Just Cairo'
 ]
 
 { #category : #hook }
 PCAthensBenchmarker >> openWindow [
 	
 	morph := PCTranslatingCirclesMorph new
-		numberOfCircles: 50;
+		surfaceExtent: 800@500;
+		numberOfCircles: 300;
+		radius: 50.0;
 		yourself.
 	window := morph openInWindowLabeled: self label.
-	window extent: 500@500.
+	window extent: 800@500.
 
 ]
 

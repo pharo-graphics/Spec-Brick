@@ -6,18 +6,15 @@ Example of use:
 ~~~
 [
 	{
-	PCBlocBenchmarker new
-		beSkia;
-		yourself.
-	PCBlocBenchmarker new
-		beCairo;
-		yourself.
+	PCBlocBenchmarker new beSkia; yourself.
+	PCBlocBenchmarker new beCairo; yourself.
 	PCAthensBenchmarker new.
 	} do: [:each |
-		Smalltalk garbageCollect.
-		1 second wait.
-		each run ]
-
+		Smalltalk garbageCollect. 1 second wait.
+		each
+			run;
+			shortReportOnStdout;
+			reportOnTranscript ]
 ] fork
 ~~~
 "
@@ -103,11 +100,11 @@ PCBenchmarker >> reportOn: aStream [
 
 	aStream << 'Speed: '.
 	(loggedFrameCount / numberOfSeconds) printOn: aStream showingDecimalPlaces: 2.
-	aStream << 'fps'; lf; lf.
+	aStream << 'fps'; lf.
 
-	aStream << 'Duration: '.
+	aStream << 'Real Duration: '.
 	loggedDuration totalSeconds printOn: aStream showingDecimalPlaces: 3.
-	aStream << 's'; lf; lf.
+	aStream << 's'; lf.
 	
 	includesFFILogging ifTrue: [ 
 		aStream << 'Top FFI Calls:'; lf; lf.
@@ -143,21 +140,34 @@ PCBenchmarker >> run [
 	includesFFILogging ifTrue: [ self startLogging ].
 	self openWindow.
 	numberOfSeconds seconds wait.
-	includesFFILogging ifTrue: [ self stopLogging ].
 
 	loggedFrameCount := self frameCount.
 	loggedDuration := DateAndTime now - self realStartTimestamp.
+	includesFFILogging ifTrue: [ self stopLogging ].
 
 	self closeWindow.
 
-	self reportOnStdout.
-	self reportOnTranscript.
 ]
 
 { #category : #running }
 PCBenchmarker >> runInFork [
 
 	[ self run ] fork
+]
+
+{ #category : #printing }
+PCBenchmarker >> shortReportOn: aStream [
+
+	aStream << self label; << ': '.
+	(loggedFrameCount / numberOfSeconds) printOn: aStream showingDecimalPlaces: 1.
+	aStream << 'fps'; lf; lf.
+
+]
+
+{ #category : #printing }
+PCBenchmarker >> shortReportOnStdout [
+
+	self shortReportOn: Stdio stdout
 ]
 
 { #category : #private }

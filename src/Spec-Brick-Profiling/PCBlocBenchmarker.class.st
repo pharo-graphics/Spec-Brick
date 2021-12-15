@@ -3,9 +3,6 @@ Class {
 	#superclass : #PCBenchmarker,
 	#instVars : [
 		'space',
-		'random',
-		'boundingBox',
-		'numberOfCircles',
 		'frames',
 		'spartaCanvasBuilderClass',
 		'realStartTimestamp'
@@ -42,46 +39,40 @@ PCBlocBenchmarker >> frameCount [
 { #category : #printing }
 PCBlocBenchmarker >> label [
 
-	^ 'Bloc+', spartaCanvasBuilderClass label
+	^ 'Bloc ', spartaCanvasBuilderClass label
 ]
 
 { #category : #hook }
 PCBlocBenchmarker >> openWindow [
 
+	| random numberOfCircles radius |
 	Bloc preferableSpartaCanvas: spartaCanvasBuilderClass.
 	space := BlSpace new
 		host: BlMorphicWindowHost new;
+		extent: 800@500;
 		title: self label;
 		yourself.
 	
 	random := Random seed: 1.
-	boundingBox := 0@0 extent: 500@500.
-	numberOfCircles := 50.
+	numberOfCircles := 300.
+	radius := 50.0.
 
 	1 to: numberOfCircles do: [ :index |
-		| w circle |
-	    w := boundingBox width / 4.0.
-
-		circle := BlElement new
+		space addChild: (BlElement new
 			background: (Color random: random);
 			size: 100 asPoint;
 			geometry: BlCircleGeometry new;
-			relocate: (w + index) @ 150;
+			relocate: (index * 2) @ 0;
 			addAnimation: ((BlTransformAnimation translate: 0@200)
 			  duration: numberOfSeconds seconds;
 			  yourself);
-			yourself.
+			yourself) ].
 
-		space addChild: circle.
-	].
-
-	space addEventHandlerOn: BlSpaceShownEvent do: [ :evt |
-		realStartTimestamp := DateAndTime now
-	].
 	frames := 0.
 	space addEventHandlerOn: BlSpaceRenderEndEvent do: [ :evt | 
-		frames := frames + 1.
-	].
+		frames := frames + 1 ].
+	space addEventHandlerOn: BlSpaceShownEvent do: [ :evt |
+		realStartTimestamp := DateAndTime now ].
 
 	space show.
 
