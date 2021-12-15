@@ -110,8 +110,8 @@ PCBenchmarker >> reportOn: aStream [
 		aStream << 'Top FFI Calls:'; lf; lf.
 		DataFrameMarkdownPrinter new
 			stringBlockClosure: [ :o :r :c |
-				(c = 2
-					ifTrue: [ o printShowingDecimalPlaces: 0 ]
+				(o isNumber
+					ifTrue: [ o printShowingDecimalPlaces: 1 ]
 					ifFalse: [ o ]) asString ];
 			dataFrame: (loggedCallsRanking head: 15);
 			stream: aStream;
@@ -205,7 +205,8 @@ PCBenchmarker >> stopLogging [
 		collect: [ :value | (value / loggedFrameCount) asFloat ]) asDataSeries
 			name: 'Calls per Frame';
 			yourself.
-	loggedCallsRanking := functionNamesSeries asDataFrame
+	
+	loggedCallsRanking := (DataFrame withRowNames: functionNamesSeries)
 		addColumn: callsPerFrameSeries;
 		sortDescendingBy: callsPerFrameSeries name;
 		yourself.
