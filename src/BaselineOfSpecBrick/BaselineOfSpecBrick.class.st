@@ -27,5 +27,5 @@ BaselineOfSpecBrick >> baseline: spec [
 BaselineOfSpecBrick >> declareBrickOn: spec [
 	spec
 		baseline: 'NewBrick'
-		with: [ spec repository: 'github://pharo-graphics/Brick:v0.9.0/src' ]
+		with: [ spec repository: 'github://pharo-graphics/Brick:dev-1.0/src' ]
 ]
