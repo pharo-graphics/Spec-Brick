@@ -14,7 +14,7 @@ BaselineOfSpecBrick >> baseline: spec [
 			self declareBrickOn: spec.
 
 			spec
-				package: 'Spec-Brick' with: [ spec requires: #('NewBrick') ];
+				package: 'Spec-Brick' with: [ spec requires: #('Brick') ];
 				package: 'Spec-Brick-Tests' with: [ spec requires: #('Spec-Brick') ];
 				package: 'Spec-Brick-ElementContainer' with: [ spec requires: #('Spec-Brick') ];
 				package: 'Spec-Brick-Examples-ToDoList' with: [ spec requires: #('Spec-Brick') ];
@@ -26,6 +26,6 @@ BaselineOfSpecBrick >> baseline: spec [
 { #category : #'external projects' }
 BaselineOfSpecBrick >> declareBrickOn: spec [
 	spec
-		baseline: 'NewBrick'
+		baseline: 'Brick'
 		with: [ spec repository: 'github://pharo-graphics/Brick:dev-1.0/src' ]
 ]
