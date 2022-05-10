@@ -7,7 +7,7 @@ Class {
 { #category : #hook }
 SpBrickDialogWindowAdapterTest >> openSpecWindow [
 
-	specWindow := specContent openDialogWithSpec.
+	specWindow := specContent openDialog.
 	brickWindow := specWindow adapter widget
 ]
 
@@ -27,7 +27,7 @@ SpBrickDialogWindowAdapterTest >> testParentWindow [
 			                   aSpWindow
 				                   initialPosition: 200 @ 100;
 				                   initialExtent: 400 @ 300 ];
-		                   openWithSpec.
+		                   open.
 	self waitBlocSpace.
 
 	specContent parentWindow: referenceWindow.

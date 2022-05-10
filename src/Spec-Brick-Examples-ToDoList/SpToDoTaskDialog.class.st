@@ -14,8 +14,8 @@ Class {
 	#category : #'Spec-Brick-Examples-ToDoList-Presenters'
 }
 
-{ #category : #specs }
-SpToDoTaskDialog class >> defaultSpec [
+{ #category : #layout }
+SpToDoTaskDialog class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  borderWidth: 5;
@@ -70,16 +70,19 @@ SpToDoTaskDialog >> initializePresenter [
 
 
 	priorityLabel := self newLabel
-		              label: 'Priority:';
-		              yourself.
+		                 label: 'Priority:';
+		                 yourself.
 
 	priorityDropList := self newDropList
-"		display: [ :item | item name ];"
-		display: [ :item | item ifNil: [ '-- none ---' ] ifNotNil: [ item name ] ];
-		iconBlock: [ :item | self iconNamed: #empty ];
-		items: SpToDoTaskPriority allPredefined;
-		selectIndex: 1;
-		yourself.
+		                    display: [ :item | 
+			                    item
+				                    ifNil: [ '-- none ---' ]
+				                    ifNotNil: [ item name ] ];
+		                    displayIcon: [ :item | self iconNamed: #empty ];
+		                    items: SpToDoTaskPriority allPredefined;
+		                    selectIndex: 1;
+		                    yourself.
+	"		display: [ :item | item name ];"
 
 
 	descriptionLabel := self newLabel
@@ -97,11 +100,10 @@ SpToDoTaskDialog >> setModelBeforeInitialization: aSpToDoList [
 
 { #category : #actions }
 SpToDoTaskDialog >> showError: error [
-	
+
 	self application newInform
 		title: 'Validation Error';
 		label: error messageText;
 		parentWindow: self window;
-		openDialogWithSpec
-
+		openDialog
 ]

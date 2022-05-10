@@ -29,5 +29,5 @@ SpBrickDialogWindowAdapter >> updateButtonBar [
 
 	self presenter buttons do: [ :each | aButtonBar add: each ].
 
-	widget root buttonBar: aButtonBar buildWithSpec
+	widget root buttonBar: aButtonBar build
 ]

@@ -94,15 +94,15 @@ SpBrickDropListAdapter >> newIcon [
 
 { #category : #private }
 SpBrickDropListAdapter >> newPopupList [
-	
+
 	^ model newList
-		display: model display;
-		items: model items;
-		displayIcon: model iconBlock;
-		whenSelectionChangedDo: [ :newSelection | 
-			model selectIndex: newSelection selectedIndex.
-			widget fireEvent: BrDropdownHideWish new ];
-		buildWithSpec
+		  display: model display;
+		  items: model items;
+		  displayIcon: model displayIcon;
+		  whenSelectionChangedDo: [ :newSelection | 
+			  model selectIndex: newSelection selectedIndex.
+			  widget fireEvent: BrDropdownHideWish new ];
+		  build
 ]
 
 { #category : #'widget creation' }

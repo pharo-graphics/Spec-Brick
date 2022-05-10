@@ -7,7 +7,7 @@ Class {
 { #category : #hook }
 SpBrickWindowAdapterTest >> openSpecWindow [
 
-	specWindow := specContent openWithSpec.
+	specWindow := specContent open.
 	brickWindow := specWindow adapter widget
 ]
 

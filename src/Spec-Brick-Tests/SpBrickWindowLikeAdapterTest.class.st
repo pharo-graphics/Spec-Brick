@@ -46,11 +46,11 @@ SpBrickWindowLikeAdapterTest >> testCenteredRelativeTo [
 
 	| referenceWindow |
 	referenceWindow := (self newApplication new: SpBrickStubPresenter)
-		              initializeWindowBlock: [ :aSpWindow | 
-			              aSpWindow
-				              initialPosition: 200 @ 100;
-				              initialExtent: 400 @ 300 ];
-		              openWithSpec.
+		                   initializeWindowBlock: [ :aSpWindow | 
+			                   aSpWindow
+				                   initialPosition: 200 @ 100;
+				                   initialExtent: 400 @ 300 ];
+		                   open.
 
 	specContent initializeWindowBlock: [ :aSpWindow | 
 		aSpWindow
@@ -61,8 +61,7 @@ SpBrickWindowLikeAdapterTest >> testCenteredRelativeTo [
 	self waitBlocSpace.
 
 	"We should find a better way to assert."
-	self assert: brickWindow position equals: 300@200.
-
+	self assert: brickWindow position equals: 300 @ 200
 ]
 
 { #category : #tests }

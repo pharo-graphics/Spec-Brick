@@ -16,6 +16,12 @@ SpBrickBackend >> adapterBindingsClass [
 	^ SpBrickAdapterBindings
 ]
 
+{ #category : #accessing }
+SpBrickBackend >> defaultConfigurationFor: aSpApplication [
+
+	^ aSpApplication defaultConfigurationForBrick
+]
+
 { #category : #'deferred message' }
 SpBrickBackend >> defer: aBlock [
 
