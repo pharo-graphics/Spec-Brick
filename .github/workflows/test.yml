@@ -28,4 +28,3 @@ jobs:
         run: smalltalkci -s ${{ matrix.smalltalk }} ${{ matrix.ston }}
         shell: bash
         timeout-minutes: 10
---
