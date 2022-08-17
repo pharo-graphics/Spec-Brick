@@ -26,7 +26,8 @@ BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas bodyOf: aBoid [
 		aeCanvas setBorderWidth: 1 ].
 	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
 		cairoContext
-			circleAt: aBoid position
+			circleCenterX: aBoid position x
+			y: aBoid position y
 			radius: aBoid radius ].
 
 	aeCanvas drawFigure.
@@ -53,6 +54,8 @@ BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas velocityOf: aBoid [
 { #category : #'drawing - Alexandrie' }
 BoidsCustomDrawSkyElement >> aeDrawOnlyMeOn: aeCanvas [
 
+	super aeDrawOnlyMeOn: aeCanvas.
+	
 	simulation boids do: [ :each |
 		aeCanvas restoreContextAfter: [
 			self aeDrawOn: aeCanvas bodyOf: each.
