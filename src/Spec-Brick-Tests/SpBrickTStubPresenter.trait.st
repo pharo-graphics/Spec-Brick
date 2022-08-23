@@ -8,7 +8,7 @@ Trait {
 }
 
 { #category : #specs }
-SpBrickTStubPresenter classSide >> defaultSpec [
+SpBrickTStubPresenter classSide >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #contentPresenter;

@@ -95,6 +95,13 @@ SpBrickWindowLikeAdapter >> open [
 	widget show
 ]
 
+{ #category : #protocol }
+SpBrickWindowLikeAdapter >> openWithDeferredAction: aBlockClosure [ 
+
+	self open.
+	self defer: aBlockClosure
+]
+
 { #category : #'widget creation' }
 SpBrickWindowLikeAdapter >> subscribeToPresenter [
 
@@ -129,10 +136,11 @@ SpBrickWindowLikeAdapter >> updateAll [
 
 { #category : #accessing }
 SpBrickWindowLikeAdapter >> updateContentWithSpecLayout: aSpExecutableLayout [
+
 	"Build the presenter of the window, and establish the Brick widget as content of the window."
 
-	widget root content: (self presenter presenter buildWithSpecLayout: aSpExecutableLayout)
-
+	widget root content:
+		(self presenter presenter buildWithLayout: aSpExecutableLayout)
 ]
 
 { #category : #accessing }
@@ -154,24 +162,22 @@ SpBrickWindowLikeAdapter >> updateMenu [
 
 { #category : #'widget creation' }
 SpBrickWindowLikeAdapter >> updateStatusBar [
+
 	"Inspired on SpAbstractMorphicWindowAdapter>>#addStatusBarTo:"
 
-	self presenter hasStatusBar ifFalse: [
-		^ widget root removeStatusBar ].
+	self presenter hasStatusBar ifFalse: [ ^ widget root removeStatusBar ].
 
-	"Build new Brick status bar from presenter spec and set it."	
-	widget root statusBar: self presenter statusBar buildWithSpec
-
+	"Build new Brick status bar from presenter spec and set it."
+	widget root statusBar: self presenter statusBar build
 ]
 
 { #category : #'widget creation' }
 SpBrickWindowLikeAdapter >> updateToolbar [
+
 	"Inspired on SpAbstractMorphicWindowAdapter>>#setToolbarTo:"
 
-	self presenter hasToolbar ifFalse: [
-		^ widget root removeToolbar ].
+	self presenter hasToolbar ifFalse: [ ^ widget root removeToolbar ].
 
-	"Build new Brick toolbar from presenter spec and set it."	
-	widget root toolbar: self presenter toolbar buildWithSpec
-
+	"Build new Brick toolbar from presenter spec and set it."
+	widget root toolbar: self presenter toolbar build
 ]

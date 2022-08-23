@@ -29,7 +29,7 @@ SpBrickDirectionableLayoutTest >> testAddTwoLabelsInCorrectOrderWith: aSpDirecti
 
 		presenter
 			layout: aSpDirectionableLayout;
-			buildWithSpec.
+			build.
 
 		labelTexts := presenter adapter widget withAllChildrenBreadthFirst
 			select: [ :each | each isKindOf: BlAttributedTextElement ]
@@ -39,8 +39,6 @@ SpBrickDirectionableLayoutTest >> testAddTwoLabelsInCorrectOrderWith: aSpDirecti
 	
 	] ensure: [ 
 		presenter window ifNotNil: [ :w | w close ] ]
-
-
 
 ]
 

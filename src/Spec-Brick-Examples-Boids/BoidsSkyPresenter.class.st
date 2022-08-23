@@ -17,8 +17,8 @@ Class {
 	#category : #'Spec-Brick-Examples-Boids-UI-Spec'
 }
 
-{ #category : #specs }
-BoidsSkyPresenter class >> defaultSpec [
+{ #category : #layout }
+BoidsSkyPresenter class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		add: #skyPresenter;
@@ -29,26 +29,26 @@ BoidsSkyPresenter class >> defaultSpec [
 BoidsSkyPresenter class >> exampleBloc1 [
 
 	| app model presenter |
-	app := SpApplication new 
-		useBackend: #Brick;
-		yourself.
+	app := SpApplication new
+		       useBackend: #Brick;
+		       yourself.
 
 	model := BoidsCustomDrawSkyElement new.
 	presenter := self newApplication: app model: model.
-	presenter openWithSpec
+	presenter open
 ]
 
 { #category : #examples }
 BoidsSkyPresenter class >> exampleBloc2 [
 
 	| app model presenter |
-	app := SpApplication new 
-		useBackend: #Brick;
-		yourself.
+	app := SpApplication new
+		       useBackend: #Brick;
+		       yourself.
 
 	model := BoidsSkyUsingGeometryElement new.
 	presenter := self newApplication: app model: model.
-	presenter openWithSpec
+	presenter open
 ]
 
 { #category : #actions }

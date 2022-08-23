@@ -18,11 +18,10 @@ SpBrickButtonBarAdapterTest >> setUpSpecWidgetClass: aPresenterClass blockToSetU
 
 	specWidget := self newApplication new: aPresenterClass.
 	aBlock value.
-	specWindow := specWidget openWithSpec.
-	
-	brickWidget := specWidget adapter widget.
-	brickWindow := specWindow adapter widget.
+	specWindow := specWidget open.
 
+	brickWidget := specWidget adapter widget.
+	brickWindow := specWindow adapter widget
 ]
 
 { #category : #running }

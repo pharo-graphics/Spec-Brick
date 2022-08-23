@@ -12,7 +12,7 @@ app := SpApplication new
 
 model := SpToDoList exampleWithSomeTasks.
 presenter := SpToDoListPresenter newApplication: app model: model.
-presenter openWithSpec.
+presenter open.
 ```
 "
 Class {
@@ -32,8 +32,8 @@ Class {
 	#category : #'Spec-Brick-Examples-ToDoList-Presenters'
 }
 
-{ #category : #specs }
-SpToDoListPresenter class >> defaultSpec [
+{ #category : #layout }
+SpToDoListPresenter class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  borderWidth: 5;
@@ -187,7 +187,7 @@ SpToDoListPresenter >> openAddTaskDialog [
 
 	(SpToDoTaskDialog newApplication: self application model: toDoList)
 		parentWindow: self window;
-		openDialogWithSpec
+		openDialog
 ]
 
 { #category : #private }

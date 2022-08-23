@@ -106,7 +106,7 @@ Create a directory and execute `<this_repo>/scripts/build.sh`, which first downl
 | Project | Badge |
 | ------- | ----- |
 | Sparta | [![Sparta CI](https://github.com/pharo-graphics/sparta/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/sparta/actions/workflows/test.yml) |
-| Fenster | [![Fenster CI](https://github.com/pharo-graphics/fenster/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/fenster/actions/workflows/test.yml) |
+| Alexandrie | [![Tests](https://github.com/pharo-graphics/Alexandrie/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Alexandrie/actions/workflows/test.yml) |
 | Bloc | [![Bloc CI](https://github.com/pharo-graphics/Bloc/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Bloc/actions/workflows/test.yml) |
 | BlocPac | [![BlocPac CI](https://github.com/pharo-graphics/bloc-pac/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/bloc-pac/actions/workflows/test.yml) |
 | Brick | [![Brick CI](https://github.com/pharo-graphics/Brick/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Brick/actions/workflows/test.yml) |

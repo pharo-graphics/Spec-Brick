@@ -1,6 +1,11 @@
 name: Tests
 
-on: [ push, pull_request, workflow_dispatch ]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * 1"   # Run every Monday at 08:00
 
 jobs:
   test:
@@ -8,7 +13,7 @@ jobs:
       # Default value (true) means that a failure in one setup, cancels other jobs.
       fail-fast: false
       matrix:
-        smalltalk: [ Pharo64-9.0, Pharo64-10 ]
+        smalltalk: [ Pharo64-11 ]
         os: [ windows-latest ]
         ston: [ .ci.ston ]
     runs-on: ${{ matrix.os }}

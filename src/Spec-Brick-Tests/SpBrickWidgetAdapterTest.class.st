@@ -20,10 +20,10 @@ SpBrickWidgetAdapterTest >> setUp [
 	super setUp.
 
 	specWidget := self newApplication new: self specWidgetClass.
-	specWindow := specWidget openWithSpec.
-	
+	specWindow := specWidget open.
+
 	brickWidget := specWidget adapter widget.
-	brickWindow := specWindow adapter widget.
+	brickWindow := specWindow adapter widget
 ]
 
 { #category : #running }

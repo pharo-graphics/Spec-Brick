@@ -50,10 +50,27 @@ SpBrickLayoutAdapter >> buildWidget [
 ]
 
 { #category : #building }
+SpBrickLayoutAdapter >> buildWithLayout: aSelector [
+
+	^ self widget
+]
+
+{ #category : #building }
+SpBrickLayoutAdapter >> buildWithSelector: aSelector [
+
+	^ self widget
+]
+
+{ #category : #building }
 SpBrickLayoutAdapter >> buildWithSpec: aString [ 
 	"Inspired in SpMorphicLayoutAdapter>>#buildWithSpec"
 
-	^ widget	
+	self
+		deprecated: 'Please use #buildWithLayout: instead'
+		transformWith: '`@receiver buildWithSpec: `@arg'
+			-> '`@receiver buildWithLayout: `@arg'.
+
+	^ self buildWithLayout: aString
 ]
 
 { #category : #protocol }
@@ -65,21 +82,20 @@ SpBrickLayoutAdapter >> layout: aLayout [
 ]
 
 { #category : #'instance creation' }
-SpBrickLayoutAdapter >> newBlElementFrom: aPresenter constraints: constraints [ 
+SpBrickLayoutAdapter >> newBlElementFrom: aPresenter constraints: constraints [
+
 	"Inspired on SpMorphicLayoutAdapter>>#buildMorph:constraints:"
 
 	| newElement |
-	newElement := aPresenter buildWithSpec: constraints spec.
+	newElement := aPresenter buildWithSelector: constraints spec.
 
-"	self applyStyle: aPresenter to: childMorph.
+	"	self applyStyle: aPresenter to: childMorph.
 	""Add children alignment constraints (if applies)""
 	childMorph := self 
 		applyChildrenAlignmentTo: childMorph 
 		constraints: constraints. 
-"	
-	newElement := self
-		addConstraints: constraints 
-		toChild: newElement.
+"
+	newElement := self addConstraints: constraints toChild: newElement.
 
 	^ newElement
 ]

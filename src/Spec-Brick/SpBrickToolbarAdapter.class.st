@@ -17,9 +17,9 @@ SpBrickToolbarAdapter >> newBrickWidget [
 ]
 
 { #category : #private }
-SpBrickToolbarAdapter >> newItemFor: aSpToolbarButtonPresenter [ 
+SpBrickToolbarAdapter >> newItemFor: aSpToolbarButtonPresenter [
 
-	^ aSpToolbarButtonPresenter buildWithSpec
+	^ aSpToolbarButtonPresenter build
 ]
 
 { #category : #'widget creation' }

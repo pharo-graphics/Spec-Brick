@@ -20,7 +20,7 @@ SpBrickButtonBarAdapter >> buildWidget [
 SpBrickButtonBarAdapter >> newBrickButtons [
 
 	^ self presenter items collect: [ :each | 
-		  each buildWithSpec
+		  each build
 			  hExact: 100;
 			  yourself ]
 ]
