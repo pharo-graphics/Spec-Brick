@@ -45,7 +45,7 @@ BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas velocityOf: aBoid [
 	aeCanvas drawOpenPathWith: [ :cairoContext |
 		cairoContext
 			moveTo: aBoid position;
-			lineRelativeTo: aBoid velocity negated ].
+			relativeLineTo: aBoid velocity negated ].
 
 	aeCanvas drawFigure
 
