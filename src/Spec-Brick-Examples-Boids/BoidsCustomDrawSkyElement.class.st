@@ -16,6 +16,18 @@ BoidsCustomDrawSkyElement class >> exampleOpenInNewSpace [
 ]
 
 { #category : #'drawing - Alexandrie' }
+BoidsCustomDrawSkyElement >> aeDrawGeometryOn: aeCanvas [
+
+	super aeDrawGeometryOn: aeCanvas.
+	
+	simulation boids do: [ :each |
+		aeCanvas restoreContextAfter: [
+			self aeDrawOn: aeCanvas bodyOf: each.
+			self aeDrawOn: aeCanvas velocityOf: each ] ].
+
+]
+
+{ #category : #'drawing - Alexandrie' }
 BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas bodyOf: aBoid [
 
 	aeCanvas setBackgroundWith: [
@@ -48,18 +60,6 @@ BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas velocityOf: aBoid [
 			relativeLineTo: aBoid velocity negated ].
 
 	aeCanvas drawFigure
-
-]
-
-{ #category : #'drawing - Alexandrie' }
-BoidsCustomDrawSkyElement >> aeDrawOnlyMeOn: aeCanvas [
-
-	super aeDrawOnlyMeOn: aeCanvas.
-	
-	simulation boids do: [ :each |
-		aeCanvas restoreContextAfter: [
-			self aeDrawOn: aeCanvas bodyOf: each.
-			self aeDrawOn: aeCanvas velocityOf: each ] ].
 
 ]
 
