@@ -30,18 +30,17 @@ BoidsCustomDrawSkyElement >> aeDrawGeometryOn: aeCanvas [
 { #category : #'drawing - Alexandrie' }
 BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas bodyOf: aBoid [
 
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext
+			circleCenterX: aBoid position x
+			y: aBoid position y
+			radius: aBoid radius ].
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: aBoid color ].
 	aeCanvas setOutskirtsCentered.
 	aeCanvas setBorderBlock: [
 		aeCanvas setSourceColor: aBoid color muchDarker.
 		aeCanvas setBorderWidth: 1 ].
-	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
-		cairoContext
-			circleCenterX: aBoid position x
-			y: aBoid position y
-			radius: aBoid radius ].
-
 	aeCanvas drawFigure.
 
 ]
@@ -49,17 +48,18 @@ BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas bodyOf: aBoid [
 { #category : #'drawing - Alexandrie' }
 BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas velocityOf: aBoid [
 
-	aeCanvas setBackgroundOff.
-	aeCanvas setOutskirtsCentered.
-	aeCanvas setBorderBlock: [
-		aeCanvas setSourceColor: aBoid color muchDarker.
-		aeCanvas setBorderWidth: 1 ].
-	aeCanvas drawOpenPathWith: [ :cairoContext |
-		cairoContext
-			moveTo: aBoid position;
-			relativeLineTo: aBoid velocity negated ].
-
-	aeCanvas drawFigure
+	aeCanvas
+		pathFactory: [ :cairoContext |
+			cairoContext
+				moveTo: aBoid position;
+				relativeLineTo: aBoid velocity negated ];
+		setBackgroundOff;
+		setOutskirtsCentered;
+		setBorderBlock: [
+			aeCanvas
+				setSourceColor: aBoid color muchDarker;
+				setBorderWidth: 1 ];
+		drawFigure
 
 ]
 
