@@ -1,5 +1,5 @@
 "
-I'm an example of drawing boids simulation by overriding #drawOnSpartaCanvas:
+I'm an example of drawing boids simulation by overriding canvas drawing hooks.
 
 See an example on class side.
 "
@@ -30,18 +30,19 @@ BoidsCustomDrawSkyElement >> aeDrawGeometryOn: aeCanvas [
 { #category : #'drawing - Alexandrie' }
 BoidsCustomDrawSkyElement >> aeDrawOn: aeCanvas bodyOf: aBoid [
 
-	aeCanvas pathFactory: [ :cairoContext |
-		cairoContext
-			circleCenterX: aBoid position x
-			y: aBoid position y
-			radius: aBoid radius ].
-	aeCanvas setBackgroundWith: [
-		aeCanvas setSourceColor: aBoid color ].
-	aeCanvas setOutskirtsCentered.
-	aeCanvas setBorderBlock: [
-		aeCanvas setSourceColor: aBoid color muchDarker.
-		aeCanvas setBorderWidth: 1 ].
-	aeCanvas drawFigure.
+	aeCanvas 
+		pathFactory: [ :cairoContext |
+			cairoContext
+				circleCenterX: aBoid position x
+				y: aBoid position y
+				radius: aBoid radius ];
+		setBackgroundWith: [
+			aeCanvas setSourceColor: aBoid color ];
+		setOutskirtsCentered;
+		setBorderBlock: [
+			aeCanvas setSourceColor: aBoid color muchDarker.
+			aeCanvas setBorderWidth: 1 ];
+		drawFigure
 
 ]
 
